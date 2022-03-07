@@ -1,15 +1,15 @@
 package components;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 
 public class Window extends JFrame {
-    public Window() {
-        super("Graphic Editor");
+    public Window(String title) {
+        super(title);
     }
 
-    public void initialize() {
-        setSize(600, 400);
+    public void initialize(int width, int height) {
+        setSize(width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
