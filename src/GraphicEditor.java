@@ -13,6 +13,7 @@ public class GraphicEditor {
                 .addMenu(new EditMenu())
         );
         mainFrame.add(new ToolBar(), BorderLayout.NORTH);
+        mainFrame.add(new DrawingPanel());
 
         mainFrame.initialize(600, 400);
     }
