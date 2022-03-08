@@ -1,8 +1,10 @@
-import components.Window;
+import components.MainFrame;
+
+import javax.swing.*;
 
 public class GraphicEditor {
     public static void main(String args[]){
-        Window window =  new Window("Graphic Editor");
-        window.initialize(600, 400);
+        MainFrame mainFrame =  new MainFrame("Graphic Editor");
+        mainFrame.initialize(600, 400);
     }
 }

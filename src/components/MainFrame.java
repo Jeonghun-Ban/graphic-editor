@@ -1,10 +1,10 @@
 package components;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 
-public class Window extends JFrame {
-    public Window(String title) {
+public class MainFrame extends JFrame {
+    public MainFrame(String title) {
         super(title);
     }
 
