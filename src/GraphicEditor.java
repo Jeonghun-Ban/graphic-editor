@@ -1,8 +1,12 @@
-import components.*;
+import components.MainFrame;
+import components.DrawingPanel;
 import components.MenuBar;
+import components.ToolBar;
+
+import elements.EditMenu;
+import elements.FileMenu;
 
 import java.awt.*;
-
 
 public class GraphicEditor {
     public static void main(String[] args){
