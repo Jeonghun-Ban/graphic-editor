@@ -1,4 +1,8 @@
 import components.*;
+import components.MenuBar;
+
+import java.awt.*;
+
 
 public class GraphicEditor {
     public static void main(String[] args){
@@ -8,6 +12,7 @@ public class GraphicEditor {
                 .addMenu(new FileMenu())
                 .addMenu(new EditMenu())
         );
+        mainFrame.add(new ToolBar(), BorderLayout.NORTH);
 
         mainFrame.initialize(600, 400);
     }
