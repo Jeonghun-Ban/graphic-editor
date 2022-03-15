@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
 public class MainFrame extends JFrame {
+    private DrawingPanel drawingPanel;
+    private ToolBar toolBar;
 
     public MainFrame(String title) {
         super(title);
@@ -15,8 +17,13 @@ public class MainFrame extends JFrame {
                 .addMenu(new FileMenu())
                 .addMenu(new EditMenu())
         );
-        this.add(new ToolBar(), BorderLayout.NORTH);
-        this.add(new DrawingPanel());
+
+        drawingPanel = new DrawingPanel();
+        toolBar = new ToolBar();
+
+        this.add(drawingPanel);
+        this.add(toolBar, BorderLayout.NORTH);
+        toolBar.init(drawingPanel);
     }
 
     private void initialize(){

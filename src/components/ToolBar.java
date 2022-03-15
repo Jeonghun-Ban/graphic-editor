@@ -1,30 +1,49 @@
 package components;
 
-import javax.swing.*;
+import enums.DrawingTool;
+import graphics.MetaShape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+import javax.swing.JToolBar;
 
 public class ToolBar extends JToolBar {
-    private JRadioButton rectangleTool;
-    private JRadioButton ovalTool;
-    private JRadioButton lineTool;
-    private JRadioButton polygonTool;
+    private ButtonGroup buttonGroup;
+    private ToolBarHandler toolBarHandler;
+    private DrawingPanel drawingPanel;
 
     public ToolBar () {
-        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup = new ButtonGroup();
+        toolBarHandler = new ToolBarHandler();
 
-        this.rectangleTool = new JRadioButton("rectangle");
-        this.add(rectangleTool);
-        buttonGroup.add(rectangleTool);
+        Arrays.stream(DrawingTool.values()).forEach( value -> {
+            JRadioButton radioBtn = new JRadioButton(value.name());
+            this.add(radioBtn);
+            buttonGroup.add(radioBtn);
+            radioBtn.addActionListener(toolBarHandler);
 
-        this.ovalTool = new JRadioButton("oval");
-        this.add(ovalTool);
-        buttonGroup.add(ovalTool);
+        });
+    }
 
-        this.lineTool = new JRadioButton("line");
-        this.add(lineTool);
-        buttonGroup.add(lineTool);
+    public void init(DrawingPanel drawingPanel){
+        this.drawingPanel = drawingPanel;
+    }
 
-        this.polygonTool = new JRadioButton("polygon");
-        this.add(polygonTool);
-        buttonGroup.add(polygonTool);
+    private class ToolBarHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                JRadioButton button = (JRadioButton)e.getSource();
+                String packageName = "graphics.";
+                Class<?> clazz = Class.forName(packageName.concat(button.getActionCommand()));
+                MetaShape shape = (MetaShape) clazz.getConstructor().newInstance();
+                drawingPanel.setCurrentShape(shape);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
