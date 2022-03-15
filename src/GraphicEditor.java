@@ -11,6 +11,7 @@ import java.awt.*;
 public class GraphicEditor {
     public static void main(String[] args){
         MainFrame mainFrame =  new MainFrame("Graphic Editor");
+        mainFrame.setSize(600, 400);
 
         mainFrame.setJMenuBar(new MenuBar()
                 .addMenu(new FileMenu())
@@ -18,7 +19,5 @@ public class GraphicEditor {
         );
         mainFrame.add(new ToolBar(), BorderLayout.NORTH);
         mainFrame.add(new DrawingPanel());
-
-        mainFrame.initialize(600, 400);
     }
 }
