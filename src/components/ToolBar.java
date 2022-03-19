@@ -17,10 +17,10 @@ public class ToolBar extends JToolBar {
     public ToolBar () {
         buttonGroup = new ButtonGroup();
         toolBarHandler = new ToolBarHandler();
-        addDrawBtns();
+        createButtons();
     }
 
-    public void addDrawBtns(){
+    public void createButtons(){
         Arrays.stream(DrawingTool.values()).forEach( value -> {
             JRadioButton radioBtn = new JRadioButton(value.name());
             this.add(radioBtn);
@@ -30,7 +30,7 @@ public class ToolBar extends JToolBar {
         });
     }
 
-    public void init(DrawingPanel drawingPanel){
+    public void linkPanel(DrawingPanel drawingPanel){
         this.drawingPanel = drawingPanel;
     }
 

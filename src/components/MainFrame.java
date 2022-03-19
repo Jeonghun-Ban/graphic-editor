@@ -8,26 +8,28 @@ import menus.FileMenu;
 
 public class MainFrame extends JFrame {
     private DrawingPanel drawingPanel;
+    private MenuBar menuBar;
     private ToolBar toolBar;
 
     public MainFrame() {
-        this.setJMenuBar(new MenuBar()
+        drawingPanel = new DrawingPanel();
+        this.add(drawingPanel);
+
+        menuBar = new MenuBar();
+        this.setJMenuBar(menuBar
                 .addMenu(new FileMenu())
                 .addMenu(new EditMenu())
         );
 
-        drawingPanel = new DrawingPanel();
         toolBar = new ToolBar();
-
-        this.add(drawingPanel);
+        toolBar.linkPanel(drawingPanel);
         this.add(toolBar, BorderLayout.NORTH);
-        toolBar.init(drawingPanel);
     }
 
     public void initialize(){
         this.setTitle(Constants.TITLE_MAINFRAME);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600, 400);
+        this.setSize(Constants.WIDTH_MAINFRAME, Constants.HEIGHT_MAINFRAME);
         this.setVisible(true);
     }
 }
