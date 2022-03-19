@@ -17,7 +17,10 @@ public class ToolBar extends JToolBar {
     public ToolBar () {
         buttonGroup = new ButtonGroup();
         toolBarHandler = new ToolBarHandler();
+        addDrawBtns();
+    }
 
+    public void addDrawBtns(){
         Arrays.stream(DrawingTool.values()).forEach( value -> {
             JRadioButton radioBtn = new JRadioButton(value.name());
             this.add(radioBtn);
@@ -37,8 +40,9 @@ public class ToolBar extends JToolBar {
         public void actionPerformed(ActionEvent e) {
             try {
                 JRadioButton button = (JRadioButton)e.getSource();
+                String buttonName = button.getActionCommand();
                 String packageName = "graphics.";
-                Class<?> clazz = Class.forName(packageName.concat(button.getActionCommand()));
+                Class<?> clazz = Class.forName(packageName.concat(buttonName));
                 MetaShape shape = (MetaShape) clazz.getConstructor().newInstance();
                 drawingPanel.setCurrentShape(shape);
             } catch (Exception ex) {

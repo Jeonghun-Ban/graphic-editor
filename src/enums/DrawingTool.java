@@ -1,5 +1,5 @@
 package enums;
 
 public enum DrawingTool {
-    Square, Oval, Line, Polygon
+    Rectangle, Oval, Line, Polygon
 }
