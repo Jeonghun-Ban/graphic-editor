@@ -1,18 +1,16 @@
 package components;
 
-import elements.EditMenu;
-import elements.FileMenu;
+import constants.Constants;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
+import elements.EditMenu;
+import elements.FileMenu;
 
 public class MainFrame extends JFrame {
     private DrawingPanel drawingPanel;
     private ToolBar toolBar;
 
-    public MainFrame(String title) {
-        super(title);
-        this.initialize();
-
+    public MainFrame() {
         this.setJMenuBar(new MenuBar()
                 .addMenu(new FileMenu())
                 .addMenu(new EditMenu())
@@ -26,8 +24,10 @@ public class MainFrame extends JFrame {
         toolBar.init(drawingPanel);
     }
 
-    private void initialize(){
+    public void initialize(){
+        this.setTitle(Constants.TITLE_MAINFRAME);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(600, 400);
         this.setVisible(true);
     }
 }

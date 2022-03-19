@@ -1,6 +1,6 @@
 package components;
 
-import enums.DrawingMode;
+import constants.DrawingMode;
 import graphics.MetaShape;
 import graphics.Polygon;
 import java.awt.Graphics;
