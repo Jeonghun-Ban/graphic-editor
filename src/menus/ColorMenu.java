@@ -5,18 +5,16 @@ import java.util.Arrays;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-public class FileMenu extends JMenu {
-    private static final long serialVersionUID = 1L;
+public class ColorMenu extends JMenu {
 
-    public FileMenu() {
-        super("File");
+    public ColorMenu() {
+        super("Color");
         createMenuItems();
     }
 
     private void createMenuItems(){
-        Arrays.stream(Constants.FileMenuList).forEach(value -> {
+        Arrays.stream(Constants.ColorMenuList).forEach(value -> {
             this.add(new JMenuItem(value));
         });
     }
-
 }

@@ -12,4 +12,8 @@ public class Constants {
     public static String[] FileMenuList = {
         "New", "Open", "Close", "Save", "Save As", "Print", "Quit"
     };
+
+    public static String[] ColorMenuList = {
+        "Set Line Color", "Set Fill Color"
+    };
 }

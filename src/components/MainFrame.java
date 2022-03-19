@@ -3,6 +3,7 @@ package components;
 import constants.Constants;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
+import menus.ColorMenu;
 import menus.EditMenu;
 import menus.FileMenu;
 
@@ -19,6 +20,7 @@ public class MainFrame extends JFrame {
         this.setJMenuBar(menuBar
                 .addMenu(new FileMenu())
                 .addMenu(new EditMenu())
+                .addMenu(new ColorMenu())
         );
 
         toolBar = new ToolBar();

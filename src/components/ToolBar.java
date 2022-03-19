@@ -26,7 +26,6 @@ public class ToolBar extends JToolBar {
             this.add(radioBtn);
             buttonGroup.add(radioBtn);
             radioBtn.addActionListener(toolBarHandler);
-
         });
     }
 

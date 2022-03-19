@@ -10,7 +10,10 @@ public class EditMenu extends JMenu {
 
     public EditMenu() {
         super("Edit");
+        createMenuItems();
+    }
 
+    private void createMenuItems(){
         Arrays.stream(Constants.EditMenuList).forEach(value -> {
             this.add(new JMenuItem(value));
         });
