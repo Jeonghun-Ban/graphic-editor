@@ -5,15 +5,15 @@ public class Constants {
     public static final int WIDTH_MAINFRAME = 600;
     public static final int HEIGHT_MAINFRAME = 400;
 
-    public static String[] EditMenuList = {
-        "Undo", "Redo", "Cut", "Copy", "Paste", "Group", "Ungroup"
+    public enum EditMenuEnum {
+        Undo, Redo, Cut, Copy, Paste, Group, Ungroup
     };
 
-    public static String[] FileMenuList = {
-        "New", "Open", "Close", "Save", "Save As", "Print", "Quit"
+    public enum FileMenuEnum {
+        New, Open, Close, Save, SaveAs, Print, Quit
     };
 
-    public static String[] ColorMenuList = {
-        "Set Line Color", "Set Fill Color"
+    public enum ColorMenuEnum {
+        SetLineColor, SetFillColor
     };
 }

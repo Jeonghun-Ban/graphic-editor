@@ -14,8 +14,8 @@ public class FileMenu extends JMenu {
     }
 
     private void createMenuItems(){
-        Arrays.stream(Constants.FileMenuList).forEach(value -> {
-            this.add(new JMenuItem(value));
+        Arrays.stream(Constants.FileMenuEnum.values()).forEach(value -> {
+            this.add(new JMenuItem(value.name()));
         });
     }
 

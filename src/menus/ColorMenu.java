@@ -13,8 +13,8 @@ public class ColorMenu extends JMenu {
     }
 
     private void createMenuItems(){
-        Arrays.stream(Constants.ColorMenuList).forEach(value -> {
-            this.add(new JMenuItem(value));
+        Arrays.stream(Constants.ColorMenuEnum.values()).forEach(value -> {
+            this.add(new JMenuItem(value.name()));
         });
     }
 }

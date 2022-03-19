@@ -14,8 +14,8 @@ public class EditMenu extends JMenu {
     }
 
     private void createMenuItems(){
-        Arrays.stream(Constants.EditMenuList).forEach(value -> {
-            this.add(new JMenuItem(value));
+        Arrays.stream(Constants.EditMenuEnum.values()).forEach(value -> {
+            this.add(new JMenuItem(value.name()));
         });
     }
 }
