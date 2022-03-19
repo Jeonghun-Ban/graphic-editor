@@ -1,4 +1,4 @@
-package graphics;
+package shapes;
 
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;

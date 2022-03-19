@@ -3,8 +3,8 @@ package components;
 import constants.Constants;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import elements.EditMenu;
-import elements.FileMenu;
+import menus.EditMenu;
+import menus.FileMenu;
 
 public class MainFrame extends JFrame {
     private DrawingPanel drawingPanel;

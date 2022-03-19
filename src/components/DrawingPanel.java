@@ -1,8 +1,8 @@
 package components;
 
 import constants.DrawingMode;
-import graphics.MetaShape;
-import graphics.Polygon;
+import shapes.MetaShape;
+import shapes.Polygon;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;

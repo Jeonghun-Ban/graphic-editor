@@ -1,7 +1,7 @@
 package components;
 
 import constants.DrawingTool;
-import graphics.MetaShape;
+import shapes.MetaShape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
