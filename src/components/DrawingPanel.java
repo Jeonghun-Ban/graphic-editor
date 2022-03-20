@@ -1,7 +1,6 @@
 package components;
 
 import constants.Constants;
-import constants.DrawingMode;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,7 +16,7 @@ public class DrawingPanel extends JPanel {
 
     private MetaShape currentShape;
     private final ArrayList<MetaShape> shapeList;
-    private DrawingMode drawingMode;
+    private Constants.DrawingMode drawingMode;
     private Color lineColor, fillColor;
 
     public DrawingPanel() {
@@ -28,7 +27,7 @@ public class DrawingPanel extends JPanel {
 
         shapeList = new ArrayList<>();
         MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
-        drawingMode = DrawingMode.IDLE;
+        drawingMode = Constants.DrawingMode.IDLE;
 
         addMouseListener(drawingHandler);
         addMouseMotionListener(drawingHandler);
@@ -76,25 +75,25 @@ public class DrawingPanel extends JPanel {
 
     private void finish(MetaShape shape) {
         shapeList.add(shape);
-        drawingMode = DrawingMode.IDLE;
+        drawingMode = Constants.DrawingMode.IDLE;
         repaint();
     }
 
     private class MouseDrawingHandler extends MouseInputAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            if(drawingMode == DrawingMode.IDLE){
+            if(drawingMode == Constants.DrawingMode.IDLE){
                 initDraw(e.getPoint());
                 if(currentShape instanceof Polygon){
-                    drawingMode = DrawingMode.POLYGON;
+                    drawingMode = Constants.DrawingMode.POLYGON;
                 } else {
-                    drawingMode = DrawingMode.GENERAL;
+                    drawingMode = Constants.DrawingMode.GENERAL;
                 }
             }
         }
         @Override
         public void mouseMoved(MouseEvent e) {
-            if(drawingMode == DrawingMode.POLYGON){
+            if(drawingMode == Constants.DrawingMode.POLYGON){
                 draw(e.getPoint());
             }
         }
@@ -104,13 +103,13 @@ public class DrawingPanel extends JPanel {
         }
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(drawingMode == DrawingMode.GENERAL){
+            if(drawingMode == Constants.DrawingMode.GENERAL){
                 finish(currentShape);
             }
         }
         @Override
         public void mouseClicked(MouseEvent e) {
-            if(drawingMode == DrawingMode.POLYGON){
+            if(drawingMode == Constants.DrawingMode.POLYGON){
                 if(e.getButton() == MouseEvent.BUTTON1){
                     continueDraw(e.getPoint());
                 } else if(e.getButton() == MouseEvent.BUTTON3){
