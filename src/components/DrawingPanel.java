@@ -1,8 +1,8 @@
 package components;
 
+import constants.Constants;
 import constants.DrawingMode;
-import shapes.MetaShape;
-import shapes.Polygon;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -10,18 +10,24 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
+import shapes.MetaShape;
+import shapes.Polygon;
 
 public class DrawingPanel extends JPanel {
 
-    private MouseDrawingHandler drawingHandler;
     private MetaShape currentShape;
-    private ArrayList<MetaShape> shapeList;
+    private final ArrayList<MetaShape> shapeList;
     private DrawingMode drawingMode;
+    private Color lineColor, fillColor;
 
     public DrawingPanel() {
         super();
+        this.setBackground(Constants.DEFAULT_BACKGROUND_COLOR);
+        lineColor = Constants.DEFAULT_LINE_COLOR;
+        fillColor = Constants.DEFAULT_FILL_COLOR;
+
         shapeList = new ArrayList<>();
-        drawingHandler = new MouseDrawingHandler();
+        MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
         drawingMode = DrawingMode.IDLE;
 
         addMouseListener(drawingHandler);
@@ -30,6 +36,14 @@ public class DrawingPanel extends JPanel {
 
     public void setCurrentShape(MetaShape currentShape) {
         this.currentShape = currentShape;
+    }
+
+    public void setLineColor(Color color){
+        this.lineColor = color;
+    }
+
+    public void setFillColor(Color color){
+        this.fillColor = color;
     }
 
     public void paintComponent(Graphics g) {
@@ -43,6 +57,9 @@ public class DrawingPanel extends JPanel {
     private void initDraw(Point point) {
         currentShape = currentShape.clone();
         currentShape.initDraw(point);
+        currentShape.setLineColor(lineColor);
+        currentShape.setFillColor(fillColor);
+
     }
 
     private void draw(Point currentP) {
@@ -62,7 +79,6 @@ public class DrawingPanel extends JPanel {
         drawingMode = DrawingMode.IDLE;
         repaint();
     }
-
 
     private class MouseDrawingHandler extends MouseInputAdapter {
         @Override

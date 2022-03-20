@@ -8,22 +8,21 @@ import menus.EditMenu;
 import menus.FileMenu;
 
 public class MainFrame extends JFrame {
-    private DrawingPanel drawingPanel;
-    private MenuBar menuBar;
-    private ToolBar toolBar;
-
     public MainFrame() {
-        drawingPanel = new DrawingPanel();
+        DrawingPanel drawingPanel = new DrawingPanel();
         this.add(drawingPanel);
 
-        menuBar = new MenuBar();
+        MenuBar menuBar = new MenuBar();
+        ColorMenu colorMenu = new ColorMenu();
+        colorMenu.linkPanel(drawingPanel);
+
         this.setJMenuBar(menuBar
                 .addMenu(new FileMenu())
                 .addMenu(new EditMenu())
-                .addMenu(new ColorMenu())
+                .addMenu(colorMenu)
         );
 
-        toolBar = new ToolBar();
+        ToolBar toolBar = new ToolBar();
         toolBar.linkPanel(drawingPanel);
         this.add(toolBar, BorderLayout.NORTH);
     }
