@@ -18,12 +18,15 @@ public class DrawingPanel extends JPanel {
     private final ArrayList<MetaShape> shapeList;
     private Constants.DrawingMode drawingMode;
     private Color lineColor, fillColor;
+    private int lineSize, dashSize;
 
     public DrawingPanel() {
         super();
         this.setBackground(Constants.DEFAULT_BACKGROUND_COLOR);
         lineColor = Constants.DEFAULT_LINE_COLOR;
         fillColor = Constants.DEFAULT_FILL_COLOR;
+        lineSize = Constants.DEFAULT_LINE_SIZE;
+        dashSize = Constants.DEFAULT_DASH_SIZE;
 
         shapeList = new ArrayList<>();
         MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
@@ -45,6 +48,15 @@ public class DrawingPanel extends JPanel {
         this.fillColor = color;
     }
 
+    public void setLineSize(int lineSize){
+        this.lineSize = lineSize;
+    }
+
+    public void setDashSize(int dashSize){
+        this.dashSize = dashSize;
+    }
+
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D)g;
@@ -56,9 +68,11 @@ public class DrawingPanel extends JPanel {
     private void initDraw(Point point) {
         currentShape = currentShape.clone();
         currentShape.initDraw(point);
+
         currentShape.setLineColor(lineColor);
         currentShape.setFillColor(fillColor);
-
+        currentShape.setLineSize(lineSize);
+        currentShape.setDashSize(dashSize);
     }
 
     private void draw(Point currentP) {
