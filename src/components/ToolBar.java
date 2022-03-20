@@ -40,7 +40,7 @@ public class ToolBar extends JToolBar {
             try {
                 JRadioButton button = (JRadioButton)e.getSource();
                 String buttonName = button.getActionCommand();
-                String packageName = "graphics.";
+                String packageName = "shapes.";
                 Class<?> clazz = Class.forName(packageName.concat(buttonName));
                 MetaShape shape = (MetaShape) clazz.getConstructor().newInstance();
                 drawingPanel.setCurrentShape(shape);
