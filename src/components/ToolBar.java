@@ -16,6 +16,8 @@ import javax.swing.event.ChangeListener;
 import shapes.MetaShape;
 
 public class ToolBar extends JToolBar {
+    private static final long serialVersionUID = 1L;
+
     private ButtonGroup buttonGroup;
     private ToolBarHandler toolBarHandler;
     private SpinnerHandler spinnerHandler;
@@ -67,13 +69,17 @@ public class ToolBar extends JToolBar {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            JRadioButton button = (JRadioButton)e.getSource();
+            String buttonName = button.getActionCommand();
             try {
-                JRadioButton button = (JRadioButton)e.getSource();
-                String buttonName = button.getActionCommand();
-                String packageName = "shapes.";
-                Class<?> clazz = Class.forName(packageName.concat(buttonName));
-                MetaShape shape = (MetaShape) clazz.getConstructor().newInstance();
-                drawingPanel.setCurrentShape(shape);
+                if(buttonName.equals("Clean")){
+                    drawingPanel.clean();
+                } else {
+                    String packageName = "shapes.";
+                    Class<?> clazz = Class.forName(packageName.concat(buttonName));
+                    MetaShape shape = (MetaShape) clazz.getConstructor().newInstance();
+                    drawingPanel.setCurrentShape(shape);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -11,6 +11,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 public class ColorMenu extends JMenu {
+    private static final long serialVersionUID = 1L;
+
     private DrawingPanel drawingPanel;
 
     public ColorMenu() {

@@ -14,7 +14,7 @@ public class Constants {
     public enum ColorMenuEnum {SetLineColor, SetFillColor}
 
     // ToolBar
-    public enum DrawingTool {Rectangle, Oval, Line, Polygon}
+    public enum DrawingTool {Rectangle, Oval, Line, Polygon, Clean}
     public static final String LINE_SIZE_SPINNER = "Line Size";
     public static final String DASH_SIZE_SPINNER = "Dash Size";
 

@@ -13,6 +13,7 @@ import shapes.MetaShape;
 import shapes.Polygon;
 
 public class DrawingPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
 
     private MetaShape currentShape;
     private final ArrayList<MetaShape> shapeList;
@@ -38,6 +39,7 @@ public class DrawingPanel extends JPanel {
 
     public void setCurrentShape(MetaShape currentShape) {
         this.currentShape = currentShape;
+        drawingMode = Constants.DrawingMode.IDLE;
     }
 
     public void setLineColor(Color color){
@@ -55,7 +57,6 @@ public class DrawingPanel extends JPanel {
     public void setDashSize(int dashSize){
         this.dashSize = dashSize;
     }
-
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -93,10 +94,15 @@ public class DrawingPanel extends JPanel {
         repaint();
     }
 
+    public void clean() {
+        shapeList.clear();
+        repaint();
+    }
+
     private class MouseDrawingHandler extends MouseInputAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            if(drawingMode == Constants.DrawingMode.IDLE){
+            if(drawingMode == Constants.DrawingMode.IDLE && currentShape != null){
                 initDraw(e.getPoint());
                 if(currentShape instanceof Polygon){
                     drawingMode = Constants.DrawingMode.POLYGON;
@@ -113,7 +119,7 @@ public class DrawingPanel extends JPanel {
         }
         @Override
         public void mouseDragged(MouseEvent e) {
-            draw(e.getPoint());
+            if(currentShape != null) draw(e.getPoint());
         }
         @Override
         public void mouseReleased(MouseEvent e) {
