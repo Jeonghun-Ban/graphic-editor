@@ -130,10 +130,12 @@ public class DrawingPanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             if(drawingMode == Constants.DrawingMode.POLYGON){
-                if(e.getButton() == MouseEvent.BUTTON1){
-                    continueDraw(e.getPoint());
-                } else if(e.getButton() == MouseEvent.BUTTON3){
-                    finish(currentShape);
+                if(e.getButton() == MouseEvent.BUTTON1) {
+                    if (e.getClickCount() == 1) {
+                        continueDraw(e.getPoint());
+                    } else if (e.getClickCount() == 2) {
+                        finish(currentShape);
+                    }
                 }
             }
         }
