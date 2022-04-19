@@ -1,6 +1,6 @@
 package components;
 
-import constants.Constants;
+import global.Constants;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

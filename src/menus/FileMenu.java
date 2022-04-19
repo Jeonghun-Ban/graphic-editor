@@ -1,6 +1,6 @@
 package menus;
 
-import constants.Constants;
+import global.Constants;
 import java.util.Arrays;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;

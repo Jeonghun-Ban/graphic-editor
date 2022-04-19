@@ -1,7 +1,7 @@
 package menus;
 
 import components.DrawingPanel;
-import constants.Constants;
+import global.Constants;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

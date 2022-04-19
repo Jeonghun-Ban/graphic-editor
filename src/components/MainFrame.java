@@ -1,6 +1,6 @@
 package components;
 
-import constants.Constants;
+import global.Constants;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import menus.ColorMenu;
