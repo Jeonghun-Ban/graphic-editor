@@ -6,22 +6,24 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
+import java.io.Serializable;
+import utils.CustomStroke;
 
-public abstract class MetaShape{
+public abstract class MetaShape implements Serializable {
     protected Shape shape;
     protected Point startP;
 
     protected Color lineColor;
     protected Color fillColor;
 
-    protected BasicStroke stroke;
+    protected CustomStroke stroke;
     protected int lineSize;
     protected int dashSize;
 
     public MetaShape(Shape shape){
         this.shape = shape;
 
-        this.stroke = new BasicStroke();
+        this.stroke = new CustomStroke();
         this.lineColor = Constants.DEFAULT_LINE_COLOR;
         this.fillColor = Constants.DEFAULT_FILL_COLOR;
         this.lineSize = Constants.DEFAULT_LINE_SIZE;
@@ -56,8 +58,8 @@ public abstract class MetaShape{
 
     public void changeStroke(){
         stroke = (dashSize == 0) ?
-            new BasicStroke(lineSize) :
-            new BasicStroke(
+            new CustomStroke(lineSize) :
+            new CustomStroke(
                 lineSize, BasicStroke.CAP_ROUND,
                 BasicStroke.JOIN_ROUND, 10,
                 new float[]{dashSize}, 0

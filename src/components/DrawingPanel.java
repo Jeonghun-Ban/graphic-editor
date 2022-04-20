@@ -14,7 +14,7 @@ import shapes.Polygon;
 
 public class DrawingPanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    private final ArrayList<MetaShape> shapeList;
+    private ArrayList<MetaShape> shapeList;
     private MetaShape currentShape;
     private Constants.DrawingMode drawingMode;
     private Color lineColor, fillColor;
@@ -96,6 +96,15 @@ public class DrawingPanel extends JPanel {
     public void clean() {
         shapeList.clear();
         repaint();
+    }
+
+    public Object getShapeList() {
+        return this.shapeList;
+    }
+
+    public void setShapeList(ArrayList shapeList) {
+        this.shapeList = shapeList;
+        this.repaint();
     }
 
     private class MouseDrawingHandler extends MouseInputAdapter {
