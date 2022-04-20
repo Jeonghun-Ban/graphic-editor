@@ -36,6 +36,10 @@ public class ToolBar extends JToolBar {
         createDashSizeSpinner();
     }
 
+    public void associate(DrawingPanel drawingPanel) {
+        this.drawingPanel = drawingPanel;
+    }
+
     public void createToolButtons() {
         Arrays.stream(DrawingTool.values()).forEach(value -> {
             JRadioButton button = new JRadioButton(value.name());
@@ -57,10 +61,6 @@ public class ToolBar extends JToolBar {
         JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
         this.add(dashSizeSpinner);
         dashSizeSpinner.addChangeListener(spinnerHandler);
-    }
-
-    public void linkPanel(DrawingPanel drawingPanel) {
-        this.drawingPanel = drawingPanel;
     }
 
     private class ToolBarHandler implements ActionListener {

@@ -14,9 +14,8 @@ import shapes.Polygon;
 
 public class DrawingPanel extends JPanel {
     private static final long serialVersionUID = 1L;
-
-    private MetaShape currentShape;
     private final ArrayList<MetaShape> shapeList;
+    private MetaShape currentShape;
     private Constants.DrawingMode drawingMode;
     private Color lineColor, fillColor;
     private int lineSize, dashSize;
@@ -42,26 +41,26 @@ public class DrawingPanel extends JPanel {
         drawingMode = Constants.DrawingMode.IDLE;
     }
 
-    public void setLineColor(Color color){
+    public void setLineColor(Color color) {
         this.lineColor = color;
     }
 
-    public void setFillColor(Color color){
+    public void setFillColor(Color color) {
         this.fillColor = color;
     }
 
-    public void setLineSize(int lineSize){
+    public void setLineSize(int lineSize) {
         this.lineSize = lineSize;
     }
 
-    public void setDashSize(int dashSize){
+    public void setDashSize(int dashSize) {
         this.dashSize = dashSize;
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2D = (Graphics2D)g;
-        for(MetaShape shape:shapeList){
+        Graphics2D g2D = (Graphics2D) g;
+        for (MetaShape shape : shapeList) {
             shape.draw(g2D);
         }
     }
@@ -84,7 +83,7 @@ public class DrawingPanel extends JPanel {
         currentShape.draw(g2D);
     }
 
-    private void continueDraw(Point p){
+    private void continueDraw(Point p) {
         ((Polygon) currentShape).continueDrawing(p);
     }
 
@@ -102,35 +101,39 @@ public class DrawingPanel extends JPanel {
     private class MouseDrawingHandler extends MouseInputAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            if(drawingMode == Constants.DrawingMode.IDLE && currentShape != null){
+            if (drawingMode == Constants.DrawingMode.IDLE && currentShape != null) {
                 initDraw(e.getPoint());
-                if(currentShape instanceof Polygon){
+                if (currentShape instanceof Polygon) {
                     drawingMode = Constants.DrawingMode.POLYGON;
                 } else {
                     drawingMode = Constants.DrawingMode.GENERAL;
                 }
             }
         }
+
         @Override
         public void mouseMoved(MouseEvent e) {
-            if(drawingMode == Constants.DrawingMode.POLYGON){
+            if (drawingMode == Constants.DrawingMode.POLYGON) {
                 draw(e.getPoint());
             }
         }
+
         @Override
         public void mouseDragged(MouseEvent e) {
-            if(currentShape != null) draw(e.getPoint());
+            if (currentShape != null) draw(e.getPoint());
         }
+
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(drawingMode == Constants.DrawingMode.GENERAL){
+            if (drawingMode == Constants.DrawingMode.GENERAL) {
                 finish(currentShape);
             }
         }
+
         @Override
         public void mouseClicked(MouseEvent e) {
-            if(drawingMode == Constants.DrawingMode.POLYGON){
-                if(e.getButton() == MouseEvent.BUTTON1) {
+            if (drawingMode == Constants.DrawingMode.POLYGON) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
                     if (e.getClickCount() == 1) {
                         continueDraw(e.getPoint());
                     } else if (e.getClickCount() == 2) {

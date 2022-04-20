@@ -33,7 +33,7 @@ public class ColorMenu extends JMenu {
         });
     }
 
-    public void linkPanel(DrawingPanel drawingPanel) {
+    public void associate(DrawingPanel drawingPanel) {
         this.drawingPanel = drawingPanel;
     }
 

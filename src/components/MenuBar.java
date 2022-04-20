@@ -1,14 +1,28 @@
 package components;
 
-import javax.swing.*;
+import javax.swing.JMenuBar;
+import menus.ColorMenu;
+import menus.EditMenu;
+import menus.FileMenu;
 
 public class MenuBar extends JMenuBar {
     private static final long serialVersionUID = 1L;
 
-    public MenuBar () {}
+    private FileMenu fileMenu;
+    private EditMenu editMenu;
+    private ColorMenu colorMenu;
 
-    public MenuBar addMenu(JMenu menu){
-        add(menu);
-        return this;
+    public MenuBar () {
+        fileMenu = new FileMenu();
+        editMenu = new EditMenu();
+        colorMenu = new ColorMenu();
+
+        this.add(fileMenu);
+        this.add(editMenu);
+        this.add(colorMenu);
+    }
+
+    public void associate(DrawingPanel drawingPanel) {
+        this.colorMenu.associate(drawingPanel);
     }
 }

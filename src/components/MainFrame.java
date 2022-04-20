@@ -3,29 +3,20 @@ package components;
 import global.Constants;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import menus.ColorMenu;
-import menus.EditMenu;
-import menus.FileMenu;
 
 public class MainFrame extends JFrame {
     private static final long serialVersionUID = 1L;
 
     public MainFrame() {
         DrawingPanel drawingPanel = new DrawingPanel();
-        this.add(drawingPanel);
-
         MenuBar menuBar = new MenuBar();
-        ColorMenu colorMenu = new ColorMenu();
-        colorMenu.linkPanel(drawingPanel);
-
-        this.setJMenuBar(menuBar
-                .addMenu(new FileMenu())
-                .addMenu(new EditMenu())
-                .addMenu(colorMenu)
-        );
-
         ToolBar toolBar = new ToolBar();
-        toolBar.linkPanel(drawingPanel);
+
+        menuBar.associate(drawingPanel);
+        toolBar.associate(drawingPanel);
+
+        this.add(drawingPanel);
+        this.setJMenuBar(menuBar);
         this.add(toolBar, BorderLayout.NORTH);
     }
 
