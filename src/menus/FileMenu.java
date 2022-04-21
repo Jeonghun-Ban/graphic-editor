@@ -32,9 +32,10 @@ public class FileMenu extends JMenu {
 
     private void createMenuItems() {
         Arrays.stream(FileMenuEnum.values()).forEach(value -> {
-            JMenuItem menuItem = new JMenuItem(value.name());
+            JMenuItem menuItem = new JMenuItem();
+            menuItem.setText(value.getLabel());
             menuItem.addActionListener(actionHandler);
-            menuItem.setActionCommand(menuItem.getName());
+            menuItem.setActionCommand(value.getLabel());
             this.add(menuItem);
         });
     }
@@ -62,9 +63,9 @@ public class FileMenu extends JMenu {
     class ActionHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("Save")) {
+            if (e.getActionCommand().equals(FileMenuEnum.Save)) {
                 save();
-            } else if (e.getActionCommand().equals("Open")) {
+            } else if (e.getActionCommand().equals(FileMenuEnum.Open)) {
                 open();
             }
         }
