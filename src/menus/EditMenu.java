@@ -1,6 +1,6 @@
 package menus;
 
-import global.Constants;
+import enums.EditMenuEnum;
 import java.util.Arrays;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -14,7 +14,7 @@ public class EditMenu extends JMenu {
     }
 
     private void createMenuItems(){
-        Arrays.stream(Constants.EditMenuEnum.values()).forEach(value -> {
+        Arrays.stream(EditMenuEnum.values()).forEach(value -> {
             this.add(new JMenuItem(value.name()));
         });
     }

@@ -1,12 +1,13 @@
 package containers;
 
-import global.Constants;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
-public class MainFrame extends JFrame {
-    private static final long serialVersionUID = 1L;
+import static global.Constants.HEIGHT_MAINFRAME;
+import static global.Constants.TITLE_MAINFRAME;
+import static global.Constants.WIDTH_MAINFRAME;
 
+public class MainFrame extends JFrame {
     public MainFrame() {
         DrawingPanel drawingPanel = new DrawingPanel();
         MenuBar menuBar = new MenuBar();
@@ -20,10 +21,10 @@ public class MainFrame extends JFrame {
         this.add(toolBar, BorderLayout.NORTH);
     }
 
-    public void initialize(){
-        this.setTitle(Constants.TITLE_MAINFRAME);
+    public void initialize() {
+        this.setTitle(TITLE_MAINFRAME);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(Constants.WIDTH_MAINFRAME, Constants.HEIGHT_MAINFRAME);
+        this.setSize(WIDTH_MAINFRAME, HEIGHT_MAINFRAME);
         this.setVisible(true);
     }
 }

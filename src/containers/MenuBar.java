@@ -6,13 +6,11 @@ import menus.EditMenu;
 import menus.FileMenu;
 
 public class MenuBar extends JMenuBar {
-    private static final long serialVersionUID = 1L;
-
     private FileMenu fileMenu;
     private EditMenu editMenu;
     private ColorMenu colorMenu;
 
-    public MenuBar () {
+    public MenuBar() {
         fileMenu = new FileMenu();
         editMenu = new EditMenu();
         colorMenu = new ColorMenu();

@@ -22,14 +22,4 @@ public class Constants {
     public static final String FILL_COLOR_TITLE = "Fill Color Chooser";
     public static final int DEFAULT_LINE_SIZE = 1;
     public static final int DEFAULT_DASH_SIZE = 0;
-
-    // MenuBar
-    public enum EditMenuEnum {Undo, Redo, Cut, Copy, Paste, Group, Ungroup}
-
-    public enum FileMenuEnum {New, Open, Close, Save, SaveAs, Print, Quit}
-
-    public enum ColorMenuEnum {SetLineColor, SetFillColor}
-
-    // DrawingPanel
-    public enum DrawingMode {IDLE, GENERAL, POLYGON}
 }

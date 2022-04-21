@@ -1,7 +1,6 @@
 package containers;
 
 import enums.DrawingTool;
-import global.Constants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -15,11 +14,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import static global.Constants.DASH_SIZE_MODEL;
+import static global.Constants.DASH_SIZE_SPINNER;
+import static global.Constants.LINE_SIZE_SPINNER;
 import static global.Constants.LiNE_SIZE_MODEL;
 
 public class ToolBar extends JToolBar {
-    private static final long serialVersionUID = 1L;
-
     private final ButtonGroup buttonGroup;
     private final ToolBarHandler toolBarHandler;
     private final SpinnerHandler spinnerHandler;
@@ -50,14 +49,14 @@ public class ToolBar extends JToolBar {
     }
 
     public void createLineSizeSpinner() {
-        this.add(new JLabel(Constants.LINE_SIZE_SPINNER));
+        this.add(new JLabel(LINE_SIZE_SPINNER));
         JSpinner lineSizeSpinner = new JSpinner(LiNE_SIZE_MODEL);
         this.add(lineSizeSpinner);
         lineSizeSpinner.addChangeListener(spinnerHandler);
     }
 
     public void createDashSizeSpinner() {
-        this.add(new JLabel(Constants.DASH_SIZE_SPINNER));
+        this.add(new JLabel(DASH_SIZE_SPINNER));
         JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
         this.add(dashSizeSpinner);
         dashSizeSpinner.addChangeListener(spinnerHandler);

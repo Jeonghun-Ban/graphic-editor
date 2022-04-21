@@ -1,6 +1,6 @@
 package containers;
 
-import global.Constants;
+import enums.DrawingMode;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,25 +12,32 @@ import javax.swing.event.MouseInputAdapter;
 import tools.draw.Draw;
 import tools.draw.Polygon;
 
+import static global.Constants.DEFAULT_BACKGROUND_COLOR;
+import static global.Constants.DEFAULT_DASH_SIZE;
+import static global.Constants.DEFAULT_FILL_COLOR;
+import static global.Constants.DEFAULT_LINE_COLOR;
+import static global.Constants.DEFAULT_LINE_SIZE;
+
 public class DrawingPanel extends JPanel {
-    private static final long serialVersionUID = 1L;
+    private DrawingMode drawingMode;
     private ArrayList<Draw> shapeList;
     private Draw currentShape;
-    private Constants.DrawingMode drawingMode;
     private Color lineColor, fillColor;
     private int lineSize, dashSize;
 
     public DrawingPanel() {
         super();
-        this.setBackground(Constants.DEFAULT_BACKGROUND_COLOR);
-        lineColor = Constants.DEFAULT_LINE_COLOR;
-        fillColor = Constants.DEFAULT_FILL_COLOR;
-        lineSize = Constants.DEFAULT_LINE_SIZE;
-        dashSize = Constants.DEFAULT_DASH_SIZE;
+        this.setBackground(DEFAULT_BACKGROUND_COLOR);
+
+        lineColor = DEFAULT_LINE_COLOR;
+        fillColor = DEFAULT_FILL_COLOR;
+        lineSize = DEFAULT_LINE_SIZE;
+        dashSize = DEFAULT_DASH_SIZE;
 
         shapeList = new ArrayList<>();
+
         MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
-        drawingMode = Constants.DrawingMode.IDLE;
+        drawingMode = DrawingMode.IDLE;
 
         addMouseListener(drawingHandler);
         addMouseMotionListener(drawingHandler);
@@ -38,7 +45,7 @@ public class DrawingPanel extends JPanel {
 
     public void setCurrentShape(Draw currentShape) {
         this.currentShape = currentShape;
-        drawingMode = Constants.DrawingMode.IDLE;
+        drawingMode = DrawingMode.IDLE;
     }
 
     public void setLineColor(Color color) {
@@ -89,7 +96,7 @@ public class DrawingPanel extends JPanel {
 
     private void finish(Draw shape) {
         shapeList.add(shape);
-        drawingMode = Constants.DrawingMode.IDLE;
+        drawingMode = DrawingMode.IDLE;
         repaint();
     }
 
@@ -110,19 +117,19 @@ public class DrawingPanel extends JPanel {
     private class MouseDrawingHandler extends MouseInputAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            if (drawingMode == Constants.DrawingMode.IDLE && currentShape != null) {
+            if (drawingMode == DrawingMode.IDLE && currentShape != null) {
                 initDraw(e.getPoint());
                 if (currentShape instanceof Polygon) {
-                    drawingMode = Constants.DrawingMode.POLYGON;
+                    drawingMode = DrawingMode.POLYGON;
                 } else {
-                    drawingMode = Constants.DrawingMode.GENERAL;
+                    drawingMode = DrawingMode.GENERAL;
                 }
             }
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (drawingMode == Constants.DrawingMode.POLYGON) {
+            if (drawingMode == DrawingMode.POLYGON) {
                 draw(e.getPoint());
             }
         }
@@ -134,14 +141,14 @@ public class DrawingPanel extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if (drawingMode == Constants.DrawingMode.GENERAL) {
+            if (drawingMode == DrawingMode.GENERAL) {
                 finish(currentShape);
             }
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (drawingMode == Constants.DrawingMode.POLYGON) {
+            if (drawingMode == DrawingMode.POLYGON) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     if (e.getClickCount() == 1) {
                         continueDraw(e.getPoint());

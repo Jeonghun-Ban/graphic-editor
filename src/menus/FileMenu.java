@@ -1,7 +1,7 @@
 package menus;
 
 import containers.DrawingPanel;
-import global.Constants;
+import enums.FileMenuEnum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class FileMenu extends JMenu {
     }
 
     private void createMenuItems() {
-        Arrays.stream(Constants.FileMenuEnum.values()).forEach(value -> {
+        Arrays.stream(FileMenuEnum.values()).forEach(value -> {
             JMenuItem menuItem = new JMenuItem(value.name());
             menuItem.addActionListener(actionHandler);
             menuItem.setActionCommand(menuItem.getName());

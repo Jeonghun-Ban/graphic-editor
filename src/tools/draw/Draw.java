@@ -1,12 +1,16 @@
 package tools.draw;
 
-import global.Constants;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 import java.io.Serializable;
 import utils.CustomStroke;
+
+import static global.Constants.DEFAULT_DASH_SIZE;
+import static global.Constants.DEFAULT_FILL_COLOR;
+import static global.Constants.DEFAULT_LINE_COLOR;
+import static global.Constants.DEFAULT_LINE_SIZE;
 
 public abstract class Draw implements Serializable {
     protected Shape shape;
@@ -23,10 +27,10 @@ public abstract class Draw implements Serializable {
         this.shape = shape;
 
         this.stroke = new CustomStroke();
-        this.lineColor = Constants.DEFAULT_LINE_COLOR;
-        this.fillColor = Constants.DEFAULT_FILL_COLOR;
-        this.lineSize = Constants.DEFAULT_LINE_SIZE;
-        this.dashSize = Constants.DEFAULT_DASH_SIZE;
+        this.lineColor = DEFAULT_LINE_COLOR;
+        this.fillColor = DEFAULT_FILL_COLOR;
+        this.lineSize = DEFAULT_LINE_SIZE;
+        this.dashSize = DEFAULT_DASH_SIZE;
     }
 
     public void draw(Graphics2D g2D){

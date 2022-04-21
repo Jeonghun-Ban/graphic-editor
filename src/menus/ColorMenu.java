@@ -1,7 +1,7 @@
 package menus;
 
 import containers.DrawingPanel;
-import global.Constants;
+import enums.ColorMenuEnum;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +9,9 @@ import java.util.Arrays;
 import javax.swing.JColorChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import static global.Constants.FILL_COLOR_TITLE;
+import static global.Constants.LINE_COLOR_TITLE;
 
 public class ColorMenu extends JMenu {
     private static final long serialVersionUID = 1L;
@@ -22,7 +25,7 @@ public class ColorMenu extends JMenu {
     }
 
     private void createMenuItems(ColorMenuHandler colorMenuHandler){
-        Arrays.stream(Constants.ColorMenuEnum.values()).forEach(value -> {
+        Arrays.stream(ColorMenuEnum.values()).forEach(value -> {
             String menuItemName = value.name();
             JMenuItem menuItem = new JMenuItem(menuItemName);
 
@@ -39,7 +42,7 @@ public class ColorMenu extends JMenu {
 
     private void setLineColor() {
         Color lineColor = JColorChooser.showDialog(
-                null, Constants.LINE_COLOR_TITLE, null);
+                null, LINE_COLOR_TITLE, null);
         if(lineColor != null){
             drawingPanel.setLineColor(lineColor);
         }
@@ -47,7 +50,7 @@ public class ColorMenu extends JMenu {
 
     private void setFillColor() {
         Color fillColor = JColorChooser.showDialog(
-                null, Constants.FILL_COLOR_TITLE, null);
+                null, FILL_COLOR_TITLE, null);
         if(fillColor != null){
             drawingPanel.setFillColor(fillColor);
         }
@@ -57,7 +60,7 @@ public class ColorMenu extends JMenu {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            switch (Constants.ColorMenuEnum.valueOf(e.getActionCommand())){
+            switch (ColorMenuEnum.valueOf(e.getActionCommand())){
                 case SetLineColor:
                     setLineColor();
                     break;
