@@ -1,6 +1,6 @@
 package menus;
 
-import components.DrawingPanel;
+import containers.DrawingPanel;
 import global.Constants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

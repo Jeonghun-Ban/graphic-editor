@@ -1,4 +1,4 @@
-package components;
+package containers;
 
 import enums.DrawingTool;
 import global.Constants;

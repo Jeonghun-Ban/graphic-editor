@@ -1,4 +1,4 @@
-package components;
+package containers;
 
 import javax.swing.JMenuBar;
 import menus.ColorMenu;

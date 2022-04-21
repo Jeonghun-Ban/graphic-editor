@@ -1,4 +1,4 @@
-package components;
+package containers;
 
 import global.Constants;
 import java.awt.BorderLayout;

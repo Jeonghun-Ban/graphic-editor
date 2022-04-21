@@ -1,4 +1,4 @@
-import components.MainFrame;
+import containers.MainFrame;
 
 public class GraphicEditor {
     public static void main(String[] args){
