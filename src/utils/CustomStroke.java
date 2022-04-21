@@ -12,7 +12,9 @@ public class CustomStroke extends BasicStroke implements Serializable {
         super(lineSize);
     }
 
-    public CustomStroke(int lineSize, int capRound, int joinRound, int i, float[] floats, int i1) {
-        super(lineSize, capRound, joinRound, i, floats, i1);
+    public CustomStroke(int lineSize, int dashSize) {
+        super(lineSize, BasicStroke.CAP_ROUND,
+                BasicStroke.JOIN_ROUND, 10,
+                new float[]{dashSize}, 0);
     }
 }

@@ -1,7 +1,6 @@
-package shapes;
+package tools.draw;
 
 import global.Constants;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -9,7 +8,7 @@ import java.awt.Shape;
 import java.io.Serializable;
 import utils.CustomStroke;
 
-public abstract class MetaShape implements Serializable {
+public abstract class Draw implements Serializable {
     protected Shape shape;
     protected Point startP;
 
@@ -20,7 +19,7 @@ public abstract class MetaShape implements Serializable {
     protected int lineSize;
     protected int dashSize;
 
-    public MetaShape(Shape shape){
+    public Draw(Shape shape){
         this.shape = shape;
 
         this.stroke = new CustomStroke();
@@ -59,14 +58,10 @@ public abstract class MetaShape implements Serializable {
     public void changeStroke(){
         stroke = (dashSize == 0) ?
             new CustomStroke(lineSize) :
-            new CustomStroke(
-                lineSize, BasicStroke.CAP_ROUND,
-                BasicStroke.JOIN_ROUND, 10,
-                new float[]{dashSize}, 0
-            );
+            new CustomStroke(lineSize, dashSize);
     }
 
     abstract public void initDraw(Point startP);
     abstract public void setCoordinate(Point currentP);
-    abstract public MetaShape clone();
+    abstract public Draw clone();
 }

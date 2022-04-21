@@ -9,13 +9,13 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-import shapes.MetaShape;
-import shapes.Polygon;
+import tools.draw.Draw;
+import tools.draw.Polygon;
 
 public class DrawingPanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    private ArrayList<MetaShape> shapeList;
-    private MetaShape currentShape;
+    private ArrayList<Draw> shapeList;
+    private Draw currentShape;
     private Constants.DrawingMode drawingMode;
     private Color lineColor, fillColor;
     private int lineSize, dashSize;
@@ -36,7 +36,7 @@ public class DrawingPanel extends JPanel {
         addMouseMotionListener(drawingHandler);
     }
 
-    public void setCurrentShape(MetaShape currentShape) {
+    public void setCurrentShape(Draw currentShape) {
         this.currentShape = currentShape;
         drawingMode = Constants.DrawingMode.IDLE;
     }
@@ -60,7 +60,7 @@ public class DrawingPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
-        for (MetaShape shape : shapeList) {
+        for (Draw shape : shapeList) {
             shape.draw(g2D);
         }
     }
@@ -87,7 +87,7 @@ public class DrawingPanel extends JPanel {
         ((Polygon) currentShape).continueDrawing(p);
     }
 
-    private void finish(MetaShape shape) {
+    private void finish(Draw shape) {
         shapeList.add(shape);
         drawingMode = Constants.DrawingMode.IDLE;
         repaint();

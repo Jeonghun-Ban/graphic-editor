@@ -1,10 +1,10 @@
 package enums;
 
-import shapes.Line;
-import shapes.MetaShape;
-import shapes.Oval;
-import shapes.Polygon;
-import shapes.Rectangle;
+import tools.draw.Line;
+import tools.draw.Draw;
+import tools.draw.Oval;
+import tools.draw.Polygon;
+import tools.draw.Rectangle;
 
 public enum DrawingTool {
     Rectangle(new Rectangle()),
@@ -13,13 +13,13 @@ public enum DrawingTool {
     Polygon(new Polygon()),
     Clean(null);
 
-    private final MetaShape shape;
+    private final Draw shape;
 
-    DrawingTool(MetaShape shape) {
+    DrawingTool(Draw shape) {
         this.shape = shape;
     }
 
-    public MetaShape getShape() {
+    public Draw getShape() {
         return this.shape;
     }
 }

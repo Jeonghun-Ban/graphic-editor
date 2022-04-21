@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import shapes.MetaShape;
+import tools.draw.Draw;
 import utils.FileStore;
 
 public class FileMenu extends JMenu {
@@ -41,7 +41,7 @@ public class FileMenu extends JMenu {
 
     private void save() {
         try {
-            ArrayList<MetaShape> shapeList = (ArrayList<MetaShape>) drawingPanel.getShapeList();
+            ArrayList<Draw> shapeList = (ArrayList<Draw>) drawingPanel.getShapeList();
             fileStore.save("test", shapeList);
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,7 +50,7 @@ public class FileMenu extends JMenu {
 
     private void open() {
         try {
-            ArrayList<MetaShape> shapeList = (ArrayList<MetaShape>) fileStore.load("test");
+            ArrayList<Draw> shapeList = (ArrayList<Draw>) fileStore.load("test");
             this.drawingPanel.setShapeList(shapeList);
         } catch (IOException e) {
             e.printStackTrace();
