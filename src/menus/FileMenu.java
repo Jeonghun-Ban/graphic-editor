@@ -1,74 +1,138 @@
 package menus;
 
+import static global.Constants.NEW_FILE_DIALOG_MESSAGE;
+import static global.Constants.NEW_FILE_DIALOG_TITLE;
+import static global.Constants.QUIT_DIALOG_MESSAGE;
+import static global.Constants.QUIT_DIALOG_TITLE;
+
 import containers.DrawingPanel;
+import enums.Exception;
 import enums.FileMenuEnum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import tools.draw.Draw;
 import utils.FileStore;
 
 public class FileMenu extends JMenu {
-    private static final long serialVersionUID = 1L;
 
-    private DrawingPanel drawingPanel;
-    private ActionHandler actionHandler;
-    private FileStore fileStore;
+  private final ActionHandler actionHandler;
+  private final FileStore fileStore;
+  private final JFileChooser fileChooser;
 
-    public FileMenu() {
-        super("File");
-        actionHandler = new ActionHandler();
-        fileStore = new FileStore();
-        createMenuItems();
+  private DrawingPanel drawingPanel;
+  private String filePath;
+
+  public FileMenu() {
+    super("File");
+    actionHandler = new ActionHandler();
+    fileStore = new FileStore();
+    fileChooser = new JFileChooser();
+    filePath = null;
+    createMenuItems();
+  }
+
+  public void associate(DrawingPanel drawingPanel) {
+    this.drawingPanel = drawingPanel;
+    fileStore.associate(drawingPanel);
+  }
+
+  private void createMenuItems() {
+    Arrays.stream(FileMenuEnum.values()).forEach(value -> {
+      JMenuItem menuItem = new JMenuItem();
+      menuItem.setText(value.getLabel());
+      menuItem.addActionListener(actionHandler);
+      menuItem.setActionCommand(value.getLabel());
+      this.add(menuItem);
+    });
+  }
+
+  private void newFile() {
+    int result = JOptionPane.showConfirmDialog(drawingPanel, NEW_FILE_DIALOG_MESSAGE,
+        NEW_FILE_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if (result == JOptionPane.YES_OPTION) {
+      drawingPanel.clean();
+      filePath = null;
     }
+  }
 
-    public void associate(DrawingPanel drawingPanel) {
-        this.drawingPanel = drawingPanel;
+  private void openFile() {
+    int result = fileChooser.showOpenDialog(drawingPanel);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File file = fileChooser.getSelectedFile();
+      filePath = file.getAbsolutePath();
+      ArrayList<Draw> shapeList = (ArrayList<Draw>) fileStore.load(filePath);
+      this.drawingPanel.setShapeList(shapeList);
     }
+  }
 
-    private void createMenuItems() {
-        Arrays.stream(FileMenuEnum.values()).forEach(value -> {
-            JMenuItem menuItem = new JMenuItem();
-            menuItem.setText(value.getLabel());
-            menuItem.addActionListener(actionHandler);
-            menuItem.setActionCommand(value.getLabel());
-            this.add(menuItem);
-        });
+  private void saveFile() {
+    if (filePath == null) {
+      saveFileAs();
     }
+    ArrayList<Draw> shapeList = (ArrayList<Draw>) drawingPanel.getShapeList();
+    fileStore.save(filePath, shapeList);
+  }
 
-    private void save() {
-        try {
-            ArrayList<Draw> shapeList = (ArrayList<Draw>) drawingPanel.getShapeList();
-            fileStore.save("test", shapeList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+  private void saveFileAs() {
+    int result = fileChooser.showSaveDialog(drawingPanel);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File file = fileChooser.getSelectedFile();
+      filePath = file.getAbsolutePath();
+      ArrayList<Draw> shapeList = (ArrayList<Draw>) drawingPanel.getShapeList();
+      fileStore.save(filePath, shapeList);
     }
+  }
 
-    private void open() {
-        try {
-            ArrayList<Draw> shapeList = (ArrayList<Draw>) fileStore.load("test");
-            this.drawingPanel.setShapeList(shapeList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+  private void print() {
+    PrinterJob printerJob = PrinterJob.getPrinterJob();
+    printerJob.setPrintable(drawingPanel);
+    boolean isPrintable = printerJob.printDialog();
 
-    class ActionHandler implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals(FileMenuEnum.Save)) {
-                save();
-            } else if (e.getActionCommand().equals(FileMenuEnum.Open)) {
-                open();
-            }
-        }
+    try {
+      if (isPrintable) {
+        printerJob.print();
+      }
+    } catch (PrinterException exception) {
+      JOptionPane.showMessageDialog(drawingPanel, Exception.PRINT_NOT_AVAILABLE,
+          Exception.PRINT_NOT_AVAILABLE.getTitle(), JOptionPane.ERROR_MESSAGE);
     }
+  }
+
+  private void quit() {
+    int dialogResult = JOptionPane.showConfirmDialog(drawingPanel, QUIT_DIALOG_MESSAGE,
+        QUIT_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if (dialogResult == JOptionPane.YES_OPTION) {
+      System.exit(0);
+    }
+  }
+
+  class ActionHandler implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      if (e.getActionCommand().equals(FileMenuEnum.New.getLabel())) {
+        newFile();
+      } else if (e.getActionCommand().equals(FileMenuEnum.Open.getLabel())) {
+        openFile();
+      } else if (e.getActionCommand().equals(FileMenuEnum.Save.getLabel())) {
+        saveFile();
+      } else if (e.getActionCommand().equals(FileMenuEnum.SaveAs.getLabel())) {
+        saveFileAs();
+      } else if (e.getActionCommand().equals(FileMenuEnum.Print.getLabel())) {
+        print();
+      } else if (e.getActionCommand().equals(FileMenuEnum.Quit.getLabel())) {
+        quit();
+      }
+    }
+  }
 }
 

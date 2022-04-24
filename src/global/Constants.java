@@ -22,4 +22,11 @@ public class Constants {
     public static final String FILL_COLOR_TITLE = "Fill Color Chooser";
     public static final int DEFAULT_LINE_SIZE = 1;
     public static final int DEFAULT_DASH_SIZE = 0;
+
+    // Menu
+    public static final String NEW_FILE_DIALOG_MESSAGE = "새 파일을 만드시겠습니까?";
+    public static final String NEW_FILE_DIALOG_TITLE = "새 파일";
+    public static final String QUIT_DIALOG_MESSAGE = "종료하시겠습니까?";
+    public static final String QUIT_DIALOG_TITLE = "종료";
+
 }
