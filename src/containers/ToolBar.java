@@ -1,5 +1,10 @@
 package containers;
 
+import static global.Constants.DASH_SIZE_MODEL;
+import static global.Constants.DASH_SIZE_SPINNER;
+import static global.Constants.LINE_SIZE_SPINNER;
+import static global.Constants.LiNE_SIZE_MODEL;
+
 import enums.DrawingTool;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,87 +18,91 @@ import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import static global.Constants.DASH_SIZE_MODEL;
-import static global.Constants.DASH_SIZE_SPINNER;
-import static global.Constants.LINE_SIZE_SPINNER;
-import static global.Constants.LiNE_SIZE_MODEL;
-
 public class ToolBar extends JToolBar {
-    private final ButtonGroup buttonGroup;
-    private final ToolBarHandler toolBarHandler;
-    private final SpinnerHandler spinnerHandler;
 
-    private DrawingPanel drawingPanel;
+  private final ButtonGroup buttonGroup;
+  private final ToolBarHandler toolBarHandler;
+  private final SpinnerHandler spinnerHandler;
 
-    public ToolBar() {
-        buttonGroup = new ButtonGroup();
-        toolBarHandler = new ToolBarHandler();
-        spinnerHandler = new SpinnerHandler();
+  private DrawingPanel drawingPanel;
 
-        createToolButtons();
-        createLineSizeSpinner();
-        createDashSizeSpinner();
-    }
+  public ToolBar() {
+    buttonGroup = new ButtonGroup();
+    toolBarHandler = new ToolBarHandler();
+    spinnerHandler = new SpinnerHandler();
 
-    public void associate(DrawingPanel drawingPanel) {
-        this.drawingPanel = drawingPanel;
-    }
+    createToolButtons();
+    createLineSizeSpinner();
+    createDashSizeSpinner();
+  }
 
-    public void createToolButtons() {
-        Arrays.stream(DrawingTool.values()).forEach(value -> {
-            JRadioButton button = new JRadioButton(value.name());
-            this.add(button);
-            buttonGroup.add(button);
-            button.addActionListener(toolBarHandler);
-        });
-    }
+  public void associate(DrawingPanel drawingPanel) {
+    this.drawingPanel = drawingPanel;
+  }
 
-    public void createLineSizeSpinner() {
-        this.add(new JLabel(LINE_SIZE_SPINNER));
-        JSpinner lineSizeSpinner = new JSpinner(LiNE_SIZE_MODEL);
-        this.add(lineSizeSpinner);
-        lineSizeSpinner.addChangeListener(spinnerHandler);
-    }
+  public void setDefaultButton() {
+    JRadioButton defaultButton = (JRadioButton) this.getComponent(
+        DrawingTool.Rectangle.ordinal()
+    );
+    defaultButton.doClick();
+  }
 
-    public void createDashSizeSpinner() {
-        this.add(new JLabel(DASH_SIZE_SPINNER));
-        JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
-        this.add(dashSizeSpinner);
-        dashSizeSpinner.addChangeListener(spinnerHandler);
-    }
+  public void createToolButtons() {
+    Arrays.stream(DrawingTool.values()).forEach(value -> {
+      JRadioButton button = new JRadioButton(value.name());
+      this.add(button);
+      buttonGroup.add(button);
+      button.addActionListener(toolBarHandler);
+    });
+  }
 
-    private class ToolBarHandler implements ActionListener {
+  public void createLineSizeSpinner() {
+    this.add(new JLabel(LINE_SIZE_SPINNER));
+    JSpinner lineSizeSpinner = new JSpinner(LiNE_SIZE_MODEL);
+    this.add(lineSizeSpinner);
+    lineSizeSpinner.addChangeListener(spinnerHandler);
+  }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JRadioButton button = (JRadioButton) e.getSource();
-            String command = button.getActionCommand();
-            try {
-                if (command.equals("Clean")) {
-                    drawingPanel.clean();
-                } else {
-                    DrawingTool drawingTool = DrawingTool.valueOf(command);
-                    drawingPanel.setCurrentShape(drawingTool.getShape());
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+  public void createDashSizeSpinner() {
+    this.add(new JLabel(DASH_SIZE_SPINNER));
+    JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
+    this.add(dashSizeSpinner);
+    dashSizeSpinner.addChangeListener(spinnerHandler);
+  }
+
+  private class ToolBarHandler implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      JRadioButton button = (JRadioButton) e.getSource();
+      String command = button.getActionCommand();
+      try {
+        if (command.equals("Clean")) {
+          drawingPanel.clean();
+        } else {
+          DrawingTool drawingTool = DrawingTool.valueOf(command);
+          drawingPanel.setCurrentShape(drawingTool.getShape());
         }
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
     }
+  }
 
-    private class SpinnerHandler implements ChangeListener {
-        @Override
-        public void stateChanged(ChangeEvent e) {
-            JSpinner spinner = (JSpinner) e.getSource();
-            SpinnerModel spinnerModel = spinner.getModel();
-            int spinnerValue = (int) spinner.getValue();
+  private class SpinnerHandler implements ChangeListener {
 
-            if (spinnerModel == LiNE_SIZE_MODEL) {
-                drawingPanel.setLineSize(spinnerValue);
-            } else if (spinnerModel == DASH_SIZE_MODEL) {
-                drawingPanel.setDashSize(spinnerValue);
-            }
-        }
+    @Override
+    public void stateChanged(ChangeEvent e) {
+      JSpinner spinner = (JSpinner) e.getSource();
+      SpinnerModel spinnerModel = spinner.getModel();
+      int spinnerValue = (int) spinner.getValue();
+
+      if (spinnerModel == LiNE_SIZE_MODEL) {
+        drawingPanel.setLineSize(spinnerValue);
+      } else if (spinnerModel == DASH_SIZE_MODEL) {
+        drawingPanel.setDashSize(spinnerValue);
+      }
     }
+  }
 }
 

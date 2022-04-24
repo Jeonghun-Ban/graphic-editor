@@ -130,7 +130,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mousePressed(MouseEvent e) {
-      if (drawingMode == DrawingMode.IDLE && currentShape != null) {
+      if (drawingMode == DrawingMode.IDLE) {
         initDraw(e.getPoint());
         if (currentShape instanceof Polygon) {
           drawingMode = DrawingMode.POLYGON;
@@ -142,6 +142,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+
       if (drawingMode == DrawingMode.POLYGON) {
         draw(e.getPoint());
       }
@@ -149,9 +150,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (currentShape != null) {
-            draw(e.getPoint());
-        }
+      draw(e.getPoint());
     }
 
     @Override
