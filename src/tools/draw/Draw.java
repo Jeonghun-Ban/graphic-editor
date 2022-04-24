@@ -65,9 +65,9 @@ public abstract class Draw implements Serializable {
             new CustomStroke(lineSize, dashSize);
     }
 
-    public void onShape() {
-        
-    }
+    public boolean contains(Point point) {
+        return this.shape.contains(point);
+    };
 
     abstract public void initDraw(Point startP);
     abstract public void setCoordinate(Point currentP);

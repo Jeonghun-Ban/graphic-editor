@@ -1,6 +1,8 @@
 package containers;
 
+import static global.Constants.CROSSHAIR_CURSOR;
 import static global.Constants.DEFAULT_BACKGROUND_COLOR;
+import static global.Constants.DEFAULT_CURSOR;
 import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
@@ -8,6 +10,7 @@ import static global.Constants.DEFAULT_LINE_SIZE;
 
 import enums.DrawingMode;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -27,23 +30,35 @@ public class DrawingPanel extends JPanel implements Printable {
   private Draw currentShape;
   private Color lineColor, fillColor;
   private int lineSize, dashSize;
+  private Cursor cursor;
 
   public DrawingPanel() {
     super();
     this.setBackground(DEFAULT_BACKGROUND_COLOR);
+
+    drawingMode = DrawingMode.IDLE;
 
     lineColor = DEFAULT_LINE_COLOR;
     fillColor = DEFAULT_FILL_COLOR;
     lineSize = DEFAULT_LINE_SIZE;
     dashSize = DEFAULT_DASH_SIZE;
 
+    this.setCursor(DEFAULT_CURSOR);
+
     shapeList = new ArrayList<>();
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
-    drawingMode = DrawingMode.IDLE;
-
     addMouseListener(drawingHandler);
     addMouseMotionListener(drawingHandler);
+  }
+
+  public Object getShapeList() {
+    return this.shapeList;
+  }
+
+  public void setShapeList(ArrayList shapeList) {
+    this.shapeList = shapeList;
+    this.repaint();
   }
 
   public void setCurrentShape(Draw currentShape) {
@@ -106,13 +121,18 @@ public class DrawingPanel extends JPanel implements Printable {
     repaint();
   }
 
-  public Object getShapeList() {
-    return this.shapeList;
+  private void changeCursor(Point point) {
+    cursor = onShape(point) ? CROSSHAIR_CURSOR : DEFAULT_CURSOR;
+    this.setCursor(cursor);
   }
 
-  public void setShapeList(ArrayList shapeList) {
-    this.shapeList = shapeList;
-    this.repaint();
+  private boolean onShape(Point point) {
+    for (Draw shape : shapeList) {
+      if (shape.contains(point)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
@@ -142,9 +162,11 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+      Point point = e.getPoint();
+      changeCursor(point);
 
       if (drawingMode == DrawingMode.POLYGON) {
-        draw(e.getPoint());
+        draw(point);
       }
     }
 
