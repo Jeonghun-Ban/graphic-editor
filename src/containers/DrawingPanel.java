@@ -20,14 +20,14 @@ import java.awt.print.Printable;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-import tools.draw.Draw;
+import tools.draw.DrawTool;
 import tools.draw.Polygon;
 
 public class DrawingPanel extends JPanel implements Printable {
 
   private DrawingMode drawingMode;
-  private ArrayList<Draw> shapeList;
-  private Draw currentShape;
+  private ArrayList<DrawTool> drawTools;
+  private DrawTool drawTool;
   private Color lineColor, fillColor;
   private int lineSize, dashSize;
   private Cursor cursor;
@@ -45,24 +45,24 @@ public class DrawingPanel extends JPanel implements Printable {
 
     this.setCursor(DEFAULT_CURSOR);
 
-    shapeList = new ArrayList<>();
+    drawTools = new ArrayList<>();
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
     addMouseListener(drawingHandler);
     addMouseMotionListener(drawingHandler);
   }
 
-  public Object getShapeList() {
-    return this.shapeList;
+  public Object getDrawTools() {
+    return this.drawTools;
   }
 
-  public void setShapeList(ArrayList shapeList) {
-    this.shapeList = shapeList;
+  public void setDrawTools(ArrayList drawTools) {
+    this.drawTools = drawTools;
     this.repaint();
   }
 
-  public void setCurrentShape(Draw currentShape) {
-    this.currentShape = currentShape;
+  public void setDrawTool(DrawTool drawTool) {
+    this.drawTool = drawTool;
     drawingMode = DrawingMode.IDLE;
   }
 
@@ -85,39 +85,39 @@ public class DrawingPanel extends JPanel implements Printable {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2D = (Graphics2D) g;
-    shapeList.forEach(shape -> shape.draw(g2D));
+    drawTools.forEach(shape -> shape.draw(g2D));
   }
 
   private void initDraw(Point point) {
-    currentShape = currentShape.clone();
-    currentShape.initDraw(point);
+    drawTool = drawTool.clone();
+    drawTool.initDraw(point);
 
-    currentShape.setLineColor(lineColor);
-    currentShape.setFillColor(fillColor);
-    currentShape.setLineSize(lineSize);
-    currentShape.setDashSize(dashSize);
+    drawTool.setLineColor(lineColor);
+    drawTool.setFillColor(fillColor);
+    drawTool.setLineSize(lineSize);
+    drawTool.setDashSize(dashSize);
   }
 
   private void draw(Point currentP) {
     Graphics2D g2D = (Graphics2D) getGraphics();
     g2D.setXORMode(g2D.getBackground());
-    currentShape.draw(g2D);
-    currentShape.setCoordinate(currentP);
-    currentShape.draw(g2D);
+    drawTool.draw(g2D);
+    drawTool.setCoordinate(currentP);
+    drawTool.draw(g2D);
   }
 
   private void continueDraw(Point p) {
-    ((Polygon) currentShape).continueDrawing(p);
+    ((Polygon) drawTool).continueDrawing(p);
   }
 
-  private void finish(Draw shape) {
-    shapeList.add(shape);
+  private void finish(DrawTool shape) {
+    drawTools.add(shape);
     drawingMode = DrawingMode.IDLE;
     repaint();
   }
 
   public void clean() {
-    shapeList.clear();
+    drawTools.clear();
     repaint();
   }
 
@@ -127,7 +127,7 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private boolean onShape(Point point) {
-    for (Draw shape : shapeList) {
+    for (DrawTool shape : drawTools) {
       if (shape.contains(point)) {
         return true;
       }
@@ -142,7 +142,7 @@ public class DrawingPanel extends JPanel implements Printable {
     }
     Graphics2D graphics2D = (Graphics2D) graphics;
     graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-    shapeList.forEach(shape -> shape.draw(graphics2D));
+    drawTools.forEach(shape -> shape.draw(graphics2D));
     return PAGE_EXISTS;
   }
 
@@ -152,7 +152,7 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (drawingMode == DrawingMode.IDLE) {
         initDraw(e.getPoint());
-        if (currentShape instanceof Polygon) {
+        if (drawTool instanceof Polygon) {
           drawingMode = DrawingMode.POLYGON;
         } else {
           drawingMode = DrawingMode.GENERAL;
@@ -178,7 +178,7 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mouseReleased(MouseEvent e) {
       if (drawingMode == DrawingMode.GENERAL) {
-        finish(currentShape);
+        finish(drawTool);
       }
     }
 
@@ -189,7 +189,7 @@ public class DrawingPanel extends JPanel implements Printable {
           if (e.getClickCount() == 1) {
             continueDraw(e.getPoint());
           } else if (e.getClickCount() == 2) {
-            finish(currentShape);
+            finish(drawTool);
           }
         }
       }

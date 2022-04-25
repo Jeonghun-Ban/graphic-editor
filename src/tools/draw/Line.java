@@ -3,7 +3,7 @@ package tools.draw;
 import java.awt.Point;
 import java.awt.geom.Line2D;
 
-public class Line extends Draw {
+public class Line extends DrawTool {
     private Line2D line;
 
     public Line() {
@@ -19,7 +19,7 @@ public class Line extends Draw {
         line.setLine(startP.x, startP.y, currentP.x, currentP.y);
     }
 
-    public Draw clone() {
+    public DrawTool clone() {
         return new Line();
     }
 }

@@ -81,7 +81,7 @@ public class ToolBar extends JToolBar {
           drawingPanel.clean();
         } else {
           DrawingTool drawingTool = DrawingTool.valueOf(command);
-          drawingPanel.setCurrentShape(drawingTool.getShape());
+          drawingPanel.setDrawTool(drawingTool.getShape());
         }
       } catch (Exception ex) {
         ex.printStackTrace();

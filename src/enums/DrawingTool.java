@@ -1,7 +1,7 @@
 package enums;
 
 import tools.draw.Line;
-import tools.draw.Draw;
+import tools.draw.DrawTool;
 import tools.draw.Oval;
 import tools.draw.Polygon;
 import tools.draw.Rectangle;
@@ -13,13 +13,13 @@ public enum DrawingTool {
     Polygon(new Polygon()),
     Clean(null);
 
-    private final Draw shape;
+    private final DrawTool shape;
 
-    DrawingTool(Draw shape) {
+    DrawingTool(DrawTool shape) {
         this.shape = shape;
     }
 
-    public Draw getShape() {
+    public DrawTool getShape() {
         return this.shape;
     }
 }

@@ -2,7 +2,7 @@ package tools.draw;
 
 import java.awt.Point;
 
-public class Polygon extends Draw {
+public class Polygon extends DrawTool {
     private java.awt.Polygon polygon;
 
     public Polygon() {
@@ -23,7 +23,7 @@ public class Polygon extends Draw {
         polygon.addPoint(p.x, p.y);
     }
 
-    public Draw clone() {
+    public DrawTool clone() {
         return new Polygon();
     }
 }

@@ -3,7 +3,7 @@ package tools.draw;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
-public class Rectangle extends Draw {
+public class Rectangle extends DrawTool {
     private Rectangle2D rectangle;
 
     public Rectangle() {
@@ -19,7 +19,7 @@ public class Rectangle extends Draw {
         rectangle.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y);
     }
 
-    public Draw clone() {
+    public DrawTool clone() {
         return new Rectangle();
     }
 }

@@ -12,7 +12,7 @@ import java.awt.Shape;
 import java.io.Serializable;
 import utils.CustomStroke;
 
-public abstract class Draw implements Serializable {
+public abstract class DrawTool implements Serializable {
     protected Shape shape;
     protected Point startP;
 
@@ -23,7 +23,7 @@ public abstract class Draw implements Serializable {
     protected int lineSize;
     protected int dashSize;
 
-    public Draw(Shape shape){
+    public DrawTool(Shape shape){
         this.shape = shape;
 
         this.stroke = new CustomStroke();
@@ -71,5 +71,5 @@ public abstract class Draw implements Serializable {
 
     abstract public void initDraw(Point startP);
     abstract public void setCoordinate(Point currentP);
-    abstract public Draw clone();
+    abstract public DrawTool clone();
 }

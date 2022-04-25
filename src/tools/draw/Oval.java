@@ -3,7 +3,7 @@ package tools.draw;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 
-public class Oval extends Draw {
+public class Oval extends DrawTool {
     private Ellipse2D ellipse;
 
     public Oval() {
@@ -19,7 +19,7 @@ public class Oval extends Draw {
         ellipse.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y);
     }
 
-    public Draw clone() {
+    public DrawTool clone() {
         return new Oval();
     }
 }

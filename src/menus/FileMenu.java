@@ -19,7 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import tools.draw.Draw;
+import tools.draw.DrawTool;
 import utils.FileStore;
 
 public class FileMenu extends JMenu {
@@ -69,8 +69,8 @@ public class FileMenu extends JMenu {
     if (result == JFileChooser.APPROVE_OPTION) {
       File file = fileChooser.getSelectedFile();
       filePath = file.getAbsolutePath();
-      ArrayList<Draw> shapeList = (ArrayList<Draw>) fileStore.load(filePath);
-      this.drawingPanel.setShapeList(shapeList);
+      ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) fileStore.load(filePath);
+      this.drawingPanel.setDrawTools(shapeList);
     }
   }
 
@@ -78,7 +78,7 @@ public class FileMenu extends JMenu {
     if (filePath == null) {
       saveFileAs();
     }
-    ArrayList<Draw> shapeList = (ArrayList<Draw>) drawingPanel.getShapeList();
+    ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
     fileStore.save(filePath, shapeList);
   }
 
@@ -87,7 +87,7 @@ public class FileMenu extends JMenu {
     if (result == JFileChooser.APPROVE_OPTION) {
       File file = fileChooser.getSelectedFile();
       filePath = file.getAbsolutePath();
-      ArrayList<Draw> shapeList = (ArrayList<Draw>) drawingPanel.getShapeList();
+      ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
       fileStore.save(filePath, shapeList);
     }
   }
