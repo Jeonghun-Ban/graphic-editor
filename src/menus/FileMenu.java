@@ -1,13 +1,9 @@
 package menus;
 
-import static global.Constants.NEW_FILE_DIALOG_MESSAGE;
-import static global.Constants.NEW_FILE_DIALOG_TITLE;
-import static global.Constants.QUIT_DIALOG_MESSAGE;
-import static global.Constants.QUIT_DIALOG_TITLE;
-
 import containers.DrawingPanel;
-import enums.Exception;
 import enums.FileMenuEnum;
+import global.Exception;
+import global.Message;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
@@ -28,8 +24,9 @@ public class FileMenu extends JMenu {
   private final FileStore fileStore;
   private final JFileChooser fileChooser;
 
-  private DrawingPanel drawingPanel;
   private File file;
+
+  private DrawingPanel drawingPanel;
 
   public FileMenu() {
     super("File");
@@ -57,8 +54,16 @@ public class FileMenu extends JMenu {
   }
 
   private void newFile() {
-    int result = JOptionPane.showConfirmDialog(drawingPanel, NEW_FILE_DIALOG_MESSAGE,
-        NEW_FILE_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if(this.drawingPanel.isUpdated()) {
+      int result = JOptionPane.showConfirmDialog(drawingPanel, Message.SAVE_FILE_DIALOG,
+          Message.SAVE_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+      if (result == JOptionPane.YES_OPTION) {
+        saveFile();
+      }
+    }
+
+    int result = JOptionPane.showConfirmDialog(drawingPanel, Message.NEW_FILE_DIALOG,
+        Message.NEW_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     if (result == JOptionPane.YES_OPTION) {
       drawingPanel.clean();
       this.file = null;
@@ -66,6 +71,14 @@ public class FileMenu extends JMenu {
   }
 
   private void openFile() {
+    if(this.drawingPanel.isUpdated()) {
+      int result = JOptionPane.showConfirmDialog(drawingPanel, Message.SAVE_FILE_DIALOG,
+          Message.SAVE_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+      if (result == JOptionPane.YES_OPTION) {
+        saveFile();
+      }
+    }
+
     int result = fileChooser.showOpenDialog(drawingPanel);
     if (result == JFileChooser.APPROVE_OPTION) {
       this.file = fileChooser.getSelectedFile();
@@ -75,12 +88,15 @@ public class FileMenu extends JMenu {
   }
 
   private void saveFile() {
-    if (this.file == null) {
-      saveFileAs();
+    if(this.drawingPanel.isUpdated()) {
+      if (this.file == null) {
+        saveFileAs();
+      } else {
+        ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
+        fileStore.save(this.file, shapeList);
+        this.drawingPanel.setUpdated(false);
+      }
     }
-    ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
-    fileStore.save(this.file, shapeList);
-
   }
 
   private void saveFileAs() {
@@ -89,6 +105,7 @@ public class FileMenu extends JMenu {
       this.file = fileChooser.getSelectedFile();
       ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
       fileStore.save(this.file, shapeList);
+      this.drawingPanel.setUpdated(false);
     }
   }
 
@@ -108,8 +125,8 @@ public class FileMenu extends JMenu {
   }
 
   private void quit() {
-    int dialogResult = JOptionPane.showConfirmDialog(drawingPanel, QUIT_DIALOG_MESSAGE,
-        QUIT_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    int dialogResult = JOptionPane.showConfirmDialog(drawingPanel, Message.QUIT_DIALOG,
+        Message.QUIT_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     if (dialogResult == JOptionPane.YES_OPTION) {
       System.exit(0);
     }

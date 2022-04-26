@@ -1,7 +1,7 @@
 package utils;
 
 import containers.DrawingPanel;
-import enums.Exception;
+import global.Exception;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

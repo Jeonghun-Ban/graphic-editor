@@ -25,31 +25,40 @@ import tools.draw.Polygon;
 
 public class DrawingPanel extends JPanel implements Printable {
 
-  private DrawingMode drawingMode;
+  private boolean updated;
+
   private ArrayList<DrawTool> drawTools;
   private DrawTool drawTool;
+  private Cursor cursor;
   private Color lineColor, fillColor;
   private int lineSize, dashSize;
-  private Cursor cursor;
+
+  private DrawingMode drawingMode;
 
   public DrawingPanel() {
     super();
     this.setBackground(DEFAULT_BACKGROUND_COLOR);
 
-    drawingMode = DrawingMode.IDLE;
-
+    drawTools = new ArrayList<>();
+    this.setCursor(DEFAULT_CURSOR);
     lineColor = DEFAULT_LINE_COLOR;
     fillColor = DEFAULT_FILL_COLOR;
     lineSize = DEFAULT_LINE_SIZE;
     dashSize = DEFAULT_DASH_SIZE;
 
-    this.setCursor(DEFAULT_CURSOR);
-
-    drawTools = new ArrayList<>();
+    drawingMode = DrawingMode.IDLE;
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
     addMouseListener(drawingHandler);
     addMouseMotionListener(drawingHandler);
+  }
+
+  public boolean isUpdated() {
+    return this.updated;
+  }
+
+  public void setUpdated(boolean updated) {
+    this.updated = updated;
   }
 
   public Object getDrawTools() {
@@ -114,6 +123,7 @@ public class DrawingPanel extends JPanel implements Printable {
     drawTools.add(shape);
     drawingMode = DrawingMode.IDLE;
     repaint();
+    this.setUpdated(true);
   }
 
   public void clean() {

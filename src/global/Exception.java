@@ -1,4 +1,4 @@
-package enums;
+package global;
 
 public enum Exception {
 
