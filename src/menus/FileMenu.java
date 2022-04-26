@@ -29,14 +29,15 @@ public class FileMenu extends JMenu {
   private final JFileChooser fileChooser;
 
   private DrawingPanel drawingPanel;
-  private String filePath;
+  private File file;
 
   public FileMenu() {
     super("File");
     actionHandler = new ActionHandler();
-    fileStore = new FileStore();
+    file = null;
     fileChooser = new JFileChooser();
-    filePath = null;
+
+    fileStore = new FileStore();
     createMenuItems();
   }
 
@@ -60,35 +61,34 @@ public class FileMenu extends JMenu {
         NEW_FILE_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     if (result == JOptionPane.YES_OPTION) {
       drawingPanel.clean();
-      filePath = null;
+      this.file = null;
     }
   }
 
   private void openFile() {
     int result = fileChooser.showOpenDialog(drawingPanel);
     if (result == JFileChooser.APPROVE_OPTION) {
-      File file = fileChooser.getSelectedFile();
-      filePath = file.getAbsolutePath();
-      ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) fileStore.load(filePath);
+      this.file = fileChooser.getSelectedFile();
+      ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) fileStore.load(file);
       this.drawingPanel.setDrawTools(shapeList);
     }
   }
 
   private void saveFile() {
-    if (filePath == null) {
+    if (this.file == null) {
       saveFileAs();
     }
     ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
-    fileStore.save(filePath, shapeList);
+    fileStore.save(this.file, shapeList);
+
   }
 
   private void saveFileAs() {
     int result = fileChooser.showSaveDialog(drawingPanel);
     if (result == JFileChooser.APPROVE_OPTION) {
-      File file = fileChooser.getSelectedFile();
-      filePath = file.getAbsolutePath();
+      this.file = fileChooser.getSelectedFile();
       ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
-      fileStore.save(filePath, shapeList);
+      fileStore.save(this.file, shapeList);
     }
   }
 

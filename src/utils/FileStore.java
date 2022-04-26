@@ -2,6 +2,7 @@ package utils;
 
 import containers.DrawingPanel;
 import enums.Exception;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,9 +18,9 @@ public class FileStore {
     this.drawingPanel = drawingPanel;
   }
 
-  public void save(String path, Object object) {
+  public void save(File file, Object object) {
     try {
-      FileOutputStream fileOutputStream = new FileOutputStream(path);
+      FileOutputStream fileOutputStream = new FileOutputStream(file);
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
       objectOutputStream.writeObject(object);
       objectOutputStream.close();
@@ -29,9 +30,9 @@ public class FileStore {
     }
   }
 
-  public Object load(String path) {
+  public Object load(File file) {
     try {
-      FileInputStream fileInputStream = new FileInputStream(path);
+      FileInputStream fileInputStream = new FileInputStream(file);
       ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
       Object object = objectInputStream.readObject();
       objectInputStream.close();
