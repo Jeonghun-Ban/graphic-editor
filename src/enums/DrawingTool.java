@@ -13,13 +13,13 @@ public enum DrawingTool {
     Polygon(new Polygon()),
     Clean(null);
 
-    private final DrawTool shape;
+    private final DrawTool drawTool;
 
-    DrawingTool(DrawTool shape) {
-        this.shape = shape;
+    DrawingTool(DrawTool drawTool) {
+        this.drawTool = drawTool;
     }
 
-    public DrawTool getShape() {
-        return this.shape;
+    public DrawTool getDrawTool() {
+        return this.drawTool;
     }
 }

@@ -94,7 +94,7 @@ public class DrawingPanel extends JPanel implements Printable {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2D = (Graphics2D) g;
-    drawTools.forEach(shape -> shape.draw(g2D));
+    drawTools.forEach(drawTool -> drawTool.draw(g2D));
   }
 
   private void initDraw(Point point) {
@@ -119,8 +119,8 @@ public class DrawingPanel extends JPanel implements Printable {
     ((Polygon) drawTool).continueDrawing(p);
   }
 
-  private void finish(DrawTool shape) {
-    drawTools.add(shape);
+  private void finish(DrawTool drawTool) {
+    drawTools.add(drawTool);
     drawingMode = DrawingMode.IDLE;
     repaint();
     this.setUpdated(true);
@@ -137,8 +137,8 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private boolean onShape(Point point) {
-    for (DrawTool shape : drawTools) {
-      if (shape.contains(point)) {
+    for (DrawTool drawTool : drawTools) {
+      if (drawTool.contains(point)) {
         return true;
       }
     }
@@ -152,7 +152,7 @@ public class DrawingPanel extends JPanel implements Printable {
     }
     Graphics2D graphics2D = (Graphics2D) graphics;
     graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-    drawTools.forEach(shape -> shape.draw(graphics2D));
+    drawTools.forEach(drawTool -> drawTool.draw(graphics2D));
     return PAGE_EXISTS;
   }
 
