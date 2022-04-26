@@ -1,5 +1,6 @@
 package state;
 
+import tools.draw.Brush;
 import tools.draw.DrawTool;
 import tools.draw.Line;
 import tools.draw.Oval;
@@ -7,6 +8,7 @@ import tools.draw.Polygon;
 import tools.draw.Rectangle;
 
 public enum DrawingTool {
+  Brush(new Brush()),
   Rectangle(new Rectangle()),
   Oval(new Oval()),
   Line(new Line()),
