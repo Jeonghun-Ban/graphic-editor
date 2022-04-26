@@ -101,19 +101,18 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void initDraw(Point point) {
     drawTool = drawTool.clone();
-    drawTool.initDraw(point);
-
+    drawTool.setStartPoint(point);
     drawTool.setLineColor(lineColor);
     drawTool.setFillColor(fillColor);
     drawTool.setLineSize(lineSize);
     drawTool.setDashSize(dashSize);
   }
 
-  private void draw(Point currentP) {
+  private void draw(Point point) {
     Graphics2D g2D = (Graphics2D) getGraphics();
     g2D.setXORMode(g2D.getBackground());
     drawTool.draw(g2D);
-    drawTool.setCoordinate(currentP);
+    drawTool.setCurrentPoint(point);
     drawTool.draw(g2D);
   }
 

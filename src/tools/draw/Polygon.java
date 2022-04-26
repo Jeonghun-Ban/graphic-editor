@@ -13,17 +13,17 @@ public class Polygon extends DrawTool {
     polygon = (java.awt.Polygon) shape;
   }
 
-  public void initDraw(Point p) {
-    polygon.addPoint(p.x, p.y);
+  public void setStartPoint(Point startPoint) {
+    polygon.addPoint(startPoint.x, startPoint.y);
   }
 
-  public void setCoordinate(Point p) {
-    polygon.xpoints[polygon.npoints - 1] = p.x;
-    polygon.ypoints[polygon.npoints - 1] = p.y;
+  public void setCurrentPoint(Point currentPoint) {
+    polygon.xpoints[polygon.npoints - 1] = currentPoint.x;
+    polygon.ypoints[polygon.npoints - 1] = currentPoint.y;
   }
 
-  public void continueDrawing(Point p) {
-    polygon.addPoint(p.x, p.y);
+  public void continueDrawing(Point point) {
+    polygon.addPoint(point.x, point.y);
   }
 
   public DrawTool clone() {

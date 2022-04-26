@@ -14,12 +14,12 @@ public class Oval extends DrawTool {
     ellipse = (Ellipse2D) shape;
   }
 
-  public void initDraw(Point startP) {
-    this.startP = startP;
+  public void setStartPoint(Point startPoint) {
+    this.startPoint = startPoint;
   }
 
-  public void setCoordinate(Point currentP) {
-    ellipse.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y);
+  public void setCurrentPoint(Point currentPoint) {
+    ellipse.setFrameFromDiagonal(startPoint.x, startPoint.y, currentPoint.x, currentPoint.y);
   }
 
   public DrawTool clone() {

@@ -14,12 +14,12 @@ public class Rectangle extends DrawTool {
     rectangle = (Rectangle2D) shape;
   }
 
-  public void initDraw(Point startP) {
-    this.startP = startP;
+  public void setStartPoint(Point startPoint) {
+    this.startPoint = startPoint;
   }
 
-  public void setCoordinate(Point currentP) {
-    rectangle.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y);
+  public void setCurrentPoint(Point currentPoint) {
+    rectangle.setFrameFromDiagonal(startPoint.x, startPoint.y, currentPoint.x, currentPoint.y);
   }
 
   public DrawTool clone() {

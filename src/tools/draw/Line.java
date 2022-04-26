@@ -14,12 +14,12 @@ public class Line extends DrawTool {
     line = (Line2D) shape;
   }
 
-  public void initDraw(Point startP) {
-    this.startP = startP;
+  public void setStartPoint(Point startPoint) {
+    this.startPoint = startPoint;
   }
 
-  public void setCoordinate(Point currentP) {
-    line.setLine(startP.x, startP.y, currentP.x, currentP.y);
+  public void setCurrentPoint(Point currentPoint) {
+    line.setLine(startPoint.x, startPoint.y, currentPoint.x, currentPoint.y);
   }
 
   public DrawTool clone() {

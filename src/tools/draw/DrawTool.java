@@ -17,7 +17,7 @@ public abstract class DrawTool implements Serializable {
   private static final long serialVersionUID = 1L;
 
   protected Shape shape;
-  protected Point startP;
+  protected Point startPoint;
 
   protected Color lineColor;
   protected Color fillColor;
@@ -72,11 +72,7 @@ public abstract class DrawTool implements Serializable {
     return this.shape.contains(point);
   }
 
-  ;
-
-  abstract public void initDraw(Point startP);
-
-  abstract public void setCoordinate(Point currentP);
-
+  abstract public void setStartPoint(Point startPoint);
+  abstract public void setCurrentPoint(Point currentPoint);
   abstract public DrawTool clone();
 }
