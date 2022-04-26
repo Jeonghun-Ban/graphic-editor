@@ -25,6 +25,11 @@ public class Constants {
   public static final int DEFAULT_LINE_SIZE = 1;
   public static final int DEFAULT_DASH_SIZE = 0;
 
+  // Menu
+  public static final String FILE_MENU_TITLE = "File";
+  public static final String EDIT_MENU_TITLE = "Edit";
+  public static final String COLOR_MENU_TITLE = "Color";
+
   // Cursor
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
   public static final Cursor CROSSHAIR_CURSOR = new Cursor(Cursor.CROSSHAIR_CURSOR);

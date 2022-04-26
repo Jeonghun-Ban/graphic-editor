@@ -1,5 +1,7 @@
 package menus;
 
+import static global.Constants.FILE_MENU_TITLE;
+
 import containers.DrawingPanel;
 import dialogs.FileDialog;
 import enums.FileMenuEnum;
@@ -11,29 +13,27 @@ import javax.swing.JMenuItem;
 
 public class FileMenu extends JMenu {
 
-  private final ActionHandler actionHandler;
-  private DrawingPanel drawingPanel;
-  private FileDialog fileDialog;
+  private final FileDialog fileDialog;
 
   public FileMenu() {
-    super("File");
-    actionHandler = new ActionHandler();
+    super(FILE_MENU_TITLE);
     fileDialog = new FileDialog();
 
-    createMenuItems();
+    ActionHandler actionHandler = new ActionHandler();
+    createMenuItems(actionHandler);
   }
 
   public void associate(DrawingPanel drawingPanel) {
-    this.drawingPanel = drawingPanel;
     this.fileDialog.associate(drawingPanel);
   }
 
-  private void createMenuItems() {
+  private void createMenuItems(ActionHandler actionHandler) {
     Arrays.stream(FileMenuEnum.values()).forEach(value -> {
       JMenuItem menuItem = new JMenuItem();
       menuItem.setText(value.getLabel());
       menuItem.addActionListener(actionHandler);
       menuItem.setActionCommand(value.getLabel());
+      menuItem.setToolTipText(value.getLabel());
       this.add(menuItem);
     });
   }

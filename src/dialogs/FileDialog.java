@@ -6,6 +6,7 @@ import global.Message;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -60,33 +61,48 @@ public class FileDialog {
       }
     }
 
-    dialogOption = fileChooser.showOpenDialog(drawingPanel);
-    if (dialogOption == JFileChooser.APPROVE_OPTION) {
-      this.file = fileChooser.getSelectedFile();
-      ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) fileStore.load(file);
-      this.drawingPanel.setDrawTools(shapeList);
+    try {
+      dialogOption = fileChooser.showOpenDialog(drawingPanel);
+      if (dialogOption == JFileChooser.APPROVE_OPTION) {
+        this.file = fileChooser.getSelectedFile();
+        ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) fileStore.load(file);
+        this.drawingPanel.setDrawTools(shapeList);
+      }
+    } catch (IOException | ClassNotFoundException e) {
+      JOptionPane.showMessageDialog(drawingPanel, Exception.FILE_STORE_LOAD_ERROR,
+          Exception.FILE_STORE_LOAD_ERROR.getTitle(), JOptionPane.ERROR_MESSAGE);
     }
   }
 
   public void saveFile() {
-    if (this.drawingPanel.isUpdated()) {
-      if (this.file == null) {
-        saveFileAs();
-      } else {
-        ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
-        fileStore.save(this.file, shapeList);
+    try {
+      if (this.drawingPanel.isUpdated()) {
+        if (this.file == null) {
+          saveFileAs();
+        } else {
+          ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
+          fileStore.save(this.file, shapeList);
+        }
         this.drawingPanel.setUpdated(false);
       }
+    } catch (IOException e) {
+      JOptionPane.showMessageDialog(drawingPanel, Exception.FILE_STORE_SAVE_ERROR,
+          Exception.FILE_STORE_SAVE_ERROR.getTitle(), JOptionPane.ERROR_MESSAGE);
     }
   }
 
   public void saveFileAs() {
-    dialogOption = fileChooser.showSaveDialog(drawingPanel);
-    if (dialogOption == JFileChooser.APPROVE_OPTION) {
-      this.file = fileChooser.getSelectedFile();
-      ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
-      fileStore.save(this.file, shapeList);
-      this.drawingPanel.setUpdated(false);
+    try {
+      dialogOption = fileChooser.showSaveDialog(drawingPanel);
+      if (dialogOption == JFileChooser.APPROVE_OPTION) {
+        this.file = fileChooser.getSelectedFile();
+        ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
+        fileStore.save(this.file, shapeList);
+        this.drawingPanel.setUpdated(false);
+      }
+    } catch (IOException e) {
+      JOptionPane.showMessageDialog(drawingPanel, Exception.FILE_STORE_SAVE_ERROR,
+          Exception.FILE_STORE_SAVE_ERROR.getTitle(), JOptionPane.ERROR_MESSAGE);
     }
   }
 

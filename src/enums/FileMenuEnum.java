@@ -8,7 +8,7 @@ public enum FileMenuEnum {
     Print("Print"),
     Quit("Quit");
 
-    private String label;
+    private final String label;
 
     FileMenuEnum(String label) {
         this.label = label;
