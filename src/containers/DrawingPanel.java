@@ -8,7 +8,7 @@ import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
 
-import enums.DrawingMode;
+import state.DrawingMode;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;

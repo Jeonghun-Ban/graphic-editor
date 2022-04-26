@@ -5,7 +5,7 @@ import static global.Constants.DASH_SIZE_SPINNER;
 import static global.Constants.LINE_SIZE_SPINNER;
 import static global.Constants.LiNE_SIZE_MODEL;
 
-import enums.DrawingTool;
+import state.DrawingTool;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;

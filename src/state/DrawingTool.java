@@ -1,4 +1,4 @@
-package enums;
+package state;
 
 import tools.draw.Line;
 import tools.draw.DrawTool;

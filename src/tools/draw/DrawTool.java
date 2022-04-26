@@ -10,7 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 import java.io.Serializable;
-import utils.CustomStroke;
+import tools.CustomStroke;
 
 public abstract class DrawTool implements Serializable {
     protected Shape shape;
