@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Path2D;
 import java.io.Serializable;
 import tools.CustomStroke;
 
@@ -38,8 +39,10 @@ public abstract class DrawTool implements Serializable {
 
   public void draw(Graphics2D g2D) {
     g2D.setStroke(stroke);
-    g2D.setColor(this.fillColor);
-    g2D.fill(shape);
+    if (!isBrush()) {
+      g2D.setColor(this.fillColor);
+      g2D.fill(shape);
+    }
     g2D.setColor(this.lineColor);
     g2D.draw(shape);
   }
@@ -70,6 +73,10 @@ public abstract class DrawTool implements Serializable {
 
   public boolean contains(Point point) {
     return this.shape.contains(point);
+  }
+
+  private boolean isBrush() {
+    return shape instanceof Path2D.Double ? true : false;
   }
 
   abstract public void setStartPoint(Point startPoint);
