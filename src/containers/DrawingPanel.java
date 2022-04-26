@@ -8,7 +8,6 @@ import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
 
-import state.DrawingMode;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -20,10 +19,13 @@ import java.awt.print.Printable;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
+import state.DrawingMode;
 import tools.draw.DrawTool;
 import tools.draw.Polygon;
 
 public class DrawingPanel extends JPanel implements Printable {
+
+  private static final long serialVersionUID = 1L;
 
   private boolean updated;
 
@@ -65,7 +67,7 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.drawTools;
   }
 
-  public void setDrawTools(ArrayList drawTools) {
+  public void setDrawTools(ArrayList<DrawTool> drawTools) {
     this.drawTools = drawTools;
     this.repaint();
   }

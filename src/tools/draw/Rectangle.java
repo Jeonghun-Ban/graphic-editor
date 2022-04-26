@@ -4,22 +4,25 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 public class Rectangle extends DrawTool {
-    private Rectangle2D rectangle;
 
-    public Rectangle() {
-        super(new Rectangle2D.Double());
-        rectangle = (Rectangle2D) shape;
-    }
+  private static final long serialVersionUID = 1L;
 
-    public void initDraw(Point startP) {
-        this.startP = startP;
-    }
+  private Rectangle2D rectangle;
 
-    public void setCoordinate(Point currentP) {
-        rectangle.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y);
-    }
+  public Rectangle() {
+    super(new Rectangle2D.Double());
+    rectangle = (Rectangle2D) shape;
+  }
 
-    public DrawTool clone() {
-        return new Rectangle();
-    }
+  public void initDraw(Point startP) {
+    this.startP = startP;
+  }
+
+  public void setCoordinate(Point currentP) {
+    rectangle.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y);
+  }
+
+  public DrawTool clone() {
+    return new Rectangle();
+  }
 }

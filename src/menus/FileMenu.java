@@ -13,7 +13,9 @@ import javax.swing.JMenuItem;
 
 public class FileMenu extends JMenu {
 
-  private final FileDialog fileDialog;
+private static final long serialVersionUID = 1L;
+
+private final FileDialog fileDialog;
 
   public FileMenu() {
     super(FILE_MENU_TITLE);

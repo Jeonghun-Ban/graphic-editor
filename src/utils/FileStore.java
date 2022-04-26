@@ -17,10 +17,10 @@ public class FileStore {
   }
 
   public Object load(File file) throws IOException, ClassNotFoundException {
-      FileInputStream fileInputStream = new FileInputStream(file);
-      ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-      Object object = objectInputStream.readObject();
-      objectInputStream.close();
-      return object;
+    FileInputStream fileInputStream = new FileInputStream(file);
+    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+    Object object = objectInputStream.readObject();
+    objectInputStream.close();
+    return object;
   }
 }

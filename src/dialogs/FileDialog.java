@@ -65,7 +65,8 @@ public class FileDialog {
       dialogOption = fileChooser.showOpenDialog(drawingPanel);
       if (dialogOption == JFileChooser.APPROVE_OPTION) {
         this.file = fileChooser.getSelectedFile();
-        ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) fileStore.load(file);
+        @SuppressWarnings("unchecked") ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) fileStore.load(
+            file);
         this.drawingPanel.setDrawTools(drawToolList);
       }
     } catch (IOException | ClassNotFoundException e) {
@@ -80,7 +81,7 @@ public class FileDialog {
         if (this.file == null) {
           saveFileAs();
         } else {
-          ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
+          @SuppressWarnings("unchecked") ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
           fileStore.save(this.file, drawToolList);
         }
         this.drawingPanel.setUpdated(false);
@@ -96,7 +97,7 @@ public class FileDialog {
       dialogOption = fileChooser.showSaveDialog(drawingPanel);
       if (dialogOption == JFileChooser.APPROVE_OPTION) {
         this.file = fileChooser.getSelectedFile();
-        ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
+        @SuppressWarnings("unchecked") ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
         fileStore.save(this.file, drawToolList);
         this.drawingPanel.setUpdated(false);
       }

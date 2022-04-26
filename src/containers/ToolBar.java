@@ -5,7 +5,6 @@ import static global.Constants.DASH_SIZE_SPINNER;
 import static global.Constants.LINE_SIZE_SPINNER;
 import static global.Constants.LiNE_SIZE_MODEL;
 
-import state.DrawingTool;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -17,10 +16,13 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import state.DrawingTool;
 
 public class ToolBar extends JToolBar {
+	
+private static final long serialVersionUID = 1L;
 
-  private final ButtonGroup buttonGroup;
+private final ButtonGroup buttonGroup;
   private final ToolBarHandler toolBarHandler;
   private final SpinnerHandler spinnerHandler;
 
@@ -41,9 +43,7 @@ public class ToolBar extends JToolBar {
   }
 
   public void setDefaultButton() {
-    JRadioButton defaultButton = (JRadioButton) this.getComponent(
-        DrawingTool.Rectangle.ordinal()
-    );
+    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawingTool.Rectangle.ordinal());
     defaultButton.doClick();
   }
 

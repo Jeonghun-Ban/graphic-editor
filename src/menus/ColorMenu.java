@@ -46,7 +46,7 @@ public class ColorMenu extends JMenu {
     public void actionPerformed(ActionEvent e) {
       if (e.getActionCommand().equals(ColorMenuEnum.SetLineColor.getLabel())) {
         colorDialog.setLineColor();
-      } else if (e.getActionCommand().equals(ColorMenuEnum.SetLineColor.getLabel())) {
+      } else if (e.getActionCommand().equals(ColorMenuEnum.SetFillColor.getLabel())) {
         colorDialog.setFillColor();
       }
     }

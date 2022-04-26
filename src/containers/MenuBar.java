@@ -6,22 +6,25 @@ import menus.EditMenu;
 import menus.FileMenu;
 
 public class MenuBar extends JMenuBar {
-    private FileMenu fileMenu;
-    private EditMenu editMenu;
-    private ColorMenu colorMenu;
 
-    public MenuBar() {
-        fileMenu = new FileMenu();
-        editMenu = new EditMenu();
-        colorMenu = new ColorMenu();
+  private static final long serialVersionUID = 1L;
 
-        this.add(fileMenu);
-        this.add(editMenu);
-        this.add(colorMenu);
-    }
+  private FileMenu fileMenu;
+  private EditMenu editMenu;
+  private ColorMenu colorMenu;
 
-    public void associate(DrawingPanel drawingPanel) {
-        this.fileMenu.associate(drawingPanel);
-        this.colorMenu.associate(drawingPanel);
-    }
+  public MenuBar() {
+    fileMenu = new FileMenu();
+    editMenu = new EditMenu();
+    colorMenu = new ColorMenu();
+
+    this.add(fileMenu);
+    this.add(editMenu);
+    this.add(colorMenu);
+  }
+
+  public void associate(DrawingPanel drawingPanel) {
+    this.fileMenu.associate(drawingPanel);
+    this.colorMenu.associate(drawingPanel);
+  }
 }

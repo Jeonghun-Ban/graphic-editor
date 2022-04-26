@@ -4,22 +4,25 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 
 public class Oval extends DrawTool {
-    private Ellipse2D ellipse;
 
-    public Oval() {
-        super(new Ellipse2D.Double());
-        ellipse = (Ellipse2D) shape;
-    }
+  private static final long serialVersionUID = 1L;
 
-    public void initDraw(Point startP) {
-        this.startP = startP;
-    }
+  private Ellipse2D ellipse;
 
-    public void setCoordinate(Point currentP) {
-        ellipse.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y);
-    }
+  public Oval() {
+    super(new Ellipse2D.Double());
+    ellipse = (Ellipse2D) shape;
+  }
 
-    public DrawTool clone() {
-        return new Oval();
-    }
+  public void initDraw(Point startP) {
+    this.startP = startP;
+  }
+
+  public void setCoordinate(Point currentP) {
+    ellipse.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y);
+  }
+
+  public DrawTool clone() {
+    return new Oval();
+  }
 }
