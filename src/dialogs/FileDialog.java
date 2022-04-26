@@ -1,0 +1,115 @@
+package dialogs;
+
+import containers.DrawingPanel;
+import global.Exception;
+import global.Message;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import tools.draw.DrawTool;
+import utils.FileStore;
+
+public class FileDialog {
+
+  private final JFileChooser fileChooser;
+  private final FileStore fileStore;
+
+  private File file;
+  private int dialogOption;
+  private DrawingPanel drawingPanel;
+
+  public FileDialog() {
+    fileChooser = new JFileChooser();
+    fileStore = new FileStore();
+    file = null;
+  }
+
+  public void associate(DrawingPanel drawingPanel) {
+    this.drawingPanel = drawingPanel;
+  }
+
+  public void newFile() {
+    if (this.drawingPanel.isUpdated()) {
+      dialogOption = JOptionPane.showConfirmDialog(drawingPanel, Message.SAVE_FILE_DIALOG,
+          Message.SAVE_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION,
+          JOptionPane.QUESTION_MESSAGE);
+      if (dialogOption == JOptionPane.YES_OPTION) {
+        saveFile();
+      }
+    }
+
+    dialogOption = JOptionPane.showConfirmDialog(drawingPanel, Message.NEW_FILE_DIALOG,
+        Message.NEW_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+    if (dialogOption == JOptionPane.YES_OPTION) {
+      drawingPanel.clean();
+      this.file = null;
+    }
+  }
+
+  public void openFile() {
+    if (this.drawingPanel.isUpdated()) {
+      dialogOption = JOptionPane.showConfirmDialog(drawingPanel, Message.SAVE_FILE_DIALOG,
+          Message.SAVE_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION,
+          JOptionPane.QUESTION_MESSAGE);
+      if (dialogOption == JOptionPane.YES_OPTION) {
+        saveFile();
+      }
+    }
+
+    dialogOption = fileChooser.showOpenDialog(drawingPanel);
+    if (dialogOption == JFileChooser.APPROVE_OPTION) {
+      this.file = fileChooser.getSelectedFile();
+      ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) fileStore.load(file);
+      this.drawingPanel.setDrawTools(shapeList);
+    }
+  }
+
+  public void saveFile() {
+    if (this.drawingPanel.isUpdated()) {
+      if (this.file == null) {
+        saveFileAs();
+      } else {
+        ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
+        fileStore.save(this.file, shapeList);
+        this.drawingPanel.setUpdated(false);
+      }
+    }
+  }
+
+  public void saveFileAs() {
+    dialogOption = fileChooser.showSaveDialog(drawingPanel);
+    if (dialogOption == JFileChooser.APPROVE_OPTION) {
+      this.file = fileChooser.getSelectedFile();
+      ArrayList<DrawTool> shapeList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
+      fileStore.save(this.file, shapeList);
+      this.drawingPanel.setUpdated(false);
+    }
+  }
+
+  public void print() {
+    PrinterJob printerJob = PrinterJob.getPrinterJob();
+    printerJob.setPrintable(drawingPanel);
+    boolean isPrintable = printerJob.printDialog();
+
+    try {
+      if (isPrintable) {
+        printerJob.print();
+      }
+    } catch (PrinterException exception) {
+      JOptionPane.showMessageDialog(drawingPanel, Exception.PRINT_NOT_AVAILABLE,
+          Exception.PRINT_NOT_AVAILABLE.getTitle(), JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  public void quit() {
+    dialogOption = JOptionPane.showConfirmDialog(drawingPanel, Message.QUIT_DIALOG,
+        Message.QUIT_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if (dialogOption == JOptionPane.YES_OPTION) {
+      System.exit(0);
+    }
+  }
+}
