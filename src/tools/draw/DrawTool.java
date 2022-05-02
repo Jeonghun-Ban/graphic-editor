@@ -62,7 +62,7 @@ public abstract class DrawTool implements Serializable {
   }
 
   private boolean isBrush() {
-    return shape instanceof Path2D.Double ? true : false;
+    return shape instanceof Path2D.Double;
   }
 
   abstract public void setStartPoint(Point startPoint);
