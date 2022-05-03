@@ -3,11 +3,11 @@ package tools.draw;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
-public class Rectangle extends DrawTool {
+public class Rectangle extends DrawShape {
 
   private static final long serialVersionUID = 1L;
 
-  private Rectangle2D rectangle;
+  private final Rectangle2D rectangle;
 
   public Rectangle() {
     super(new Rectangle2D.Double());
@@ -25,7 +25,7 @@ public class Rectangle extends DrawTool {
   }
 
   @Override
-  public DrawTool clone() {
+  public DrawShape clone() {
     return new Rectangle();
   }
 }

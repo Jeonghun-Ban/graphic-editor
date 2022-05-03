@@ -17,7 +17,7 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import state.DrawingTool;
+import enums.DrawTool;
 
 public class ToolBar extends JToolBar {
 	
@@ -44,12 +44,12 @@ private final ButtonGroup buttonGroup;
   }
 
   public void setDefaultButton() {
-    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawingTool.Cursor.ordinal());
+    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawTool.Cursor.ordinal());
     defaultButton.doClick();
   }
 
   public void createToolButtons() {
-    Arrays.stream(DrawingTool.values()).forEach(value -> {
+    Arrays.stream(DrawTool.values()).forEach(value -> {
       JRadioButton button = new JRadioButton();
       button.setActionCommand(value.name());
       button.setIcon(getIcon(value.name().toLowerCase(), false));
@@ -86,11 +86,11 @@ private final ButtonGroup buttonGroup;
       JRadioButton button = (JRadioButton) e.getSource();
       String command = button.getActionCommand();
       try {
-        if (command.equals(DrawingTool.Clean.toString())) {
+        if (command.equals(DrawTool.Clean.toString())) {
           drawingPanel.clean();
         } else {
-          DrawingTool drawingTool = DrawingTool.valueOf(command);
-          drawingPanel.setDrawTool(drawingTool.getDrawTool());
+          DrawTool drawTool = DrawTool.valueOf(command);
+          drawingPanel.setDrawShape(drawTool.getDrawShape());
         }
       } catch (Exception ex) {
         ex.printStackTrace();

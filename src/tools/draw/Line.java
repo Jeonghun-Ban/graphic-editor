@@ -3,11 +3,11 @@ package tools.draw;
 import java.awt.Point;
 import java.awt.geom.Line2D;
 
-public class Line extends DrawTool {
+public class Line extends DrawShape {
 
   private static final long serialVersionUID = 1L;
 
-  private Line2D line;
+  private final Line2D line;
 
   public Line() {
     super(new Line2D.Double());
@@ -25,7 +25,7 @@ public class Line extends DrawTool {
   }
 
   @Override
-  public DrawTool clone() {
+  public DrawShape clone() {
     return new Line();
   }
 }

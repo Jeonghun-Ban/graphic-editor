@@ -3,11 +3,11 @@ package tools.draw;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 
-public class Oval extends DrawTool {
+public class Oval extends DrawShape {
 
   private static final long serialVersionUID = 1L;
 
-  private Ellipse2D ellipse;
+  private final Ellipse2D ellipse;
 
   public Oval() {
     super(new Ellipse2D.Double());
@@ -25,7 +25,7 @@ public class Oval extends DrawTool {
   }
 
   @Override
-  public DrawTool clone() {
+  public DrawShape clone() {
     return new Oval();
   }
 }

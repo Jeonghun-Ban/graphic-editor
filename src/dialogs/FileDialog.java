@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import tools.draw.DrawTool;
+import tools.draw.DrawShape;
 import utils.FileStore;
 
 public class FileDialog {
@@ -65,9 +65,9 @@ public class FileDialog {
       dialogOption = fileChooser.showOpenDialog(drawingPanel);
       if (dialogOption == JFileChooser.APPROVE_OPTION) {
         this.file = fileChooser.getSelectedFile();
-        @SuppressWarnings("unchecked") ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) fileStore.load(
+        @SuppressWarnings("unchecked") ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) fileStore.load(
             file);
-        this.drawingPanel.setDrawTools(drawToolList);
+        this.drawingPanel.setDrawShapes(drawShapeList);
       }
     } catch (IOException | ClassNotFoundException e) {
       JOptionPane.showMessageDialog(drawingPanel, Exception.FILE_STORE_LOAD_ERROR,
@@ -81,8 +81,8 @@ public class FileDialog {
         if (this.file == null) {
           saveFileAs();
         } else {
-          @SuppressWarnings("unchecked") ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
-          fileStore.save(this.file, drawToolList);
+          @SuppressWarnings("unchecked") ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
+          fileStore.save(this.file, drawShapeList);
         }
         this.drawingPanel.setUpdated(false);
       }
@@ -97,8 +97,8 @@ public class FileDialog {
       dialogOption = fileChooser.showSaveDialog(drawingPanel);
       if (dialogOption == JFileChooser.APPROVE_OPTION) {
         this.file = fileChooser.getSelectedFile();
-        @SuppressWarnings("unchecked") ArrayList<DrawTool> drawToolList = (ArrayList<DrawTool>) drawingPanel.getDrawTools();
-        fileStore.save(this.file, drawToolList);
+        @SuppressWarnings("unchecked") ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
+        fileStore.save(this.file, drawShapeList);
         this.drawingPanel.setUpdated(false);
       }
     } catch (IOException e) {

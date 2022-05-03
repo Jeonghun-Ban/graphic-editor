@@ -19,8 +19,8 @@ import java.awt.print.Printable;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-import state.DrawingMode;
-import tools.draw.DrawTool;
+import enums.DrawMode;
+import tools.draw.DrawShape;
 import tools.draw.Polygon;
 
 public class DrawingPanel extends JPanel implements Printable {
@@ -29,26 +29,25 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private boolean updated;
 
-  private ArrayList<DrawTool> drawTools;
-  private DrawTool drawTool;
-  private Cursor cursor;
+  private ArrayList<DrawShape> drawShapes;
+  private DrawShape drawShape;
   private Color lineColor, fillColor;
   private int lineSize, dashSize;
 
-  private DrawingMode drawingMode;
+  private DrawMode drawMode;
 
   public DrawingPanel() {
     super();
     this.setBackground(DEFAULT_BACKGROUND_COLOR);
 
-    drawTools = new ArrayList<>();
+    drawShapes = new ArrayList<>();
     this.setCursor(DEFAULT_CURSOR);
     lineColor = DEFAULT_LINE_COLOR;
     fillColor = DEFAULT_FILL_COLOR;
     lineSize = DEFAULT_LINE_SIZE;
     dashSize = DEFAULT_DASH_SIZE;
 
-    drawingMode = DrawingMode.IDLE;
+    drawMode = DrawMode.IDLE;
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
     addMouseListener(drawingHandler);
@@ -59,30 +58,30 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.updated;
   }
 
-  public boolean isDrawTool(DrawTool drawTool) {
-    return this.drawTool == drawTool;
+  public boolean isDrawShape(DrawShape drawShape) {
+    return this.drawShape == drawShape;
   }
 
-  public boolean isDrawingMode(DrawingMode drawingMode) {
-    return this.drawingMode == drawingMode;
+  public boolean isDrawMode(DrawMode drawMode) {
+    return this.drawMode == drawMode;
   }
 
   public void setUpdated(boolean updated) {
     this.updated = updated;
   }
 
-  public Object getDrawTools() {
-    return this.drawTools;
+  public Object getDrawShapes() {
+    return this.drawShapes;
   }
 
-  public void setDrawTools(ArrayList<DrawTool> drawTools) {
-    this.drawTools = drawTools;
+  public void setDrawShapes(ArrayList<DrawShape> drawShapes) {
+    this.drawShapes = drawShapes;
     this.repaint();
   }
 
-  public void setDrawTool(DrawTool drawTool) {
-    this.drawTool = drawTool;
-    drawingMode = DrawingMode.IDLE;
+  public void setDrawShape(DrawShape drawShape) {
+    this.drawShape = drawShape;
+    drawMode = DrawMode.IDLE;
   }
 
   public void setLineColor(Color color) {
@@ -104,50 +103,50 @@ public class DrawingPanel extends JPanel implements Printable {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2D = (Graphics2D) g;
-    drawTools.forEach(drawTool -> drawTool.draw(g2D));
+    drawShapes.forEach(drawShape -> drawShape.draw(g2D));
   }
 
   private void initDraw(Point point) {
-    drawTool = drawTool.clone();
-    drawTool.setStartPoint(point);
-    drawTool.setLineColor(lineColor);
-    drawTool.setFillColor(fillColor);
-    drawTool.setLineSize(lineSize);
-    drawTool.setDashSize(dashSize);
+    drawShape = drawShape.clone();
+    drawShape.setStartPoint(point);
+    drawShape.setLineColor(lineColor);
+    drawShape.setFillColor(fillColor);
+    drawShape.setLineSize(lineSize);
+    drawShape.setDashSize(dashSize);
   }
 
   private void draw(Point point) {
     Graphics2D g2D = (Graphics2D) getGraphics();
     g2D.setXORMode(g2D.getBackground());
-    drawTool.draw(g2D);
-    drawTool.setCurrentPoint(point);
-    drawTool.draw(g2D);
+    drawShape.draw(g2D);
+    drawShape.setCurrentPoint(point);
+    drawShape.draw(g2D);
   }
 
   private void continueDraw(Point p) {
-    ((Polygon) drawTool).continueDrawing(p);
+    ((Polygon) drawShape).continueDrawing(p);
   }
 
-  private void finish(DrawTool drawTool) {
-    drawTools.add(drawTool);
-    drawingMode = DrawingMode.IDLE;
+  private void finish(DrawShape drawShape) {
+    drawShapes.add(drawShape);
+    drawMode = DrawMode.IDLE;
     repaint();
     this.setUpdated(true);
   }
 
   public void clean() {
-    drawTools.clear();
+    drawShapes.clear();
     repaint();
   }
 
   private void changeCursor(Point point) {
-    cursor = onShape(point) ? CROSSHAIR_CURSOR : DEFAULT_CURSOR;
+    Cursor cursor = onShape(point) ? CROSSHAIR_CURSOR : DEFAULT_CURSOR;
     this.setCursor(cursor);
   }
 
   private boolean onShape(Point point) {
-    for (DrawTool drawTool : drawTools) {
-      if (drawTool.contains(point)) {
+    for (DrawShape drawShape : drawShapes) {
+      if (drawShape.contains(point)) {
         return true;
       }
     }
@@ -161,7 +160,7 @@ public class DrawingPanel extends JPanel implements Printable {
     }
     Graphics2D graphics2D = (Graphics2D) graphics;
     graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-    drawTools.forEach(drawTool -> drawTool.draw(graphics2D));
+    drawShapes.forEach(drawShape -> drawShape.draw(graphics2D));
     return PAGE_EXISTS;
   }
 
@@ -169,12 +168,12 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mousePressed(MouseEvent e) {
-      if (isDrawingMode(DrawingMode.IDLE) && !isDrawTool(null)) {
+      if (isDrawMode(DrawMode.IDLE) && !isDrawShape(null)) {
         initDraw(e.getPoint());
-        if (drawTool instanceof Polygon) {
-          drawingMode = DrawingMode.POLYGON;
+        if (drawShape instanceof Polygon) {
+          drawMode = DrawMode.POLYGON;
         } else {
-          drawingMode = DrawingMode.GENERAL;
+          drawMode = DrawMode.GENERAL;
         }
       }
     }
@@ -184,33 +183,33 @@ public class DrawingPanel extends JPanel implements Printable {
       Point point = e.getPoint();
       changeCursor(point);
 
-      if (isDrawingMode(DrawingMode.POLYGON)) {
+      if (isDrawMode(DrawMode.POLYGON)) {
         draw(point);
       }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-      if(isDrawingMode(DrawingMode.GENERAL)) {
+      if(isDrawMode(DrawMode.GENERAL)) {
         draw(e.getPoint());
       }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-      if (isDrawingMode(DrawingMode.GENERAL)) {
-        finish(drawTool);
+      if (isDrawMode(DrawMode.GENERAL)) {
+        finish(drawShape);
       }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-      if (isDrawingMode(DrawingMode.POLYGON)) {
+      if (isDrawMode(DrawMode.POLYGON)) {
         if (e.getButton() == MouseEvent.BUTTON1) {
           if (e.getClickCount() == 1) {
             continueDraw(e.getPoint());
           } else if (e.getClickCount() == 2) {
-            finish(drawTool);
+            finish(drawShape);
           }
         }
       }

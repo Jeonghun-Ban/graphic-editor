@@ -3,11 +3,11 @@ package tools.draw;
 import java.awt.Point;
 import java.awt.geom.Path2D;
 
-public class Brush extends DrawTool {
+public class Brush extends DrawShape {
 
   private static final long serialVersionUID = 1L;
 
-  private Path2D brush;
+  private final Path2D brush;
 
   public Brush() {
     super(new Path2D.Double());
@@ -25,7 +25,7 @@ public class Brush extends DrawTool {
   }
 
   @Override
-  public DrawTool clone() {
+  public DrawShape clone() {
     return new Brush();
   }
 

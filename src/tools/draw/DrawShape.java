@@ -13,7 +13,7 @@ import java.io.Serializable;
 import tools.Anchor;
 import tools.SerializableStroke;
 
-public abstract class DrawTool implements Serializable {
+public abstract class DrawShape implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public abstract class DrawTool implements Serializable {
 
   protected SerializableStroke serializableStroke;
 
-  public DrawTool(Shape shape) {
+  public DrawShape(Shape shape) {
     this.shape = shape;
     this.anchor = new Anchor();
 
@@ -76,5 +76,5 @@ public abstract class DrawTool implements Serializable {
 
   abstract public void setCurrentPoint(Point currentPoint);
 
-  abstract public DrawTool clone();
+  abstract public DrawShape clone();
 }

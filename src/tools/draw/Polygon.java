@@ -2,11 +2,11 @@ package tools.draw;
 
 import java.awt.Point;
 
-public class Polygon extends DrawTool {
+public class Polygon extends DrawShape {
 
   private static final long serialVersionUID = 1L;
 
-  private java.awt.Polygon polygon;
+  private final java.awt.Polygon polygon;
 
   public Polygon() {
     super(new java.awt.Polygon());
@@ -29,7 +29,7 @@ public class Polygon extends DrawTool {
   }
 
   @Override
-  public DrawTool clone() {
+  public DrawShape clone() {
     return new Polygon();
   }
 }

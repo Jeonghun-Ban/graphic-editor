@@ -1,13 +1,13 @@
-package state;
+package enums;
 
 import tools.draw.Brush;
-import tools.draw.DrawTool;
+import tools.draw.DrawShape;
 import tools.draw.Line;
 import tools.draw.Oval;
 import tools.draw.Polygon;
 import tools.draw.Rectangle;
 
-public enum DrawingTool {
+public enum DrawTool {
   Cursor(null),
   Brush(new Brush()),
   Rectangle(new Rectangle()),
@@ -16,14 +16,14 @@ public enum DrawingTool {
   Polygon(new Polygon()),
   Clean(null);
 
-  private final DrawTool drawTool;
+  private final DrawShape drawShape;
 
-  DrawingTool(DrawTool drawTool) {
-    this.drawTool = drawTool;
+  DrawTool(DrawShape drawShape) {
+    this.drawShape = drawShape;
   }
 
-  public DrawTool getDrawTool() {
-    return this.drawTool;
+  public DrawShape getDrawShape() {
+    return this.drawShape;
   }
 
   @Override
