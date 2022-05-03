@@ -44,7 +44,7 @@ private final ButtonGroup buttonGroup;
   }
 
   public void setDefaultButton() {
-    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawingTool.Brush.ordinal());
+    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawingTool.Cursor.ordinal());
     defaultButton.doClick();
   }
 
@@ -86,7 +86,7 @@ private final ButtonGroup buttonGroup;
       JRadioButton button = (JRadioButton) e.getSource();
       String command = button.getActionCommand();
       try {
-        if (command.equals("Clean")) {
+        if (command.equals(DrawingTool.Clean.toString())) {
           drawingPanel.clean();
         } else {
           DrawingTool drawingTool = DrawingTool.valueOf(command);

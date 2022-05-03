@@ -8,6 +8,7 @@ import tools.draw.Polygon;
 import tools.draw.Rectangle;
 
 public enum DrawingTool {
+  Cursor(null),
   Brush(new Brush()),
   Rectangle(new Rectangle()),
   Oval(new Oval()),
@@ -23,5 +24,10 @@ public enum DrawingTool {
 
   public DrawTool getDrawTool() {
     return this.drawTool;
+  }
+
+  @Override
+  public String toString() {
+    return this.name();
   }
 }

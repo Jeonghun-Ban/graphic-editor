@@ -59,6 +59,14 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.updated;
   }
 
+  public boolean isDrawTool(DrawTool drawTool) {
+    return this.drawTool == drawTool;
+  }
+
+  public boolean isDrawingMode(DrawingMode drawingMode) {
+    return this.drawingMode == drawingMode;
+  }
+
   public void setUpdated(boolean updated) {
     this.updated = updated;
   }
@@ -161,7 +169,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mousePressed(MouseEvent e) {
-      if (drawingMode == DrawingMode.IDLE) {
+      if (isDrawingMode(DrawingMode.IDLE) && !isDrawTool(null)) {
         initDraw(e.getPoint());
         if (drawTool instanceof Polygon) {
           drawingMode = DrawingMode.POLYGON;
@@ -176,26 +184,28 @@ public class DrawingPanel extends JPanel implements Printable {
       Point point = e.getPoint();
       changeCursor(point);
 
-      if (drawingMode == DrawingMode.POLYGON) {
+      if (isDrawingMode(DrawingMode.POLYGON)) {
         draw(point);
       }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-      draw(e.getPoint());
+      if(isDrawingMode(DrawingMode.GENERAL)) {
+        draw(e.getPoint());
+      }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-      if (drawingMode == DrawingMode.GENERAL) {
+      if (isDrawingMode(DrawingMode.GENERAL)) {
         finish(drawTool);
       }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-      if (drawingMode == DrawingMode.POLYGON) {
+      if (isDrawingMode(DrawingMode.POLYGON)) {
         if (e.getButton() == MouseEvent.BUTTON1) {
           if (e.getClickCount() == 1) {
             continueDraw(e.getPoint());
