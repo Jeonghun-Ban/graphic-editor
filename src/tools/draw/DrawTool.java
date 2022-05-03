@@ -6,9 +6,11 @@ import static global.Constants.DEFAULT_LINE_COLOR;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Path2D;
 import java.io.Serializable;
+import tools.Anchor;
 import tools.SerializableStroke;
 
 public abstract class DrawTool implements Serializable {
@@ -16,6 +18,7 @@ public abstract class DrawTool implements Serializable {
   private static final long serialVersionUID = 1L;
 
   protected Shape shape;
+  protected Anchor anchor;
   protected Point startPoint;
 
   protected Color lineColor;
@@ -25,6 +28,7 @@ public abstract class DrawTool implements Serializable {
 
   public DrawTool(Shape shape) {
     this.shape = shape;
+    this.anchor = new Anchor();
 
     this.serializableStroke = new SerializableStroke();
     this.lineColor = DEFAULT_LINE_COLOR;
@@ -39,6 +43,9 @@ public abstract class DrawTool implements Serializable {
     }
     g2D.setColor(this.lineColor);
     g2D.draw(shape);
+
+    Rectangle boundRectangle = shape.getBounds();
+    anchor.draw(g2D, boundRectangle);
   }
 
   public void setLineColor(Color color) {
@@ -66,6 +73,8 @@ public abstract class DrawTool implements Serializable {
   }
 
   abstract public void setStartPoint(Point startPoint);
+
   abstract public void setCurrentPoint(Point currentPoint);
+
   abstract public DrawTool clone();
 }

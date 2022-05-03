@@ -33,4 +33,9 @@ public class Constants {
   // Cursor
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
   public static final Cursor CROSSHAIR_CURSOR = new Cursor(Cursor.CROSSHAIR_CURSOR);
+
+  // Anchor
+  public static final int ANCHOR_WIDTH = 10;
+  public static final int ANCHOR_HEIGHT = 10;
+  public static final int ANCHOR_RADIUS = 5;
 }
