@@ -26,6 +26,8 @@ public abstract class DrawShape implements Serializable {
 
   protected SerializableStroke serializableStroke;
 
+  protected boolean selected;
+
   public DrawShape(Shape shape) {
     this.shape = shape;
     this.anchor = new Anchor();
@@ -33,6 +35,8 @@ public abstract class DrawShape implements Serializable {
     this.serializableStroke = new SerializableStroke();
     this.lineColor = DEFAULT_LINE_COLOR;
     this.fillColor = DEFAULT_FILL_COLOR;
+
+    this.selected = false;
   }
 
   public void draw(Graphics2D g2D) {
@@ -44,8 +48,14 @@ public abstract class DrawShape implements Serializable {
     g2D.setColor(this.lineColor);
     g2D.draw(shape);
 
-    Rectangle boundRectangle = shape.getBounds();
-    anchor.draw(g2D, boundRectangle);
+    if (selected) {
+      Rectangle boundRectangle = shape.getBounds();
+      anchor.draw(g2D, boundRectangle);
+    }
+  }
+
+  public void setSelected() {
+    selected = !selected;
   }
 
   public void setLineColor(Color color) {

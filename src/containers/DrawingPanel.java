@@ -153,6 +153,15 @@ public class DrawingPanel extends JPanel implements Printable {
     return false;
   }
 
+  private void selectDrawShape(Point point) {
+    for (DrawShape drawShape : drawShapes) {
+      if (drawShape.contains(point)) {
+        drawShape.setSelected();
+      }
+    }
+    repaint();
+  }
+
   @Override
   public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
     if (pageIndex > 0) {
@@ -212,6 +221,8 @@ public class DrawingPanel extends JPanel implements Printable {
             finish(drawShape);
           }
         }
+      } else if(isDrawMode(DrawMode.IDLE) && isDrawShape(null)) {
+        selectDrawShape(e.getPoint());
       }
     }
   }
