@@ -7,7 +7,9 @@ import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
+import static global.Constants.HAND_CURSOR;
 
+import enums.DrawMode;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -19,7 +21,6 @@ import java.awt.print.Printable;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-import enums.DrawMode;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
 
@@ -31,6 +32,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private ArrayList<DrawShape> drawShapes;
   private DrawShape drawShape;
+  private Cursor cursor;
   private Color lineColor, fillColor;
   private int lineSize, dashSize;
 
@@ -47,6 +49,7 @@ public class DrawingPanel extends JPanel implements Printable {
     lineSize = DEFAULT_LINE_SIZE;
     dashSize = DEFAULT_DASH_SIZE;
 
+    cursor = DEFAULT_CURSOR;
     drawMode = DrawMode.IDLE;
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
@@ -113,6 +116,9 @@ public class DrawingPanel extends JPanel implements Printable {
     drawShape.setFillColor(fillColor);
     drawShape.setLineSize(lineSize);
     drawShape.setDashSize(dashSize);
+
+    cursor = CROSSHAIR_CURSOR;
+    setCursor(cursor);
   }
 
   private void draw(Point point) {
@@ -132,6 +138,9 @@ public class DrawingPanel extends JPanel implements Printable {
     drawMode = DrawMode.IDLE;
     repaint();
     this.setUpdated(true);
+
+    cursor = DEFAULT_CURSOR;
+    setCursor(cursor);
   }
 
   public void clean() {
@@ -140,7 +149,7 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private void changeCursor(Point point) {
-    Cursor cursor = onShape(point) ? CROSSHAIR_CURSOR : DEFAULT_CURSOR;
+    cursor = onShape(point) ? HAND_CURSOR : DEFAULT_CURSOR;
     this.setCursor(cursor);
   }
 
