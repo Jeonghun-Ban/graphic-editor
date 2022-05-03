@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
+import transformer.Drawer;
+import transformer.Transformer;
 
 public class DrawingPanel extends JPanel implements Printable {
 
@@ -32,7 +34,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private ArrayList<DrawShape> drawShapes;
   private DrawShape drawShape;
-  private Cursor cursor;
+  private Transformer transformer;
   private Color lineColor, fillColor;
   private int lineSize, dashSize;
 
@@ -43,14 +45,15 @@ public class DrawingPanel extends JPanel implements Printable {
     this.setBackground(DEFAULT_BACKGROUND_COLOR);
 
     drawShapes = new ArrayList<>();
+
+    this.transformer = null;
+    this.setDrawMode(DrawMode.IDLE);
     this.setCursor(DEFAULT_CURSOR);
+
     lineColor = DEFAULT_LINE_COLOR;
     fillColor = DEFAULT_FILL_COLOR;
     lineSize = DEFAULT_LINE_SIZE;
     dashSize = DEFAULT_DASH_SIZE;
-
-    cursor = DEFAULT_CURSOR;
-    drawMode = DrawMode.IDLE;
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
     addMouseListener(drawingHandler);
@@ -61,6 +64,10 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.updated;
   }
 
+  public void setUpdated(boolean updated) {
+    this.updated = updated;
+  }
+
   public boolean isDrawShape(DrawShape drawShape) {
     return this.drawShape == drawShape;
   }
@@ -69,8 +76,8 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.drawMode == drawMode;
   }
 
-  public void setUpdated(boolean updated) {
-    this.updated = updated;
+  private void setDrawMode(DrawMode drawMode) {
+    this.drawMode = drawMode;
   }
 
   public Object getDrawShapes() {
@@ -103,44 +110,22 @@ public class DrawingPanel extends JPanel implements Printable {
     this.dashSize = dashSize;
   }
 
+  @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2D = (Graphics2D) g;
     drawShapes.forEach(drawShape -> drawShape.draw(g2D));
   }
 
-  private void initDraw(Point point) {
-    drawShape = drawShape.clone();
-    drawShape.setStartPoint(point);
-    drawShape.setLineColor(lineColor);
-    drawShape.setFillColor(fillColor);
-    drawShape.setLineSize(lineSize);
-    drawShape.setDashSize(dashSize);
-
-    cursor = CROSSHAIR_CURSOR;
-    setCursor(cursor);
+  @Override
+  public void repaint() {
+    super.repaint();
+    setDrawMode(DrawMode.IDLE);
   }
 
-  private void draw(Point point) {
-    Graphics2D g2D = (Graphics2D) getGraphics();
-    g2D.setXORMode(g2D.getBackground());
-    drawShape.draw(g2D);
-    drawShape.setCurrentPoint(point);
-    drawShape.draw(g2D);
-  }
-
-  private void continueDraw(Point p) {
-    ((Polygon) drawShape).continueDrawing(p);
-  }
-
-  private void finish(DrawShape drawShape) {
-    drawShapes.add(drawShape);
-    drawMode = DrawMode.IDLE;
-    repaint();
+  private void finish() {
     this.setUpdated(true);
-
-    cursor = DEFAULT_CURSOR;
-    setCursor(cursor);
+    repaint();
   }
 
   public void clean() {
@@ -149,7 +134,7 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private void changeCursor(Point point) {
-    cursor = onShape(point) ? HAND_CURSOR : DEFAULT_CURSOR;
+    Cursor cursor = onShape(point) ? HAND_CURSOR : DEFAULT_CURSOR;
     this.setCursor(cursor);
   }
 
@@ -187,7 +172,12 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE) && !isDrawShape(null)) {
-        initDraw(e.getPoint());
+        drawShape = drawShape.clone();
+        drawShape.setStyleAttributes(lineColor, fillColor, lineSize, dashSize);
+        transformer = new Drawer(drawShape);
+        transformer.init(e.getPoint());
+        setCursor(CROSSHAIR_CURSOR);
+
         if (drawShape instanceof Polygon) {
           drawMode = DrawMode.POLYGON;
         } else {
@@ -198,25 +188,24 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-      Point point = e.getPoint();
-      changeCursor(point);
-
+      changeCursor(e.getPoint());
       if (isDrawMode(DrawMode.POLYGON)) {
-        draw(point);
+        transformer.transform((Graphics2D) getGraphics(), e.getPoint());
       }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-      if(isDrawMode(DrawMode.GENERAL)) {
-        draw(e.getPoint());
+      if (isDrawMode(DrawMode.GENERAL)) {
+        transformer.transform((Graphics2D) getGraphics(), e.getPoint());
       }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
       if (isDrawMode(DrawMode.GENERAL)) {
-        finish(drawShape);
+        transformer.finish(drawShapes);
+        finish();
       }
     }
 
@@ -225,12 +214,13 @@ public class DrawingPanel extends JPanel implements Printable {
       if (isDrawMode(DrawMode.POLYGON)) {
         if (e.getButton() == MouseEvent.BUTTON1) {
           if (e.getClickCount() == 1) {
-            continueDraw(e.getPoint());
+            ((Drawer) transformer).continueTransform(e.getPoint());
           } else if (e.getClickCount() == 2) {
-            finish(drawShape);
+            transformer.finish(drawShapes);
+            finish();
           }
         }
-      } else if(isDrawMode(DrawMode.IDLE) && isDrawShape(null)) {
+      } else if (isDrawMode(DrawMode.IDLE) && isDrawShape(null)) {
         selectDrawShape(e.getPoint());
       }
     }
