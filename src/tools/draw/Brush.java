@@ -14,14 +14,17 @@ public class Brush extends DrawTool {
     brush = (Path2D) shape;
   }
 
+  @Override
   public void setStartPoint(Point startPoint) {
     brush.moveTo(startPoint.x, startPoint.y);
   }
 
+  @Override
   public void setCurrentPoint(Point currentPoint) {
     brush.lineTo(currentPoint.x, currentPoint.y);
   }
 
+  @Override
   public DrawTool clone() {
     return new Brush();
   }

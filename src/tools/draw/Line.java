@@ -14,14 +14,17 @@ public class Line extends DrawTool {
     line = (Line2D) shape;
   }
 
+  @Override
   public void setStartPoint(Point startPoint) {
     this.startPoint = startPoint;
   }
 
+  @Override
   public void setCurrentPoint(Point currentPoint) {
     line.setLine(startPoint.x, startPoint.y, currentPoint.x, currentPoint.y);
   }
 
+  @Override
   public DrawTool clone() {
     return new Line();
   }

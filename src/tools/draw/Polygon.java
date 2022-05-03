@@ -13,10 +13,12 @@ public class Polygon extends DrawTool {
     polygon = (java.awt.Polygon) shape;
   }
 
+  @Override
   public void setStartPoint(Point startPoint) {
     polygon.addPoint(startPoint.x, startPoint.y);
   }
 
+  @Override
   public void setCurrentPoint(Point currentPoint) {
     polygon.xpoints[polygon.npoints - 1] = currentPoint.x;
     polygon.ypoints[polygon.npoints - 1] = currentPoint.y;
@@ -26,6 +28,7 @@ public class Polygon extends DrawTool {
     polygon.addPoint(point.x, point.y);
   }
 
+  @Override
   public DrawTool clone() {
     return new Polygon();
   }
