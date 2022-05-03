@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
@@ -43,17 +44,25 @@ private final ButtonGroup buttonGroup;
   }
 
   public void setDefaultButton() {
-    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawingTool.Rectangle.ordinal());
+    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawingTool.Brush.ordinal());
     defaultButton.doClick();
   }
 
   public void createToolButtons() {
     Arrays.stream(DrawingTool.values()).forEach(value -> {
-      JRadioButton button = new JRadioButton(value.name());
+      JRadioButton button = new JRadioButton();
+      button.setActionCommand(value.name());
+      button.setIcon(getIcon(value.name().toLowerCase(), false));
+      button.setSelectedIcon(getIcon(value.name().toLowerCase(), true));
       this.add(button);
       buttonGroup.add(button);
       button.addActionListener(toolBarHandler);
     });
+  }
+
+  private ImageIcon getIcon(String iconName, boolean isPressed) {
+    return isPressed ? new ImageIcon("src/image/pressed-button/".concat(iconName).concat(".png"))
+        : new ImageIcon("src/image/general-button/".concat(iconName).concat(".png"));
   }
 
   public void createLineSizeSpinner() {
