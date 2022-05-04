@@ -23,6 +23,9 @@ public class AnchorList {
   public void draw(Graphics2D g2D, Rectangle rectangle) {
     Arrays.stream(Anchor.values()).forEach(anchor -> {
       Ellipse2D ellipse2D = anchor.getBoundAnchor(this.anchorList.get(anchor.ordinal()), rectangle);
+      g2D.setColor(DEFAULT_BACKGROUND_COLOR);
+      g2D.fill(ellipse2D);
+      g2D.setColor(DEFAULT_LINE_COLOR);
       g2D.draw(ellipse2D);
     });
   }
