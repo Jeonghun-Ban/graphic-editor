@@ -123,8 +123,16 @@ public class DrawingPanel extends JPanel implements Printable {
     setDrawMode(DrawMode.IDLE);
   }
 
-  private void finish() {
+  private void initDraw() {
+    drawShape = drawShape.clone();
+    drawShape.setStyleAttributes(lineColor, fillColor, lineSize, dashSize);
+    setCursor(CROSSHAIR_CURSOR);
+    deselectShapes();
+  }
+
+  private void finishDraw() {
     this.setUpdated(true);
+    this.drawShape.select();
     repaint();
   }
 
@@ -133,27 +141,34 @@ public class DrawingPanel extends JPanel implements Printable {
     repaint();
   }
 
+  private DrawShape onShape(Point point) {
+    for (DrawShape drawShape : drawShapes) {
+      if (drawShape.contains(point)) {
+        return drawShape;
+      }
+    }
+    return null;
+  }
+
   private void changeCursor(Point point) {
-    Cursor cursor = onShape(point) ? HAND_CURSOR : DEFAULT_CURSOR;
+    Cursor cursor = onShape(point) != null ? HAND_CURSOR : DEFAULT_CURSOR;
     this.setCursor(cursor);
   }
 
-  private boolean onShape(Point point) {
-    for (DrawShape drawShape : drawShapes) {
-      if (drawShape.contains(point)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private void selectDrawShape(Point point) {
-    for (DrawShape drawShape : drawShapes) {
-      if (drawShape.contains(point)) {
-        drawShape.setSelected();
-      }
+  private void selectShape(Point point) {
+    DrawShape drawShape = onShape(point);
+    if (drawShape != null) {
+      drawShape.select();
+    } else {
+      deselectShapes();
     }
     repaint();
+  }
+
+  private void deselectShapes() {
+    drawShapes.forEach(drawShape -> {
+      drawShape.setSelected(false);
+    });
   }
 
   @Override
@@ -172,11 +187,9 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE) && !isDrawShape(null)) {
-        drawShape = drawShape.clone();
-        drawShape.setStyleAttributes(lineColor, fillColor, lineSize, dashSize);
+        initDraw();
         transformer = new Drawer(drawShape);
         transformer.init(e.getPoint());
-        setCursor(CROSSHAIR_CURSOR);
 
         if (drawShape instanceof Polygon) {
           drawMode = DrawMode.POLYGON;
@@ -205,7 +218,7 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mouseReleased(MouseEvent e) {
       if (isDrawMode(DrawMode.GENERAL)) {
         transformer.finish(drawShapes);
-        finish();
+        finishDraw();
       }
     }
 
@@ -217,11 +230,11 @@ public class DrawingPanel extends JPanel implements Printable {
             ((Drawer) transformer).continueTransform(e.getPoint());
           } else if (e.getClickCount() == 2) {
             transformer.finish(drawShapes);
-            finish();
+            finishDraw();
           }
         }
       } else if (isDrawMode(DrawMode.IDLE) && isDrawShape(null)) {
-        selectDrawShape(e.getPoint());
+        selectShape(e.getPoint());
       }
     }
   }

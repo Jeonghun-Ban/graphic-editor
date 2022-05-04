@@ -54,8 +54,12 @@ public abstract class DrawShape implements Serializable {
     }
   }
 
-  public void setSelected() {
+  public void select() {
     selected = !selected;
+  }
+
+  public void setSelected(boolean selected) {
+    this.selected = selected;
   }
 
   public void setStyleAttributes(Color lineColor, Color fillColor, int lineSize, int dashSize) {
