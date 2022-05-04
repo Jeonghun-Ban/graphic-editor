@@ -10,7 +10,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Path2D;
 import java.io.Serializable;
-import tools.Anchor;
+import tools.anchor.AnchorList;
 import tools.SerializableStroke;
 
 public abstract class DrawShape implements Serializable {
@@ -18,7 +18,7 @@ public abstract class DrawShape implements Serializable {
   private static final long serialVersionUID = 1L;
 
   protected Shape shape;
-  protected Anchor anchor;
+  protected AnchorList anchorList;
   protected Point startPoint;
 
   protected Color lineColor;
@@ -30,7 +30,7 @@ public abstract class DrawShape implements Serializable {
 
   public DrawShape(Shape shape) {
     this.shape = shape;
-    this.anchor = new Anchor();
+    this.anchorList = new AnchorList();
 
     this.serializableStroke = new SerializableStroke();
     this.lineColor = DEFAULT_LINE_COLOR;
@@ -50,7 +50,7 @@ public abstract class DrawShape implements Serializable {
 
     if (selected) {
       Rectangle boundRectangle = shape.getBounds();
-      anchor.draw(g2D, boundRectangle);
+      anchorList.draw(g2D, boundRectangle);
     }
   }
 

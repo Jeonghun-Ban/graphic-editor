@@ -39,4 +39,5 @@ public class Constants {
   public static final int ANCHOR_WIDTH = 10;
   public static final int ANCHOR_HEIGHT = 10;
   public static final int ANCHOR_RADIUS = 5;
+  public static final int ROTATE_ANCHOR_HEIGHT = 50;
 }
