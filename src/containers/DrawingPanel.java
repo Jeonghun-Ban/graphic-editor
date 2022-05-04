@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
+import java.util.Optional;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 import tools.draw.DrawShape;
@@ -33,7 +34,7 @@ public class DrawingPanel extends JPanel implements Printable {
   private boolean updated;
 
   private ArrayList<DrawShape> drawShapes;
-  private DrawShape drawShape;
+  private DrawShape currentShape;
   private Transformer transformer;
   private Color lineColor, fillColor;
   private int lineSize, dashSize;
@@ -68,8 +69,8 @@ public class DrawingPanel extends JPanel implements Printable {
     this.updated = updated;
   }
 
-  public boolean isDrawShape(DrawShape drawShape) {
-    return this.drawShape == drawShape;
+  public boolean isCurrentShape(DrawShape currentShape) {
+    return this.currentShape == currentShape;
   }
 
   public boolean isDrawMode(DrawMode drawMode) {
@@ -89,8 +90,8 @@ public class DrawingPanel extends JPanel implements Printable {
     this.repaint();
   }
 
-  public void setDrawShape(DrawShape drawShape) {
-    this.drawShape = drawShape;
+  public void setCurrentShape(DrawShape currentShape) {
+    this.currentShape = currentShape;
     drawMode = DrawMode.IDLE;
   }
 
@@ -124,15 +125,15 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private void initDraw() {
-    drawShape = drawShape.clone();
-    drawShape.setStyleAttributes(lineColor, fillColor, lineSize, dashSize);
+    currentShape = currentShape.clone();
+    currentShape.setStyleAttributes(lineColor, fillColor, lineSize, dashSize);
     setCursor(CROSSHAIR_CURSOR);
     deselectShapes();
   }
 
   private void finishDraw() {
     this.setUpdated(true);
-    this.drawShape.select();
+    this.currentShape.select();
     repaint();
   }
 
@@ -141,24 +142,21 @@ public class DrawingPanel extends JPanel implements Printable {
     repaint();
   }
 
-  private DrawShape onShape(Point point) {
-    for (DrawShape drawShape : drawShapes) {
-      if (drawShape.contains(point)) {
-        return drawShape;
-      }
-    }
-    return null;
+  private Optional<DrawShape> onShape(Point point) {
+    return drawShapes.stream()
+        .filter(drawShape -> drawShape.contains(point)).findFirst();
   }
 
   private void changeCursor(Point point) {
-    Cursor cursor = onShape(point) != null ? HAND_CURSOR : DEFAULT_CURSOR;
+    Optional<DrawShape> drawShape = onShape(point);
+    Cursor cursor = drawShape.isPresent() ? HAND_CURSOR : DEFAULT_CURSOR;
     this.setCursor(cursor);
   }
 
   private void selectShape(Point point) {
-    DrawShape drawShape = onShape(point);
-    if (drawShape != null) {
-      drawShape.select();
+    Optional<DrawShape> drawShape = onShape(point);
+    if (drawShape.isPresent()) {
+      drawShape.get().select();
     } else {
       deselectShapes();
     }
@@ -186,12 +184,12 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mousePressed(MouseEvent e) {
-      if (isDrawMode(DrawMode.IDLE) && !isDrawShape(null)) {
+      if (isDrawMode(DrawMode.IDLE) && !isCurrentShape(null)) {
         initDraw();
-        transformer = new Drawer(drawShape);
+        transformer = new Drawer(currentShape);
         transformer.init(e.getPoint());
 
-        if (drawShape instanceof Polygon) {
+        if (currentShape instanceof Polygon) {
           drawMode = DrawMode.POLYGON;
         } else {
           drawMode = DrawMode.GENERAL;
@@ -233,7 +231,7 @@ public class DrawingPanel extends JPanel implements Printable {
             finishDraw();
           }
         }
-      } else if (isDrawMode(DrawMode.IDLE) && isDrawShape(null)) {
+      } else if (isDrawMode(DrawMode.IDLE) && isCurrentShape(null)) {
         selectShape(e.getPoint());
       }
     }

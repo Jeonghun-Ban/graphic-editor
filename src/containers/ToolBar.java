@@ -90,7 +90,7 @@ private final ButtonGroup buttonGroup;
           drawingPanel.clean();
         } else {
           DrawTool drawTool = DrawTool.valueOf(command);
-          drawingPanel.setDrawShape(drawTool.getDrawShape());
+          drawingPanel.setCurrentShape(drawTool.getDrawShape());
         }
       } catch (Exception ex) {
         ex.printStackTrace();
