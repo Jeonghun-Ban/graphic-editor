@@ -159,8 +159,8 @@ public class DrawingPanel extends JPanel implements Printable {
     if (selectedShape!=null) {
       drawShapes.remove(selectedShape);
       setSelectedShape(null);
+      repaint();
     }
-    repaint();
   }
 
   private Optional<DrawShape> onShape(Point point) {

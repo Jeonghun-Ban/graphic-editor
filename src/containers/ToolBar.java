@@ -86,7 +86,7 @@ private final ButtonGroup buttonGroup;
       JRadioButton button = (JRadioButton) e.getSource();
       String command = button.getActionCommand();
       try {
-        if (command.equals(DrawTool.Clean.toString())) {
+        if (command.equals(DrawTool.Remove.toString())) {
           drawingPanel.remove();
         } else {
           DrawTool drawTool = DrawTool.valueOf(command);
