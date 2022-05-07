@@ -130,12 +130,6 @@ public class DrawingPanel extends JPanel implements Printable {
     drawShapes.forEach(drawShape -> drawShape.draw(g2D));
   }
 
-  @Override
-  public void repaint() {
-    super.repaint();
-    setDrawMode(DrawMode.IDLE);
-  }
-
   private void initDraw() {
     currentShape = currentShape.clone();
     currentShape.setStyleAttributes(lineColor, fillColor, lineSize, dashSize);
@@ -145,12 +139,14 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void finishDraw() {
     setUpdated(true);
+    setDrawMode(DrawMode.IDLE);
     selectShape(currentShape);
     repaint();
   }
 
   private void finishMove() {
     this.setUpdated(true);
+    setDrawMode(DrawMode.IDLE);
     repaint();
   }
 
@@ -158,6 +154,7 @@ public class DrawingPanel extends JPanel implements Printable {
     if (selectedShape != null) {
       drawShapes.remove(selectedShape);
       setSelectedShape(null);
+      setDrawMode(DrawMode.IDLE);
       repaint();
     }
   }
@@ -181,6 +178,7 @@ public class DrawingPanel extends JPanel implements Printable {
       drawShapes.remove(selectedShape);
       drawShapes.add(selectedShape);
     }
+    setDrawMode(DrawMode.IDLE);
     repaint();
   }
 
@@ -230,6 +228,9 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mouseDragged(MouseEvent e) {
       if (!isDrawMode(DrawMode.IDLE)) {
         transformer.transform((Graphics2D) getGraphics(), e.getPoint());
+      }
+      if (isDrawMode(DrawMode.MOVE)) {
+        repaint();
       }
     }
 
