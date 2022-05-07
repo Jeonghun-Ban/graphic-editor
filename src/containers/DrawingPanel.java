@@ -150,6 +150,11 @@ public class DrawingPanel extends JPanel implements Printable {
     repaint();
   }
 
+  public void clear() {
+    drawShapes.clear();
+    repaint();
+  }
+
   public void remove() {
     if (selectedShape != null) {
       drawShapes.remove(selectedShape);

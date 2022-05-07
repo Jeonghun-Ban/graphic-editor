@@ -46,7 +46,7 @@ public class FileDialog {
         Message.NEW_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE);
     if (dialogOption == JOptionPane.YES_OPTION) {
-      drawingPanel.remove();
+      drawingPanel.clear();
       this.file = null;
     }
   }
@@ -83,8 +83,8 @@ public class FileDialog {
         } else {
           @SuppressWarnings("unchecked") ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
           fileStore.save(this.file, drawShapeList);
+          this.drawingPanel.setUpdated(false);
         }
-        this.drawingPanel.setUpdated(false);
       }
     } catch (IOException e) {
       JOptionPane.showMessageDialog(drawingPanel, Exception.FILE_STORE_SAVE_ERROR,
