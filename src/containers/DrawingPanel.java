@@ -69,6 +69,10 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.updated;
   }
 
+  public void setUpdated(boolean updated) {
+    this.updated = updated;
+  }
+
   public boolean isCurrentShape(DrawShape currentShape) {
     return this.currentShape == currentShape;
   }
@@ -79,10 +83,6 @@ public class DrawingPanel extends JPanel implements Printable {
 
   public boolean isDrawMode(DrawMode drawMode) {
     return this.drawMode == drawMode;
-  }
-
-  public void setUpdated(boolean updated) {
-    this.updated = updated;
   }
 
   private void setDrawMode(DrawMode drawMode) {
@@ -151,12 +151,11 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void finishMove() {
     this.setUpdated(true);
-    this.setSelectedShape(null);
     repaint();
   }
 
   public void remove() {
-    if (selectedShape!=null) {
+    if (selectedShape != null) {
       drawShapes.remove(selectedShape);
       setSelectedShape(null);
       repaint();
@@ -182,17 +181,17 @@ public class DrawingPanel extends JPanel implements Printable {
       drawShapes.remove(selectedShape);
       drawShapes.add(selectedShape);
     }
+    repaint();
   }
 
   private void selectShape(DrawShape drawShape) {
-    setSelectedShape(drawShape);
+    this.setSelectedShape(drawShape);
     this.selectedShape.setSelected(true);
   }
 
   private void deselectShapes() {
-    drawShapes.forEach(drawShape -> {
-      drawShape.setSelected(false);
-    });
+    drawShapes.forEach(drawShape -> drawShape.setSelected(false));
+    this.setSelectedShape(null);
   }
 
   @Override
