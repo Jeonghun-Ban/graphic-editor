@@ -36,7 +36,7 @@ public class DrawingPanel extends JPanel implements Printable {
   private boolean updated;
 
   private List<DrawShape> drawShapes;
-  private DrawShape currentShape;
+  private DrawShape currentShape, selectedShape;
   private Transformer transformer;
   private Color lineColor, fillColor;
   private int lineSize, dashSize;
@@ -48,6 +48,8 @@ public class DrawingPanel extends JPanel implements Printable {
     this.setBackground(DEFAULT_BACKGROUND_COLOR);
 
     drawShapes = new ArrayList<>();
+    currentShape = null;
+    selectedShape = null;
 
     this.transformer = null;
     this.setDrawMode(DrawMode.IDLE);
@@ -135,7 +137,12 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void finishDraw() {
     this.setUpdated(true);
-    this.currentShape.select();
+    this.currentShape.setSelected(true);
+    repaint();
+  }
+
+  private void finishMove() {
+    this.setUpdated(true);
     repaint();
   }
 
@@ -157,12 +164,13 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void selectShape(Point point) {
     Optional<DrawShape> drawShape = onShape(point);
+    deselectShapes();
     if (drawShape.isPresent()) {
-      drawShape.get().select();
-    } else {
-      deselectShapes();
+      selectedShape = drawShape.get();
+      drawShapes.remove(selectedShape);
+      drawShapes.add(selectedShape);
+      selectedShape.setSelected(true);
     }
-    repaint();
   }
 
   private void deselectShapes() {
@@ -193,21 +201,11 @@ public class DrawingPanel extends JPanel implements Printable {
           transformer.init(e.getPoint());
           drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
         } else {
-          Optional<DrawShape> selectShape = onShape(e.getPoint());
-          if (selectShape.isPresent()) {
-            transformer = new Mover(selectShape.get());
-            transformer.init(e.getPoint());
-            setDrawMode(DrawMode.MOVE);
-          }
+          selectShape(e.getPoint());
+          transformer = new Mover(selectedShape);
+          transformer.init(e.getPoint());
+          setDrawMode(DrawMode.MOVE);
         }
-      }
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-      changeCursor(e.getPoint());
-      if (isDrawMode(DrawMode.POLYGON)) {
-        transformer.transform((Graphics2D) getGraphics(), e.getPoint());
       }
     }
 
@@ -224,8 +222,7 @@ public class DrawingPanel extends JPanel implements Printable {
         ((Drawer) transformer).finish(drawShapes);
         finishDraw();
       } else if (isDrawMode(DrawMode.MOVE)) {
-        drawMode = DrawMode.IDLE;
-        repaint();
+        finishMove();
       }
     }
 
@@ -244,5 +241,14 @@ public class DrawingPanel extends JPanel implements Printable {
         selectShape(e.getPoint());
       }
     }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+      changeCursor(e.getPoint());
+      if (isDrawMode(DrawMode.POLYGON)) {
+        transformer.transform((Graphics2D) getGraphics(), e.getPoint());
+      }
+    }
+
   }
 }

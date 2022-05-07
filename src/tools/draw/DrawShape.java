@@ -58,10 +58,6 @@ public abstract class DrawShape implements Serializable {
     }
   }
 
-  public void select() {
-    selected = !selected;
-  }
-
   public void setSelected(boolean selected) {
     this.selected = selected;
   }
