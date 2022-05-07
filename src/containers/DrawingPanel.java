@@ -69,16 +69,20 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.updated;
   }
 
-  public void setUpdated(boolean updated) {
-    this.updated = updated;
-  }
-
   public boolean isCurrentShape(DrawShape currentShape) {
     return this.currentShape == currentShape;
   }
 
+  public boolean isSelectedShape(DrawShape selectedShape) {
+    return this.selectedShape == selectedShape;
+  }
+
   public boolean isDrawMode(DrawMode drawMode) {
     return this.drawMode == drawMode;
+  }
+
+  public void setUpdated(boolean updated) {
+    this.updated = updated;
   }
 
   private void setDrawMode(DrawMode drawMode) {
@@ -97,6 +101,10 @@ public class DrawingPanel extends JPanel implements Printable {
   public void setCurrentShape(DrawShape currentShape) {
     this.currentShape = currentShape;
     drawMode = DrawMode.IDLE;
+  }
+
+  public void setSelectedShape(DrawShape selectedShape) {
+    this.selectedShape = selectedShape;
   }
 
   public void setLineColor(Color color) {
@@ -136,18 +144,22 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private void finishDraw() {
-    this.setUpdated(true);
-    this.currentShape.setSelected(true);
+    setUpdated(true);
+    selectShape(currentShape);
     repaint();
   }
 
   private void finishMove() {
     this.setUpdated(true);
+    this.setSelectedShape(null);
     repaint();
   }
 
-  public void clean() {
-    drawShapes.clear();
+  public void remove() {
+    if (selectedShape!=null) {
+      drawShapes.remove(selectedShape);
+      setSelectedShape(null);
+    }
     repaint();
   }
 
@@ -166,11 +178,15 @@ public class DrawingPanel extends JPanel implements Printable {
     Optional<DrawShape> drawShape = onShape(point);
     deselectShapes();
     if (drawShape.isPresent()) {
-      selectedShape = drawShape.get();
+      selectShape(drawShape.get());
       drawShapes.remove(selectedShape);
       drawShapes.add(selectedShape);
-      selectedShape.setSelected(true);
     }
+  }
+
+  private void selectShape(DrawShape drawShape) {
+    setSelectedShape(drawShape);
+    this.selectedShape.setSelected(true);
   }
 
   private void deselectShapes() {
@@ -202,9 +218,11 @@ public class DrawingPanel extends JPanel implements Printable {
           drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
         } else {
           selectShape(e.getPoint());
-          transformer = new Mover(selectedShape);
-          transformer.init(e.getPoint());
-          setDrawMode(DrawMode.MOVE);
+          if (!isSelectedShape(null)) {
+            transformer = new Mover(selectedShape);
+            transformer.init(e.getPoint());
+            setDrawMode(DrawMode.MOVE);
+          }
         }
       }
     }

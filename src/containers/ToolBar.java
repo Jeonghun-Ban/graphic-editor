@@ -87,7 +87,7 @@ private final ButtonGroup buttonGroup;
       String command = button.getActionCommand();
       try {
         if (command.equals(DrawTool.Clean.toString())) {
-          drawingPanel.clean();
+          drawingPanel.remove();
         } else {
           DrawTool drawTool = DrawTool.valueOf(command);
           drawingPanel.setCurrentShape(drawTool.getDrawShape());

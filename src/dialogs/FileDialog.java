@@ -46,7 +46,7 @@ public class FileDialog {
         Message.NEW_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE);
     if (dialogOption == JOptionPane.YES_OPTION) {
-      drawingPanel.clean();
+      drawingPanel.remove();
       this.file = null;
     }
   }
