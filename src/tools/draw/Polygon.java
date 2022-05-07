@@ -24,7 +24,7 @@ public class Polygon extends DrawShape {
     polygon.ypoints[polygon.npoints - 1] = currentPoint.y;
   }
 
-  public void continueDrawing(Point point) {
+  public void continueDraw(Point point) {
     polygon.addPoint(point.x, point.y);
   }
 
