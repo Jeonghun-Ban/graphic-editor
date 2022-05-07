@@ -26,6 +26,7 @@ import javax.swing.event.MouseInputAdapter;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
 import transformer.Drawer;
+import transformer.Mover;
 import transformer.Transformer;
 
 public class DrawingPanel extends JPanel implements Printable {
@@ -185,11 +186,20 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mousePressed(MouseEvent e) {
-      if (isDrawMode(DrawMode.IDLE) && !isCurrentShape(null)) {
-        initDraw();
-        transformer = new Drawer(currentShape);
-        transformer.init(e.getPoint());
-        drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
+      if (isDrawMode(DrawMode.IDLE)) {
+        if (!isCurrentShape(null)) {
+          initDraw();
+          transformer = new Drawer(currentShape);
+          transformer.init(e.getPoint());
+          drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
+        } else {
+          Optional<DrawShape> selectShape = onShape(e.getPoint());
+          if (selectShape.isPresent()) {
+            transformer = new Mover(selectShape.get());
+            transformer.init(e.getPoint());
+            setDrawMode(DrawMode.MOVE);
+          }
+        }
       }
     }
 
@@ -203,7 +213,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-      if (isDrawMode(DrawMode.GENERAL)) {
+      if (!isDrawMode(DrawMode.IDLE)) {
         transformer.transform((Graphics2D) getGraphics(), e.getPoint());
       }
     }
@@ -213,6 +223,9 @@ public class DrawingPanel extends JPanel implements Printable {
       if (isDrawMode(DrawMode.GENERAL)) {
         ((Drawer) transformer).finish(drawShapes);
         finishDraw();
+      } else if (isDrawMode(DrawMode.MOVE)) {
+        drawMode = DrawMode.IDLE;
+        repaint();
       }
     }
 
