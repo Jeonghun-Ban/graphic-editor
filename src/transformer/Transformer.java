@@ -2,7 +2,7 @@ package transformer;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.List;
 import tools.draw.DrawShape;
 
 public abstract class Transformer {
@@ -17,5 +17,5 @@ public abstract class Transformer {
 
   public abstract void transform(Graphics2D graphics2D, Point currentPoint);
 
-  public abstract void finish(ArrayList<DrawShape> drawShapes);
+  public abstract void finish(List<DrawShape> drawShapes);
 }

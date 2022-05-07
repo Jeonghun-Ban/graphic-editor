@@ -11,7 +11,6 @@ import static global.Constants.HAND_CURSOR;
 
 import enums.DrawMode;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -19,6 +18,8 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
@@ -33,7 +34,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private boolean updated;
 
-  private ArrayList<DrawShape> drawShapes;
+  private List<DrawShape> drawShapes;
   private DrawShape currentShape;
   private Transformer transformer;
   private Color lineColor, fillColor;
@@ -143,14 +144,15 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private Optional<DrawShape> onShape(Point point) {
-    return drawShapes.stream()
+    List<DrawShape> reversedList = new ArrayList<>(List.copyOf(drawShapes));
+    Collections.reverse(reversedList);
+    return reversedList.stream()
         .filter(drawShape -> drawShape.contains(point)).findFirst();
   }
 
   private void changeCursor(Point point) {
     Optional<DrawShape> drawShape = onShape(point);
-    Cursor cursor = drawShape.isPresent() ? HAND_CURSOR : DEFAULT_CURSOR;
-    this.setCursor(cursor);
+    this.setCursor(drawShape.isPresent() ? HAND_CURSOR : DEFAULT_CURSOR);
   }
 
   private void selectShape(Point point) {

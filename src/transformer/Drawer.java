@@ -2,7 +2,7 @@ package transformer;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.List;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
 
@@ -30,7 +30,7 @@ public class Drawer extends Transformer {
   }
 
   @Override
-  public void finish(ArrayList<DrawShape> shapes) {
+  public void finish(List<DrawShape> shapes) {
     shapes.add(drawShape);
   }
 }
