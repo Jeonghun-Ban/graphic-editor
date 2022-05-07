@@ -9,7 +9,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
+import java.awt.geom.GeneralPath;
 import java.io.Serializable;
 import tools.SerializableStroke;
 import tools.anchor.AnchorList;
@@ -83,7 +83,7 @@ public abstract class DrawShape implements Serializable {
   }
 
   private boolean isBrush() {
-    return shape instanceof Path2D.Double;
+    return shape instanceof GeneralPath;
   }
 
   abstract public void setStartPoint(Point startPoint);
