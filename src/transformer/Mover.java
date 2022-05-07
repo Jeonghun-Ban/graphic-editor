@@ -18,6 +18,7 @@ public class Mover extends Transformer {
   @Override
   public void init(Point startPoint) {
     this.startPoint = startPoint;
+    drawShape.setSelected(false);
   }
 
   @Override
@@ -29,5 +30,9 @@ public class Mover extends Transformer {
     drawShape.moveTo(changePoint);
     drawShape.draw(g2D);
     this.startPoint = currentPoint;
+  }
+
+  public void finish() {
+    drawShape.setSelected(true);
   }
 }

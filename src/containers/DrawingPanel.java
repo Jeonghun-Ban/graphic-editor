@@ -239,6 +239,7 @@ public class DrawingPanel extends JPanel implements Printable {
         ((Drawer) transformer).finish(drawShapes);
         finishDraw();
       } else if (isDrawMode(DrawMode.MOVE)) {
+        ((Mover) transformer).finish();
         finishMove();
       }
     }
