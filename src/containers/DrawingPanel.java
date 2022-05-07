@@ -146,8 +146,7 @@ public class DrawingPanel extends JPanel implements Printable {
   private Optional<DrawShape> onShape(Point point) {
     List<DrawShape> reversedList = new ArrayList<>(List.copyOf(drawShapes));
     Collections.reverse(reversedList);
-    return reversedList.stream()
-        .filter(drawShape -> drawShape.contains(point)).findFirst();
+    return reversedList.stream().filter(drawShape -> drawShape.contains(point)).findFirst();
   }
 
   private void changeCursor(Point point) {
@@ -190,12 +189,7 @@ public class DrawingPanel extends JPanel implements Printable {
         initDraw();
         transformer = new Drawer(currentShape);
         transformer.init(e.getPoint());
-
-        if (currentShape instanceof Polygon) {
-          drawMode = DrawMode.POLYGON;
-        } else {
-          drawMode = DrawMode.GENERAL;
-        }
+        drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
       }
     }
 
@@ -217,7 +211,7 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mouseReleased(MouseEvent e) {
       if (isDrawMode(DrawMode.GENERAL)) {
-        transformer.finish(drawShapes);
+        ((Drawer) transformer).finish(drawShapes);
         finishDraw();
       }
     }
@@ -229,7 +223,7 @@ public class DrawingPanel extends JPanel implements Printable {
           if (e.getClickCount() == 1) {
             ((Drawer) transformer).continueTransform(e.getPoint());
           } else if (e.getClickCount() == 2) {
-            transformer.finish(drawShapes);
+            ((Drawer) transformer).finish(drawShapes);
             finishDraw();
           }
         }

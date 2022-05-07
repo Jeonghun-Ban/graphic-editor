@@ -8,10 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.io.Serializable;
-import tools.anchor.AnchorList;
 import tools.SerializableStroke;
+import tools.anchor.AnchorList;
 
 public abstract class DrawShape implements Serializable {
 
@@ -24,6 +25,7 @@ public abstract class DrawShape implements Serializable {
   protected Color lineColor;
   protected Color fillColor;
 
+  protected AffineTransform affineTransform;
   protected SerializableStroke serializableStroke;
 
   protected boolean selected;
@@ -32,9 +34,11 @@ public abstract class DrawShape implements Serializable {
     this.shape = shape;
     this.anchorList = new AnchorList();
 
-    this.serializableStroke = new SerializableStroke();
     this.lineColor = DEFAULT_LINE_COLOR;
     this.fillColor = DEFAULT_FILL_COLOR;
+
+    this.affineTransform = new AffineTransform();
+    this.serializableStroke = new SerializableStroke();
 
     this.selected = false;
   }
@@ -71,6 +75,11 @@ public abstract class DrawShape implements Serializable {
 
   public boolean contains(Point point) {
     return this.shape.contains(point);
+  }
+
+  public void moveTo(Point changePoint) {
+    affineTransform.setToTranslation(changePoint.getX(), changePoint.getY());
+    this.shape = (affineTransform.createTransformedShape(shape));
   }
 
   private boolean isBrush() {
