@@ -6,10 +6,13 @@ import static global.Constants.DEFAULT_LINE_COLOR;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AnchorList {
+public class AnchorList implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private ArrayList<Ellipse2D> anchorList;
 
