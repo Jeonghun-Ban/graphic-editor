@@ -14,5 +14,5 @@ public abstract class Transformer {
 
   public abstract void init(Point startPoint);
 
-  public abstract void transform(Graphics2D graphics2D, Point currentPoint);
+  public abstract void transform(Graphics2D g2D, Point currentPoint);
 }
