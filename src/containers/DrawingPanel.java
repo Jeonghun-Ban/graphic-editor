@@ -7,7 +7,6 @@ import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
-import static global.Constants.HAND_CURSOR;
 
 import enums.DrawMode;
 import java.awt.Color;
@@ -167,12 +166,11 @@ public class DrawingPanel extends JPanel implements Printable {
   private Optional<DrawShape> onShape(Point point) {
     List<DrawShape> reversedList = new ArrayList<>(List.copyOf(drawShapes));
     Collections.reverse(reversedList);
-    return reversedList.stream().filter(drawShape -> drawShape.contains(point)).findFirst();
+    return reversedList.stream().filter(drawShape -> drawShape.onShape(point)).findFirst();
   }
 
   private void changeCursor(Point point) {
-    Optional<DrawShape> drawShape = onShape(point);
-    this.setCursor(drawShape.isPresent() ? HAND_CURSOR : DEFAULT_CURSOR);
+    drawShapes.stream().forEach(shape -> setCursor(shape.getCursor(point)));
   }
 
   private void selectShape(Point point) {
@@ -273,6 +271,5 @@ public class DrawingPanel extends JPanel implements Printable {
         transformer.transform((Graphics2D) getGraphics(), e.getPoint());
       }
     }
-
   }
 }

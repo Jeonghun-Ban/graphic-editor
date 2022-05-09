@@ -1,9 +1,12 @@
 package tools.draw;
 
+import static global.Constants.DEFAULT_CURSOR;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
+import static global.Constants.HAND_CURSOR;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -11,7 +14,9 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.io.Serializable;
+import tools.AnchorCursor;
 import tools.SerializableStroke;
+import tools.anchor.Anchor;
 import tools.anchor.AnchorList;
 
 public abstract class DrawShape implements Serializable {
@@ -69,8 +74,20 @@ public abstract class DrawShape implements Serializable {
     this.serializableStroke.setLineSize(lineSize);
   }
 
-  public boolean contains(Point point) {
+  public boolean onShape(Point point) {
     return this.shape.contains(point);
+  }
+
+  public Cursor getCursor(Point point) {
+    Anchor anchor = this.anchorList.contains(point);
+    if (anchor!=null) {
+      AnchorCursor anchorCursor = AnchorCursor.valueOf(anchor.name());
+      return anchorCursor.getCursor();
+    }
+    if (onShape(point)) {
+      return HAND_CURSOR;
+    }
+    return DEFAULT_CURSOR;
   }
 
   public void moveTo(Point changePoint) {

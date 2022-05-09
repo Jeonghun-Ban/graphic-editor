@@ -4,6 +4,7 @@ import static global.Constants.DEFAULT_BACKGROUND_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.io.Serializable;
@@ -31,5 +32,15 @@ public class AnchorList implements Serializable {
       g2D.setColor(DEFAULT_LINE_COLOR);
       g2D.draw(ellipse2D);
     });
+  }
+
+  public Anchor contains(Point point) {
+    for(Anchor anchor: Anchor.values()) {
+      Ellipse2D ellipse2D = anchorList.get(anchor.ordinal());
+      if(ellipse2D.contains(point)) {
+        return anchor;
+      }
+    }
+    return null;
   }
 }
