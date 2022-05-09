@@ -12,14 +12,14 @@ import java.util.function.Function;
 
 public enum Anchor {
   NW((Rectangle r) -> new Point(r.x, r.y)),
-  NN((Rectangle r) -> new Point(r.x + r.width / 2, r.y)),
+  N((Rectangle r) -> new Point(r.x + r.width / 2, r.y)),
   NE((Rectangle r) -> new Point(r.x + r.width, r.y)),
-  EE((Rectangle r) -> new Point(r.x + r.width, r.y + r.height / 2)),
+  E((Rectangle r) -> new Point(r.x + r.width, r.y + r.height / 2)),
   SE((Rectangle r) -> new Point(r.x + r.width, r.y + r.height)),
-  SS((Rectangle r) -> new Point(r.x + r.width / 2, r.y + r.height)),
+  S((Rectangle r) -> new Point(r.x + r.width / 2, r.y + r.height)),
   SW((Rectangle r) -> new Point(r.x, r.y + r.height)),
-  WW((Rectangle r) -> new Point(r.x, r.y + r.height / 2)),
-  RR((Rectangle r) -> new Point(r.x + r.width / 2, r.y - ROTATE_ANCHOR_HEIGHT)),
+  W((Rectangle r) -> new Point(r.x, r.y + r.height / 2)),
+  Rotate((Rectangle r) -> new Point(r.x + r.width / 2, r.y - ROTATE_ANCHOR_HEIGHT)),
   ;
 
   private final Function<Rectangle, Point> operator;
