@@ -49,15 +49,11 @@ public class DrawingPanel extends JPanel implements Printable {
     drawShapes = new ArrayList<>();
     currentShape = null;
     selectedShape = null;
+    transformer = null;
 
-    this.transformer = null;
-    this.setDrawMode(DrawMode.IDLE);
-    this.setCursor(DEFAULT_CURSOR);
-
-    lineColor = DEFAULT_LINE_COLOR;
-    fillColor = DEFAULT_FILL_COLOR;
-    lineSize = DEFAULT_LINE_SIZE;
-    dashSize = DEFAULT_DASH_SIZE;
+    setDrawMode(DrawMode.IDLE);
+    setCursor(DEFAULT_CURSOR);
+    setDefaultStyle();
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
     addMouseListener(drawingHandler);
@@ -94,7 +90,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
   public void setDrawShapes(ArrayList<DrawShape> drawShapes) {
     this.drawShapes = drawShapes;
-    this.repaint();
+    repaint();
   }
 
   public void setCurrentShape(DrawShape currentShape) {
@@ -122,6 +118,13 @@ public class DrawingPanel extends JPanel implements Printable {
     this.dashSize = dashSize;
   }
 
+  public void setDefaultStyle() {
+    setLineColor(DEFAULT_LINE_COLOR);
+    setFillColor(DEFAULT_FILL_COLOR);
+    setLineSize(DEFAULT_LINE_SIZE);
+    setDashSize(DEFAULT_DASH_SIZE);
+  }
+
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
@@ -131,7 +134,10 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void initDraw() {
     currentShape = currentShape.clone();
-    currentShape.setStyleAttributes(lineColor, fillColor, lineSize, dashSize);
+    currentShape.setLineSize(lineSize);
+    currentShape.setDashSize(dashSize);
+    currentShape.setLineColor(lineColor);
+    currentShape.setFillColor(fillColor);
     setCursor(CROSSHAIR_CURSOR);
     deselectShapes();
   }

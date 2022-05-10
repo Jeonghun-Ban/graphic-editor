@@ -1,8 +1,10 @@
 package tools.draw;
 
 import static global.Constants.DEFAULT_CURSOR;
+import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
+import static global.Constants.DEFAULT_LINE_SIZE;
 import static global.Constants.HAND_CURSOR;
 
 import java.awt.Color;
@@ -39,13 +41,11 @@ public abstract class DrawShape implements Serializable {
     this.shape = shape;
     this.anchorList = new AnchorList();
 
-    this.lineColor = DEFAULT_LINE_COLOR;
-    this.fillColor = DEFAULT_FILL_COLOR;
-
     this.affineTransform = new AffineTransform();
     this.serializableStroke = new SerializableStroke();
 
-    this.selected = false;
+    setDefaultStyle();
+    setSelected(false);
   }
 
   public void draw(Graphics2D g2D) {
@@ -63,15 +63,31 @@ public abstract class DrawShape implements Serializable {
     }
   }
 
+  public void setDefaultStyle() {
+    setLineColor(DEFAULT_LINE_COLOR);
+    setFillColor(DEFAULT_FILL_COLOR);
+    setLineSize(DEFAULT_LINE_SIZE);
+    setDashSize(DEFAULT_DASH_SIZE);
+  }
+
   public void setSelected(boolean selected) {
     this.selected = selected;
   }
 
-  public void setStyleAttributes(Color lineColor, Color fillColor, int lineSize, int dashSize) {
+  public void setLineColor(Color lineColor) {
     this.lineColor = lineColor;
+  }
+
+  public void setFillColor(Color fillColor) {
     this.fillColor = fillColor;
-    this.serializableStroke.setDashSize(dashSize);
+  }
+
+  public void setLineSize(int lineSize) {
     this.serializableStroke.setLineSize(lineSize);
+  }
+
+  public void setDashSize(int dashSize) {
+    this.serializableStroke.setDashSize(dashSize);
   }
 
   public boolean onShape(Point point) {
@@ -80,7 +96,7 @@ public abstract class DrawShape implements Serializable {
 
   public Cursor getCursor(Point point) {
     Anchor anchor = this.anchorList.contains(point);
-    if (anchor!=null) {
+    if (anchor != null) {
       AnchorCursor anchorCursor = AnchorCursor.valueOf(anchor.name());
       return anchorCursor.getCursor();
     }
