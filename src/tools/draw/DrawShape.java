@@ -1,5 +1,6 @@
 package tools.draw;
 
+import static global.Constants.ANCHOR_STROKE;
 import static global.Constants.DEFAULT_CURSOR;
 import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;

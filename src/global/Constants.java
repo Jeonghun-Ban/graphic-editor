@@ -1,5 +1,6 @@
 package global;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.SpinnerModel;
@@ -40,4 +41,5 @@ public class Constants {
   public static final int ANCHOR_HEIGHT = 10;
   public static final int ANCHOR_RADIUS = 5;
   public static final int ROTATE_ANCHOR_HEIGHT = 30;
+  public static final BasicStroke ANCHOR_STROKE = new BasicStroke();
 }

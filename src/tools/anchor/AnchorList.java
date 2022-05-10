@@ -1,5 +1,6 @@
 package tools.anchor;
 
+import static global.Constants.ANCHOR_STROKE;
 import static global.Constants.DEFAULT_BACKGROUND_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 
@@ -25,6 +26,7 @@ public class AnchorList implements Serializable {
   }
 
   public void draw(Graphics2D g2D, Rectangle rectangle) {
+    g2D.setStroke(ANCHOR_STROKE);
     Arrays.stream(Anchor.values()).forEach(anchor -> {
       Ellipse2D ellipse2D = anchor.getBoundAnchor(this.anchorList.get(anchor.ordinal()), rectangle);
       g2D.setColor(DEFAULT_BACKGROUND_COLOR);
