@@ -17,6 +17,7 @@ import java.util.Optional;
 import tools.SerializableStroke;
 import tools.anchor.Anchor;
 import tools.anchor.AnchorList;
+import utils.CustomAffineTransform;
 
 public abstract class DrawShape implements Serializable {
 
@@ -38,7 +39,7 @@ public abstract class DrawShape implements Serializable {
     this.shape = shape;
     this.anchorList = new AnchorList();
 
-    this.affineTransform = new AffineTransform();
+    this.affineTransform = new CustomAffineTransform();
     this.serializableStroke = new SerializableStroke();
 
     setDefaultStyle();
