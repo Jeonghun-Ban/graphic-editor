@@ -7,6 +7,7 @@ import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
+import static global.Constants.HAND_CURSOR;
 
 import enums.DrawMode;
 import java.awt.Color;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
+import tools.AnchorCursor;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
 import tools.draw.Selection;
@@ -137,7 +139,6 @@ public class DrawingPanel extends JPanel implements Printable {
     currentShape.setDashSize(dashSize);
     currentShape.setLineColor(lineColor);
     currentShape.setFillColor(fillColor);
-    setCursor(CROSSHAIR_CURSOR);
     deselectShapes();
   }
 
@@ -175,17 +176,32 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private void changeCursor(Point point) {
-    drawShapes.stream().forEach(shape -> setCursor(shape.getCursor(point)));
+    if (currentShape instanceof Selection) {
+      setCursor(DEFAULT_CURSOR);
+
+      Optional<DrawShape> drawShape = onShape(point);
+      drawShape.ifPresent(shape -> setCursor(HAND_CURSOR));
+
+      if (selectedShape != null) {
+        selectedShape.onAnchor(point).ifPresent(anchor -> {
+          AnchorCursor anchorCursor = AnchorCursor.valueOf(anchor.name());
+          setCursor(anchorCursor.getCursor());
+        });
+      }
+
+    } else {
+      setCursor(CROSSHAIR_CURSOR);
+    }
   }
 
   private void selectShape(Point point) {
     Optional<DrawShape> drawShape = onShape(point);
     deselectShapes();
-    if (drawShape.isPresent()) {
-      selectShape(drawShape.get());
+    drawShape.ifPresent(shape -> {
+      selectShape(shape);
       drawShapes.remove(selectedShape);
       drawShapes.add(selectedShape);
-    }
+    });
     setDrawMode(DrawMode.IDLE);
     repaint();
   }
@@ -222,57 +238,57 @@ public class DrawingPanel extends JPanel implements Printable {
           transformer.init(e.getPoint());
           setDrawMode(DrawMode.MOVE);
         } else {
-        initDraw();
-        transformer = new Drawer(currentShape);
-        transformer.init(e.getPoint());
-        drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
-      }
-    }
-  }
-
-  @Override
-  public void mouseDragged(MouseEvent e) {
-    if (!isDrawMode(DrawMode.IDLE)) {
-      transformer.transform((Graphics2D) getGraphics(), e.getPoint());
-    }
-    if (isDrawMode(DrawMode.MOVE)) {
-      repaint();
-    }
-  }
-
-  @Override
-  public void mouseReleased(MouseEvent e) {
-    if (isDrawMode(DrawMode.GENERAL)) {
-      ((Drawer) transformer).finish(drawShapes);
-      finishDraw();
-    } else if (isDrawMode(DrawMode.MOVE)) {
-      ((Mover) transformer).finish();
-      finishMove();
-    }
-  }
-
-  @Override
-  public void mouseClicked(MouseEvent e) {
-    if (isDrawMode(DrawMode.POLYGON)) {
-      if (e.getButton() == MouseEvent.BUTTON1) {
-        if (e.getClickCount() == 1) {
-          ((Drawer) transformer).continueTransform(e.getPoint());
-        } else if (e.getClickCount() == 2) {
-          ((Drawer) transformer).finish(drawShapes);
-          finishDraw();
+          initDraw();
+          transformer = new Drawer(currentShape);
+          transformer.init(e.getPoint());
+          drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
         }
       }
-    } else if (currentShape instanceof Selection) {
-      selectShape(e.getPoint());
     }
-  }
 
-  @Override
-  public void mouseMoved(MouseEvent e) {
-    changeCursor(e.getPoint());
-    if (isDrawMode(DrawMode.POLYGON)) {
-      transformer.transform((Graphics2D) getGraphics(), e.getPoint());
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      if (!isDrawMode(DrawMode.IDLE)) {
+        transformer.transform((Graphics2D) getGraphics(), e.getPoint());
+      }
+      if (isDrawMode(DrawMode.MOVE)) {
+        repaint();
+      }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      if (isDrawMode(DrawMode.GENERAL)) {
+        ((Drawer) transformer).finish(drawShapes);
+        finishDraw();
+      } else if (isDrawMode(DrawMode.MOVE)) {
+        ((Mover) transformer).finish();
+        finishMove();
+      }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      if (isDrawMode(DrawMode.POLYGON)) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+          if (e.getClickCount() == 1) {
+            ((Drawer) transformer).continueTransform(e.getPoint());
+          } else if (e.getClickCount() == 2) {
+            ((Drawer) transformer).finish(drawShapes);
+            finishDraw();
+          }
+        }
+      } else if (currentShape instanceof Selection) {
+        selectShape(e.getPoint());
+      }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+      changeCursor(e.getPoint());
+      if (isDrawMode(DrawMode.POLYGON)) {
+        transformer.transform((Graphics2D) getGraphics(), e.getPoint());
+      }
     }
   }
-}
 }

@@ -11,18 +11,17 @@ import java.awt.geom.Ellipse2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class AnchorList implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private ArrayList<Ellipse2D> anchorList;
+  private final ArrayList<Ellipse2D> anchorList;
 
   public AnchorList() {
     this.anchorList = new ArrayList<>();
-    Arrays.stream(Anchor.values()).forEach(anchor -> {
-      this.anchorList.add(new Ellipse2D.Double());
-    });
+    Arrays.stream(Anchor.values()).forEach(anchor -> this.anchorList.add(new Ellipse2D.Double()));
   }
 
   public void draw(Graphics2D g2D, Rectangle rectangle) {
@@ -36,13 +35,13 @@ public class AnchorList implements Serializable {
     });
   }
 
-  public Anchor contains(Point point) {
+  public Optional<Anchor> contains(Point point) {
     for(Anchor anchor: Anchor.values()) {
       Ellipse2D ellipse2D = anchorList.get(anchor.ordinal());
       if(ellipse2D.contains(point)) {
-        return anchor;
+        return Optional.of(anchor);
       }
     }
-    return null;
+    return Optional.empty();
   }
 }

@@ -1,15 +1,11 @@
 package tools.draw;
 
-import static global.Constants.ANCHOR_STROKE;
-import static global.Constants.DEFAULT_CURSOR;
 import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
-import static global.Constants.HAND_CURSOR;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,7 +13,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.io.Serializable;
-import tools.AnchorCursor;
+import java.util.Optional;
 import tools.SerializableStroke;
 import tools.anchor.Anchor;
 import tools.anchor.AnchorList;
@@ -95,21 +91,13 @@ public abstract class DrawShape implements Serializable {
     return this.shape.contains(point);
   }
 
-  public Cursor getCursor(Point point) {
-    Anchor anchor = this.anchorList.contains(point);
-    if (anchor != null) {
-      AnchorCursor anchorCursor = AnchorCursor.valueOf(anchor.name());
-      return anchorCursor.getCursor();
-    }
-    if (onShape(point)) {
-      return HAND_CURSOR;
-    }
-    return DEFAULT_CURSOR;
+  public Optional<Anchor> onAnchor(Point point) {
+    return this.anchorList.contains(point);
   }
 
   public void moveTo(Point changePoint) {
     affineTransform.setToTranslation(changePoint.getX(), changePoint.getY());
-    this.shape = (affineTransform.createTransformedShape(shape));
+    shape = affineTransform.createTransformedShape(shape);
   }
 
   private boolean isBrush() {
