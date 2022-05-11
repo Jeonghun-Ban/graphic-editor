@@ -232,8 +232,9 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
-        selectShape(e.getPoint());
+
         if (currentShape instanceof Selection && !isSelectedShape(null)) {
+          selectShape(e.getPoint());
           transformer = new Mover(selectedShape);
           transformer.init(e.getPoint());
           setDrawMode(DrawMode.MOVE);

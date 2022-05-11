@@ -20,10 +20,13 @@ import javax.swing.event.ChangeListener;
 import enums.DrawTool;
 
 public class ToolBar extends JToolBar {
-	
-private static final long serialVersionUID = 1L;
 
-private final ButtonGroup buttonGroup;
+  private static final long serialVersionUID = 1L;
+
+  private static final JSpinner lineSizeSpinner = new JSpinner(LiNE_SIZE_MODEL);
+  private static final JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
+
+  private final ButtonGroup buttonGroup;
   private final ToolBarHandler toolBarHandler;
   private final SpinnerHandler spinnerHandler;
 
@@ -35,8 +38,8 @@ private final ButtonGroup buttonGroup;
     spinnerHandler = new SpinnerHandler();
 
     createToolButtons();
-    createLineSizeSpinner();
-    createDashSizeSpinner();
+    createSpinner(LINE_SIZE_SPINNER, lineSizeSpinner);
+    createSpinner(DASH_SIZE_SPINNER, dashSizeSpinner);
   }
 
   public void associate(DrawingPanel drawingPanel) {
@@ -65,18 +68,10 @@ private final ButtonGroup buttonGroup;
         : new ImageIcon("src/image/general-button/".concat(iconName).concat(".png"));
   }
 
-  public void createLineSizeSpinner() {
-    this.add(new JLabel(LINE_SIZE_SPINNER));
-    JSpinner lineSizeSpinner = new JSpinner(LiNE_SIZE_MODEL);
-    this.add(lineSizeSpinner);
-    lineSizeSpinner.addChangeListener(spinnerHandler);
-  }
-
-  public void createDashSizeSpinner() {
-    this.add(new JLabel(DASH_SIZE_SPINNER));
-    JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
-    this.add(dashSizeSpinner);
-    dashSizeSpinner.addChangeListener(spinnerHandler);
+  public void createSpinner(String label, JSpinner spinner) {
+    this.add(new JLabel(label));
+    this.add(spinner);
+    spinner.addChangeListener(spinnerHandler);
   }
 
   private class ToolBarHandler implements ActionListener {
