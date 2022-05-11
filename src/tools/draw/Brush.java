@@ -1,17 +1,17 @@
 package tools.draw;
 
 import java.awt.Point;
-import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 
 public class Brush extends DrawShape {
 
   private static final long serialVersionUID = 1L;
 
-  private final GeneralPath brush;
+  private final Path2D.Float brush;
 
   public Brush() {
-    super(new GeneralPath());
-    brush = (GeneralPath) shape;
+    super(new Path2D.Float());
+    brush = (Path2D.Float) shape;
   }
 
   @Override

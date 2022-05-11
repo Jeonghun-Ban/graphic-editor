@@ -11,7 +11,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import java.io.Serializable;
 import java.util.Optional;
 import tools.SerializableStroke;
@@ -101,7 +101,7 @@ public abstract class DrawShape implements Serializable {
   }
 
   private boolean isBrush() {
-    return shape instanceof GeneralPath;
+    return shape instanceof Path2D.Float;
   }
 
   abstract public void setStartPoint(Point startPoint);
