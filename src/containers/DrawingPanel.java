@@ -69,14 +69,6 @@ public class DrawingPanel extends JPanel implements Printable {
     this.updated = updated;
   }
 
-  public boolean isCurrentShape(DrawShape currentShape) {
-    return this.currentShape == currentShape;
-  }
-
-  public boolean isSelectedShape(DrawShape selectedShape) {
-    return this.selectedShape == selectedShape;
-  }
-
   public boolean isDrawMode(DrawMode drawMode) {
     return this.drawMode == drawMode;
   }
@@ -194,9 +186,10 @@ public class DrawingPanel extends JPanel implements Printable {
     }
   }
 
-  private void selectShape(Point point) {
-    Optional<DrawShape> drawShape = onShape(point);
+  private Optional<DrawShape> selectShape(Point point) {
     deselectShapes();
+
+    Optional<DrawShape> drawShape = onShape(point);
     drawShape.ifPresent(shape -> {
       selectShape(shape);
       drawShapes.remove(selectedShape);
@@ -204,6 +197,8 @@ public class DrawingPanel extends JPanel implements Printable {
     });
     setDrawMode(DrawMode.IDLE);
     repaint();
+
+    return drawShape;
   }
 
   private void selectShape(DrawShape drawShape) {
@@ -232,12 +227,12 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
-
-        if (currentShape instanceof Selection && !isSelectedShape(null)) {
-          selectShape(e.getPoint());
-          transformer = new Mover(selectedShape);
-          transformer.init(e.getPoint());
-          setDrawMode(DrawMode.MOVE);
+        if (currentShape instanceof Selection) {
+          selectShape(e.getPoint()).ifPresent(shape -> {
+            transformer = new Mover(shape);
+            transformer.init(e.getPoint());
+            setDrawMode(DrawMode.MOVE);
+          });
         } else {
           initDraw();
           transformer = new Drawer(currentShape);
