@@ -44,7 +44,7 @@ private final ButtonGroup buttonGroup;
   }
 
   public void setDefaultButton() {
-    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawTool.Cursor.ordinal());
+    JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawTool.Selection.ordinal());
     defaultButton.doClick();
   }
 

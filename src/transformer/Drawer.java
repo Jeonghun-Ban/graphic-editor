@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.List;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
+import tools.draw.Selection;
 
 public class Drawer extends Transformer {
 
@@ -30,6 +31,8 @@ public class Drawer extends Transformer {
   }
 
   public void finish(List<DrawShape> shapes) {
-    shapes.add(drawShape);
+    if (!(drawShape instanceof Selection)) {
+      shapes.add(drawShape);
+    }
   }
 }

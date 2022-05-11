@@ -6,9 +6,10 @@ import tools.draw.Line;
 import tools.draw.Oval;
 import tools.draw.Polygon;
 import tools.draw.Rectangle;
+import tools.draw.Selection;
 
 public enum DrawTool {
-  Cursor(null),
+  Selection(new Selection()),
   Brush(new Brush()),
   Rectangle(new Rectangle()),
   Oval(new Oval()),
