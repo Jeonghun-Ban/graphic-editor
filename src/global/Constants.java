@@ -26,6 +26,13 @@ public class Constants {
   public static final int DEFAULT_LINE_SIZE = 1;
   public static final int DEFAULT_DASH_SIZE = 0;
 
+  // Icon Button
+  public static final String ICON_RESOURCE_ROOT_PATH = "resources/static/image/button/";
+  public static final String ICON_RESOURCE_PRESSED_PATH = "pressed/";
+  public static final String ICON_RESOURCE_GENERAL_PATH = "general/";
+  public static final String ICON_RESOURCE_FORMAT = ".png";
+
+
   // Menu
   public static final String FILE_MENU_TITLE = "File";
   public static final String EDIT_MENU_TITLE = "Edit";

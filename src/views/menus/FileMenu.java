@@ -1,8 +1,8 @@
-package menus;
+package views.menus;
 
 import static global.Constants.FILE_MENU_TITLE;
 
-import dialogs.FileDialog;
+import views.dialogs.FileDialog;
 import enums.FileMenuEnum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

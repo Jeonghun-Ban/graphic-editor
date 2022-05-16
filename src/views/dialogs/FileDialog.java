@@ -1,6 +1,6 @@
-package dialogs;
+package views.dialogs;
 
-import containers.DrawingPanel;
+import views.containers.DrawingPanel;
 import global.Exception;
 import global.Message;
 import java.awt.print.PrinterException;

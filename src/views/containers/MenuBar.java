@@ -1,9 +1,9 @@
-package containers;
+package views.containers;
 
 import javax.swing.JMenuBar;
-import menus.ColorMenu;
-import menus.EditMenu;
-import menus.FileMenu;
+import views.menus.ColorMenu;
+import views.menus.EditMenu;
+import views.menus.FileMenu;
 
 public class MenuBar extends JMenuBar {
 

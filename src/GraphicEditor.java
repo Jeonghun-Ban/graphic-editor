@@ -1,4 +1,4 @@
-import containers.MainFrame;
+import views.containers.MainFrame;
 
 public class GraphicEditor {
 

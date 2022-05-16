@@ -1,4 +1,4 @@
-package containers;
+package views.containers;
 
 import static global.Constants.HEIGHT_MAINFRAME;
 import static global.Constants.TITLE_MAINFRAME;

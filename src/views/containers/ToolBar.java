@@ -1,7 +1,11 @@
-package containers;
+package views.containers;
 
 import static global.Constants.DASH_SIZE_MODEL;
 import static global.Constants.DASH_SIZE_SPINNER;
+import static global.Constants.ICON_RESOURCE_FORMAT;
+import static global.Constants.ICON_RESOURCE_GENERAL_PATH;
+import static global.Constants.ICON_RESOURCE_PRESSED_PATH;
+import static global.Constants.ICON_RESOURCE_ROOT_PATH;
 import static global.Constants.LINE_SIZE_SPINNER;
 import static global.Constants.LiNE_SIZE_MODEL;
 
@@ -71,8 +75,9 @@ public class ToolBar extends JToolBar {
   }
 
   private ImageIcon getIcon(String iconName, boolean isPressed) {
-    return isPressed ? new ImageIcon("src/image/pressed-button/".concat(iconName).concat(".png"))
-        : new ImageIcon("src/image/general-button/".concat(iconName).concat(".png"));
+    return new ImageIcon(ICON_RESOURCE_ROOT_PATH.concat(
+            isPressed ? ICON_RESOURCE_PRESSED_PATH : ICON_RESOURCE_GENERAL_PATH).concat(iconName)
+        .concat(ICON_RESOURCE_FORMAT));
   }
 
   public void createSpinner(String label, JSpinner spinner) {

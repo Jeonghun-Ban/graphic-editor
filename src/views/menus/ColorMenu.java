@@ -1,8 +1,8 @@
-package menus;
+package views.menus;
 
 import static global.Constants.COLOR_MENU_TITLE;
 
-import dialogs.ColorDialog;
+import views.dialogs.ColorDialog;
 import enums.ColorMenuEnum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

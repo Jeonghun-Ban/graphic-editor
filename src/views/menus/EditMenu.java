@@ -1,4 +1,4 @@
-package menus;
+package views.menus;
 
 import static global.Constants.EDIT_MENU_TITLE;
 

@@ -1,4 +1,4 @@
-package containers;
+package views.containers;
 
 import static global.Constants.CROSSHAIR_CURSOR;
 import static global.Constants.DEFAULT_BACKGROUND_COLOR;
@@ -27,9 +27,9 @@ import tools.AnchorCursor;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
 import tools.draw.Selection;
-import transformer.Drawer;
-import transformer.Transformer;
-import transformer.Translator;
+import tools.transformer.Drawer;
+import tools.transformer.Transformer;
+import tools.transformer.Translator;
 
 
 public class DrawingPanel extends JPanel implements Printable {

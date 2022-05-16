@@ -1,9 +1,9 @@
-package dialogs;
+package views.dialogs;
 
 import static global.Constants.FILL_COLOR_TITLE;
 import static global.Constants.LINE_COLOR_TITLE;
 
-import containers.DrawingPanel;
+import views.containers.DrawingPanel;
 import java.awt.Color;
 import javax.swing.JColorChooser;
 
