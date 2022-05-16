@@ -65,8 +65,8 @@ public class FileDialog {
       dialogOption = fileChooser.showOpenDialog(drawingPanel);
       if (dialogOption == JFileChooser.APPROVE_OPTION) {
         this.file = fileChooser.getSelectedFile();
-        @SuppressWarnings("unchecked") ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) fileStore.load(
-            file);
+        @SuppressWarnings("unchecked")
+        ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) fileStore.load(file);
         this.drawingPanel.setDrawShapes(drawShapeList);
       }
     } catch (IOException | ClassNotFoundException e) {
@@ -81,7 +81,8 @@ public class FileDialog {
         if (this.file == null) {
           saveFileAs();
         } else {
-          @SuppressWarnings("unchecked") ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
+          @SuppressWarnings("unchecked")
+          ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
           fileStore.save(this.file, drawShapeList);
           this.drawingPanel.setUpdated(false);
         }
@@ -97,7 +98,8 @@ public class FileDialog {
       dialogOption = fileChooser.showSaveDialog(drawingPanel);
       if (dialogOption == JFileChooser.APPROVE_OPTION) {
         this.file = fileChooser.getSelectedFile();
-        @SuppressWarnings("unchecked") ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
+        @SuppressWarnings("unchecked")
+        ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
         fileStore.save(this.file, drawShapeList);
         this.drawingPanel.setUpdated(false);
       }

@@ -105,9 +105,9 @@ public abstract class DrawShape implements Serializable {
     return shape instanceof Path2D.Float;
   }
 
-  abstract public void setStartPoint(Point startPoint);
+  public abstract void setStartPoint(Point startPoint);
 
-  abstract public void setCurrentPoint(Point currentPoint);
+  public abstract void setCurrentPoint(Point currentPoint);
 
-  abstract public DrawShape clone();
+  public abstract DrawShape clone();
 }

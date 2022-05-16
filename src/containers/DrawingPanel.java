@@ -28,8 +28,9 @@ import tools.draw.DrawShape;
 import tools.draw.Polygon;
 import tools.draw.Selection;
 import transformer.Drawer;
-import transformer.Translator;
 import transformer.Transformer;
+import transformer.Translator;
+
 
 public class DrawingPanel extends JPanel implements Printable {
 
@@ -38,10 +39,13 @@ public class DrawingPanel extends JPanel implements Printable {
   private boolean updated;
 
   private List<DrawShape> drawShapes;
-  private DrawShape currentShape, selectedShape;
+  private DrawShape currentShape;
+  private DrawShape selectedShape;
   private Transformer transformer;
-  private Color lineColor, fillColor;
-  private int lineSize, dashSize;
+  private Color lineColor;
+  private Color fillColor;
+  private int lineSize;
+  private int dashSize;
 
   private DrawMode drawMode;
 

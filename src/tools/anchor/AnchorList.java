@@ -36,9 +36,9 @@ public class AnchorList implements Serializable {
   }
 
   public Optional<Anchor> contains(Point point) {
-    for(Anchor anchor: Anchor.values()) {
+    for (Anchor anchor : Anchor.values()) {
       Ellipse2D ellipse2D = anchorList.get(anchor.ordinal());
-      if(ellipse2D.contains(point)) {
+      if (ellipse2D.contains(point)) {
         return Optional.of(anchor);
       }
     }
