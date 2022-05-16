@@ -28,7 +28,7 @@ import tools.draw.DrawShape;
 import tools.draw.Polygon;
 import tools.draw.Selection;
 import transformer.Drawer;
-import transformer.Mover;
+import transformer.Translator;
 import transformer.Transformer;
 
 public class DrawingPanel extends JPanel implements Printable {
@@ -229,9 +229,9 @@ public class DrawingPanel extends JPanel implements Printable {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection) {
           selectShape(e.getPoint()).ifPresent(shape -> {
-            transformer = new Mover(shape);
+            transformer = new Translator(shape);
             transformer.init(e.getPoint());
-            setDrawMode(DrawMode.MOVE);
+            setDrawMode(DrawMode.TRANSLATE);
           });
         } else {
           initDraw();
@@ -247,7 +247,7 @@ public class DrawingPanel extends JPanel implements Printable {
       if (!isDrawMode(DrawMode.IDLE)) {
         transformer.transform((Graphics2D) getGraphics(), e.getPoint());
       }
-      if (isDrawMode(DrawMode.MOVE)) {
+      if (isDrawMode(DrawMode.TRANSLATE)) {
         repaint();
       }
     }
@@ -257,8 +257,8 @@ public class DrawingPanel extends JPanel implements Printable {
       if (isDrawMode(DrawMode.GENERAL)) {
         ((Drawer) transformer).finish(drawShapes);
         finishDraw();
-      } else if (isDrawMode(DrawMode.MOVE)) {
-        ((Mover) transformer).finish();
+      } else if (isDrawMode(DrawMode.TRANSLATE)) {
+        ((Translator) transformer).finish();
         finishMove();
       }
     }

@@ -6,11 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import tools.draw.DrawShape;
 
-public class Mover extends Transformer {
+public class Translator extends Transformer {
 
   private Point startPoint;
 
-  public Mover(DrawShape drawShape) {
+  public Translator(DrawShape drawShape) {
     super(drawShape);
     this.startPoint = new Point();
   }
@@ -27,7 +27,7 @@ public class Mover extends Transformer {
         currentPoint.y - this.startPoint.y);
     g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
     drawShape.draw(g2D);
-    drawShape.moveTo(changePoint);
+    drawShape.translateTo(changePoint);
     drawShape.draw(g2D);
     this.startPoint = currentPoint;
   }

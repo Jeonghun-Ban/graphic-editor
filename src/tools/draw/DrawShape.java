@@ -96,7 +96,7 @@ public abstract class DrawShape implements Serializable {
     return this.anchorList.contains(point);
   }
 
-  public void moveTo(Point changePoint) {
+  public void translateTo(Point changePoint) {
     affineTransform.setToTranslation(changePoint.getX(), changePoint.getY());
     shape = affineTransform.createTransformedShape(shape);
   }
