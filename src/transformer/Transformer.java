@@ -6,7 +6,7 @@ import tools.draw.DrawShape;
 
 public abstract class Transformer {
 
-  protected DrawShape drawShape;
+  protected final DrawShape drawShape;
 
   public Transformer(DrawShape drawShape) {
     this.drawShape = drawShape;

@@ -23,24 +23,24 @@ public abstract class DrawShape implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  protected final AffineTransform affineTransform;
+  protected final SerializableStroke serializableStroke;
+  protected final AnchorList anchorList;
+
   protected Shape shape;
-  protected AnchorList anchorList;
   protected Point startPoint;
 
   protected Color lineColor;
   protected Color fillColor;
 
-  protected AffineTransform affineTransform;
-  protected SerializableStroke serializableStroke;
-
   protected boolean selected;
 
   public DrawShape(Shape shape) {
-    this.shape = shape;
-    this.anchorList = new AnchorList();
-
     this.affineTransform = new CustomAffineTransform();
     this.serializableStroke = new SerializableStroke();
+    this.anchorList = new AnchorList();
+
+    this.shape = shape;
 
     setDefaultStyle();
     setSelected(false);
