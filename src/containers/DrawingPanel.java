@@ -35,9 +35,9 @@ import transformer.Translator;
 public class DrawingPanel extends JPanel implements Printable {
 
   private static final long serialVersionUID = 1L;
+  private static DrawingPanel drawingPanel;
 
   private boolean updated;
-
   private List<DrawShape> drawShapes;
   private DrawShape currentShape;
   private DrawShape selectedShape;
@@ -46,10 +46,9 @@ public class DrawingPanel extends JPanel implements Printable {
   private Color fillColor;
   private int lineSize;
   private int dashSize;
-
   private DrawMode drawMode;
 
-  public DrawingPanel() {
+  private DrawingPanel() {
     super();
     this.setBackground(DEFAULT_BACKGROUND_COLOR);
 
@@ -63,6 +62,13 @@ public class DrawingPanel extends JPanel implements Printable {
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
     addMouseListener(drawingHandler);
     addMouseMotionListener(drawingHandler);
+  }
+
+  public static DrawingPanel getInstance() {
+    if (drawingPanel == null) {
+      drawingPanel = new DrawingPanel();
+    }
+    return drawingPanel;
   }
 
   public boolean isUpdated() {

@@ -26,10 +26,7 @@ public class FileDialog {
     fileChooser = new JFileChooser();
     fileStore = new FileStore();
     file = null;
-  }
-
-  public void associate(DrawingPanel drawingPanel) {
-    this.drawingPanel = drawingPanel;
+    drawingPanel = DrawingPanel.getInstance();
   }
 
   public void newFile() {

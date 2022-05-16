@@ -23,6 +23,8 @@ public class ToolBar extends JToolBar {
 
   private static final long serialVersionUID = 1L;
 
+  private static ToolBar toolBar;
+
   private static final JSpinner lineSizeSpinner = new JSpinner(LiNE_SIZE_MODEL);
   private static final JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
 
@@ -32,7 +34,7 @@ public class ToolBar extends JToolBar {
 
   private DrawingPanel drawingPanel;
 
-  public ToolBar() {
+  private ToolBar() {
     buttonGroup = new ButtonGroup();
     toolBarHandler = new ToolBarHandler();
     spinnerHandler = new SpinnerHandler();
@@ -40,10 +42,15 @@ public class ToolBar extends JToolBar {
     createToolButtons();
     createSpinner(LINE_SIZE_SPINNER, lineSizeSpinner);
     createSpinner(DASH_SIZE_SPINNER, dashSizeSpinner);
+
+    drawingPanel = DrawingPanel.getInstance();
   }
 
-  public void associate(DrawingPanel drawingPanel) {
-    this.drawingPanel = drawingPanel;
+  public static ToolBar getInstance() {
+    if (toolBar == null) {
+      toolBar = new ToolBar();
+    }
+    return toolBar;
   }
 
   public void setDefaultButton() {

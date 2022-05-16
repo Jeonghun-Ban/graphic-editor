@@ -12,11 +12,7 @@ public class ColorDialog {
   private DrawingPanel drawingPanel;
 
   public ColorDialog() {
-
-  }
-
-  public void associate(DrawingPanel drawingPanel) {
-    this.drawingPanel = drawingPanel;
+    drawingPanel = DrawingPanel.getInstance();
   }
 
   public void setLineColor() {

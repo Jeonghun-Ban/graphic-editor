@@ -11,9 +11,18 @@ public class EditMenu extends JMenu {
 
   private static final long serialVersionUID = 1L;
 
-  public EditMenu() {
+  private static EditMenu editMenu;
+
+  private EditMenu() {
     super(EDIT_MENU_TITLE);
     createMenuItems();
+  }
+
+  public static EditMenu getInstance() {
+    if (editMenu == null) {
+      editMenu = new EditMenu();
+    }
+    return editMenu;
   }
 
   private void createMenuItems() {

@@ -2,7 +2,6 @@ package menus;
 
 import static global.Constants.FILE_MENU_TITLE;
 
-import containers.DrawingPanel;
 import dialogs.FileDialog;
 import enums.FileMenuEnum;
 import java.awt.event.ActionEvent;
@@ -15,9 +14,10 @@ public class FileMenu extends JMenu {
 
   private static final long serialVersionUID = 1L;
 
+  private static FileMenu fileMenu;
   private final FileDialog fileDialog;
 
-  public FileMenu() {
+  private FileMenu() {
     super(FILE_MENU_TITLE);
     fileDialog = new FileDialog();
 
@@ -25,8 +25,11 @@ public class FileMenu extends JMenu {
     createMenuItems(actionHandler);
   }
 
-  public void associate(DrawingPanel drawingPanel) {
-    this.fileDialog.associate(drawingPanel);
+  public static FileMenu getInstance() {
+    if (fileMenu == null) {
+      fileMenu = new FileMenu();
+    }
+    return fileMenu;
   }
 
   private void createMenuItems(ActionHandler actionHandler) {

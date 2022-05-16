@@ -11,18 +11,25 @@ public class MainFrame extends JFrame {
 
   private static final long serialVersionUID = 1L;
 
-  public MainFrame() {
-    DrawingPanel drawingPanel = new DrawingPanel();
-    MenuBar menuBar = new MenuBar();
-    ToolBar toolBar = new ToolBar();
+  private static MainFrame mainFrame = null;
 
-    menuBar.associate(drawingPanel);
-    toolBar.associate(drawingPanel);
+  private MainFrame() {
+    DrawingPanel drawingPanel = DrawingPanel.getInstance();
+    MenuBar menuBar = MenuBar.getInstance();
+    ToolBar toolBar = ToolBar.getInstance();
+
     toolBar.setDefaultButton();
 
     this.add(drawingPanel);
     this.setJMenuBar(menuBar);
     this.add(toolBar, BorderLayout.NORTH);
+  }
+
+  public static MainFrame getInstance() {
+    if (mainFrame == null) {
+      mainFrame = new MainFrame();
+    }
+    return mainFrame;
   }
 
   public void initialize() {

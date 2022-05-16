@@ -2,7 +2,6 @@ package menus;
 
 import static global.Constants.COLOR_MENU_TITLE;
 
-import containers.DrawingPanel;
 import dialogs.ColorDialog;
 import enums.ColorMenuEnum;
 import java.awt.event.ActionEvent;
@@ -15,14 +14,22 @@ public class ColorMenu extends JMenu {
 
   private static final long serialVersionUID = 1L;
 
+  private static ColorMenu colorMenu;
   private final ColorDialog colorDialog;
 
-  public ColorMenu() {
+  private ColorMenu() {
     super(COLOR_MENU_TITLE);
     colorDialog = new ColorDialog();
 
     ActionHandler actionHandler = new ActionHandler();
     createMenuItems(actionHandler);
+  }
+
+  public static ColorMenu getInstance() {
+    if (colorMenu == null) {
+      colorMenu = new ColorMenu();
+    }
+    return colorMenu;
   }
 
   private void createMenuItems(ActionHandler actionHandler) {
@@ -34,10 +41,6 @@ public class ColorMenu extends JMenu {
       menuItem.setToolTipText(value.getLabel());
       this.add(menuItem);
     });
-  }
-
-  public void associate(DrawingPanel drawingPanel) {
-    this.colorDialog.associate(drawingPanel);
   }
 
   private class ActionHandler implements ActionListener {

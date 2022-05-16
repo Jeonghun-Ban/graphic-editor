@@ -8,23 +8,26 @@ import menus.FileMenu;
 public class MenuBar extends JMenuBar {
 
   private static final long serialVersionUID = 1L;
+  private static MenuBar menuBar;
 
   private final FileMenu fileMenu;
   private final EditMenu editMenu;
   private final ColorMenu colorMenu;
 
-  public MenuBar() {
-    fileMenu = new FileMenu();
-    editMenu = new EditMenu();
-    colorMenu = new ColorMenu();
+  private MenuBar() {
+    fileMenu = FileMenu.getInstance();
+    editMenu = EditMenu.getInstance();
+    colorMenu = ColorMenu.getInstance();
 
     this.add(fileMenu);
     this.add(editMenu);
     this.add(colorMenu);
   }
 
-  public void associate(DrawingPanel drawingPanel) {
-    this.fileMenu.associate(drawingPanel);
-    this.colorMenu.associate(drawingPanel);
+  public static MenuBar getInstance() {
+    if (menuBar == null) {
+      menuBar = new MenuBar();
+    }
+    return menuBar;
   }
 }
