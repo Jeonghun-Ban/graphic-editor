@@ -15,6 +15,8 @@ import utils.FileStore;
 
 public class FileDialog {
 
+  private static FileDialog fileDialog;
+
   private final JFileChooser fileChooser;
   private final FileStore fileStore;
 
@@ -22,11 +24,18 @@ public class FileDialog {
   private int dialogOption;
   private DrawingPanel drawingPanel;
 
-  public FileDialog() {
+  private FileDialog() {
     fileChooser = new JFileChooser();
     fileStore = new FileStore();
     file = null;
     drawingPanel = DrawingPanel.getInstance();
+  }
+
+  public static FileDialog getInstance() {
+    if (fileDialog == null) {
+      fileDialog = new FileDialog();
+    }
+    return fileDialog;
   }
 
   public void newFile() {

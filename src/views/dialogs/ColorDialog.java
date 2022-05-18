@@ -10,9 +10,17 @@ import javax.swing.JColorChooser;
 public class ColorDialog {
 
   private DrawingPanel drawingPanel;
+  private static ColorDialog colorDialog;
 
-  public ColorDialog() {
+  private ColorDialog() {
     drawingPanel = DrawingPanel.getInstance();
+  }
+
+  public static ColorDialog getInstance() {
+    if (colorDialog == null) {
+      colorDialog = new ColorDialog();
+    }
+    return colorDialog;
   }
 
   public void setLineColor() {
