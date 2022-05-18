@@ -1,12 +1,12 @@
 package views.menus;
 
-public enum ColorMenuEnum {
+public enum ColorMenuItem {
   SetLineColor("Set Line Color"),
   SetFillColor("Set Fill Color");
 
   private final String label;
 
-  ColorMenuEnum(String label) {
+  ColorMenuItem(String label) {
     this.label = label;
   }
 

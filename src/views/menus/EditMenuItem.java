@@ -1,6 +1,6 @@
 package views.menus;
 
-public enum EditMenuEnum {
+public enum EditMenuItem {
   Undo("Undo"),
   Redo("Redo"),
   Cut("Cut"),
@@ -11,7 +11,7 @@ public enum EditMenuEnum {
 
   private final String label;
 
-  EditMenuEnum(String label) {
+  EditMenuItem(String label) {
     this.label = label;
   }
 

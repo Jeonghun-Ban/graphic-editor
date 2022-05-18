@@ -1,6 +1,6 @@
 package views.menus;
 
-public enum FileMenuEnum {
+public enum FileMenuItem {
   New("New"),
   Open("Open"),
   Save("Save"),
@@ -10,7 +10,7 @@ public enum FileMenuEnum {
 
   private final String label;
 
-  FileMenuEnum(String label) {
+  FileMenuItem(String label) {
     this.label = label;
   }
 

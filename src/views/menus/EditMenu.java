@@ -25,10 +25,10 @@ public class EditMenu extends JMenu {
   }
 
   private void createMenuItems() {
-    Arrays.stream(EditMenuEnum.values()).forEach(menuEnum -> {
+    Arrays.stream(EditMenuItem.values()).forEach(item -> {
       JMenuItem menuItem = new JMenuItem();
-      menuItem.setText(menuEnum.toString());
-      menuItem.setToolTipText(menuEnum.toString());
+      menuItem.setText(item.toString());
+      menuItem.setToolTipText(item.toString());
       this.add(menuItem);
     });
   }

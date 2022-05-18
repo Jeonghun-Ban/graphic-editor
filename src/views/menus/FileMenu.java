@@ -32,12 +32,12 @@ public class FileMenu extends JMenu {
   }
 
   private void createMenuItems(ActionHandler actionHandler) {
-    Arrays.stream(FileMenuEnum.values()).forEach(menuEnum -> {
+    Arrays.stream(FileMenuItem.values()).forEach(item -> {
       JMenuItem menuItem = new JMenuItem();
-      menuItem.setText(menuEnum.toString());
+      menuItem.setText(item.toString());
       menuItem.addActionListener(actionHandler);
-      menuItem.setActionCommand(menuEnum.toString());
-      menuItem.setToolTipText(menuEnum.toString());
+      menuItem.setActionCommand(item.toString());
+      menuItem.setToolTipText(item.toString());
       this.add(menuItem);
     });
   }
@@ -46,17 +46,17 @@ public class FileMenu extends JMenu {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (e.getActionCommand().equals(FileMenuEnum.New.toString())) {
+      if (e.getActionCommand().equals(FileMenuItem.New.toString())) {
         fileDialog.newFile();
-      } else if (e.getActionCommand().equals(FileMenuEnum.Open.toString())) {
+      } else if (e.getActionCommand().equals(FileMenuItem.Open.toString())) {
         fileDialog.openFile();
-      } else if (e.getActionCommand().equals(FileMenuEnum.Save.toString())) {
+      } else if (e.getActionCommand().equals(FileMenuItem.Save.toString())) {
         fileDialog.saveFile();
-      } else if (e.getActionCommand().equals(FileMenuEnum.SaveAs.toString())) {
+      } else if (e.getActionCommand().equals(FileMenuItem.SaveAs.toString())) {
         fileDialog.saveFileAs();
-      } else if (e.getActionCommand().equals(FileMenuEnum.Print.toString())) {
+      } else if (e.getActionCommand().equals(FileMenuItem.Print.toString())) {
         fileDialog.print();
-      } else if (e.getActionCommand().equals(FileMenuEnum.Quit.toString())) {
+      } else if (e.getActionCommand().equals(FileMenuItem.Quit.toString())) {
         fileDialog.quit();
       }
     }

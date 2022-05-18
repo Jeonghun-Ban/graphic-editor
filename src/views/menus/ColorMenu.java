@@ -32,12 +32,12 @@ public class ColorMenu extends JMenu {
   }
 
   private void createMenuItems(ActionHandler actionHandler) {
-    Arrays.stream(ColorMenuEnum.values()).forEach(menuEnum -> {
+    Arrays.stream(ColorMenuItem.values()).forEach(item -> {
       JMenuItem menuItem = new JMenuItem();
-      menuItem.setText(menuEnum.toString());
+      menuItem.setText(item.toString());
       menuItem.addActionListener(actionHandler);
-      menuItem.setActionCommand(menuEnum.toString());
-      menuItem.setToolTipText(menuEnum.toString());
+      menuItem.setActionCommand(item.toString());
+      menuItem.setToolTipText(item.toString());
       this.add(menuItem);
     });
   }
@@ -46,9 +46,9 @@ public class ColorMenu extends JMenu {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (e.getActionCommand().equals(ColorMenuEnum.SetLineColor.toString())) {
+      if (e.getActionCommand().equals(ColorMenuItem.SetLineColor.toString())) {
         colorDialog.setLineColor();
-      } else if (e.getActionCommand().equals(ColorMenuEnum.SetFillColor.toString())) {
+      } else if (e.getActionCommand().equals(ColorMenuItem.SetFillColor.toString())) {
         colorDialog.setFillColor();
       }
     }
