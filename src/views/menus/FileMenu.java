@@ -3,7 +3,6 @@ package views.menus;
 import static global.Constants.FILE_MENU_TITLE;
 
 import views.dialogs.FileDialog;
-import enums.FileMenuEnum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -33,12 +32,12 @@ public class FileMenu extends JMenu {
   }
 
   private void createMenuItems(ActionHandler actionHandler) {
-    Arrays.stream(FileMenuEnum.values()).forEach(value -> {
+    Arrays.stream(FileMenuEnum.values()).forEach(menuEnum -> {
       JMenuItem menuItem = new JMenuItem();
-      menuItem.setText(value.getLabel());
+      menuItem.setText(menuEnum.toString());
       menuItem.addActionListener(actionHandler);
-      menuItem.setActionCommand(value.getLabel());
-      menuItem.setToolTipText(value.getLabel());
+      menuItem.setActionCommand(menuEnum.toString());
+      menuItem.setToolTipText(menuEnum.toString());
       this.add(menuItem);
     });
   }
@@ -47,17 +46,17 @@ public class FileMenu extends JMenu {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (e.getActionCommand().equals(FileMenuEnum.New.getLabel())) {
+      if (e.getActionCommand().equals(FileMenuEnum.New.toString())) {
         fileDialog.newFile();
-      } else if (e.getActionCommand().equals(FileMenuEnum.Open.getLabel())) {
+      } else if (e.getActionCommand().equals(FileMenuEnum.Open.toString())) {
         fileDialog.openFile();
-      } else if (e.getActionCommand().equals(FileMenuEnum.Save.getLabel())) {
+      } else if (e.getActionCommand().equals(FileMenuEnum.Save.toString())) {
         fileDialog.saveFile();
-      } else if (e.getActionCommand().equals(FileMenuEnum.SaveAs.getLabel())) {
+      } else if (e.getActionCommand().equals(FileMenuEnum.SaveAs.toString())) {
         fileDialog.saveFileAs();
-      } else if (e.getActionCommand().equals(FileMenuEnum.Print.getLabel())) {
+      } else if (e.getActionCommand().equals(FileMenuEnum.Print.toString())) {
         fileDialog.print();
-      } else if (e.getActionCommand().equals(FileMenuEnum.Quit.getLabel())) {
+      } else if (e.getActionCommand().equals(FileMenuEnum.Quit.toString())) {
         fileDialog.quit();
       }
     }

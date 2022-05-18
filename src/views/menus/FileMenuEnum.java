@@ -1,4 +1,4 @@
-package enums;
+package views.menus;
 
 public enum FileMenuEnum {
   New("New"),
@@ -14,7 +14,8 @@ public enum FileMenuEnum {
     this.label = label;
   }
 
-  public String getLabel() {
+  @Override
+  public String toString() {
     return this.label;
   }
 }

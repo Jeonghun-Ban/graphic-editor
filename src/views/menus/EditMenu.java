@@ -2,7 +2,6 @@ package views.menus;
 
 import static global.Constants.EDIT_MENU_TITLE;
 
-import enums.EditMenuEnum;
 import java.util.Arrays;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -26,10 +25,10 @@ public class EditMenu extends JMenu {
   }
 
   private void createMenuItems() {
-    Arrays.stream(EditMenuEnum.values()).forEach(value -> {
+    Arrays.stream(EditMenuEnum.values()).forEach(menuEnum -> {
       JMenuItem menuItem = new JMenuItem();
-      menuItem.setText(value.getLabel());
-      menuItem.setToolTipText(value.getLabel());
+      menuItem.setText(menuEnum.toString());
+      menuItem.setToolTipText(menuEnum.toString());
       this.add(menuItem);
     });
   }

@@ -3,7 +3,6 @@ package views.menus;
 import static global.Constants.COLOR_MENU_TITLE;
 
 import views.dialogs.ColorDialog;
-import enums.ColorMenuEnum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -33,12 +32,12 @@ public class ColorMenu extends JMenu {
   }
 
   private void createMenuItems(ActionHandler actionHandler) {
-    Arrays.stream(ColorMenuEnum.values()).forEach(value -> {
+    Arrays.stream(ColorMenuEnum.values()).forEach(menuEnum -> {
       JMenuItem menuItem = new JMenuItem();
-      menuItem.setText(value.getLabel());
+      menuItem.setText(menuEnum.toString());
       menuItem.addActionListener(actionHandler);
-      menuItem.setActionCommand(value.getLabel());
-      menuItem.setToolTipText(value.getLabel());
+      menuItem.setActionCommand(menuEnum.toString());
+      menuItem.setToolTipText(menuEnum.toString());
       this.add(menuItem);
     });
   }
@@ -47,9 +46,9 @@ public class ColorMenu extends JMenu {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (e.getActionCommand().equals(ColorMenuEnum.SetLineColor.getLabel())) {
+      if (e.getActionCommand().equals(ColorMenuEnum.SetLineColor.toString())) {
         colorDialog.setLineColor();
-      } else if (e.getActionCommand().equals(ColorMenuEnum.SetFillColor.getLabel())) {
+      } else if (e.getActionCommand().equals(ColorMenuEnum.SetFillColor.toString())) {
         colorDialog.setFillColor();
       }
     }
