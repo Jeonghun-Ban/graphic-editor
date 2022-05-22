@@ -11,7 +11,6 @@ import java.awt.geom.Ellipse2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 
 public class AnchorList implements Serializable {
 
@@ -35,13 +34,13 @@ public class AnchorList implements Serializable {
     });
   }
 
-  public Optional<Anchor> contains(Point point) {
+  public Anchor contains(Point point) {
     for (Anchor anchor : Anchor.values()) {
       Ellipse2D ellipse2D = anchorList.get(anchor.ordinal());
       if (ellipse2D.contains(point)) {
-        return Optional.of(anchor);
+        return anchor;
       }
     }
-    return Optional.empty();
+    return null;
   }
 }

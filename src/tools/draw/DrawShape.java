@@ -13,11 +13,11 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.io.Serializable;
-import java.util.Optional;
 import tools.SerializableStroke;
 import tools.anchor.Anchor;
 import tools.anchor.AnchorList;
 import utils.CustomAffineTransform;
+import utils.ScalingFactorDto;
 
 public abstract class DrawShape implements Serializable {
 
@@ -61,6 +61,10 @@ public abstract class DrawShape implements Serializable {
     }
   }
 
+  public Rectangle getBounds() {
+    return shape.getBounds();
+  }
+
   public void setDefaultStyle() {
     setLineColor(DEFAULT_LINE_COLOR);
     setFillColor(DEFAULT_FILL_COLOR);
@@ -92,12 +96,22 @@ public abstract class DrawShape implements Serializable {
     return this.shape.contains(point);
   }
 
-  public Optional<Anchor> onAnchor(Point point) {
+  public Anchor onAnchor(Point point) {
     return this.anchorList.contains(point);
   }
 
   public void translateTo(Point changePoint) {
     affineTransform.setToTranslation(changePoint.getX(), changePoint.getY());
+    shape = affineTransform.createTransformedShape(shape);
+  }
+
+  public void scaleTo(ScalingFactorDto scalingFactorDto) {
+    affineTransform.setToTranslation(scalingFactorDto.getInitX(),
+        scalingFactorDto.getInitY());
+    affineTransform.scale(scalingFactorDto.getScaleX(),
+        scalingFactorDto.getScaleY());
+    affineTransform.translate(scalingFactorDto.getFinishX(),
+        scalingFactorDto.getFinishY());
     shape = affineTransform.createTransformedShape(shape);
   }
 

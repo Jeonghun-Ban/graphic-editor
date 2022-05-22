@@ -24,10 +24,12 @@ import java.util.Optional;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 import tools.AnchorCursor;
+import tools.anchor.Anchor;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
 import tools.draw.Selection;
 import tools.transformer.Drawer;
+import tools.transformer.Resizer;
 import tools.transformer.Transformer;
 import tools.transformer.Translator;
 
@@ -144,14 +146,7 @@ public class DrawingPanel extends JPanel implements Printable {
     deselectShapes();
   }
 
-  private void finishDraw() {
-    setUpdated(true);
-    setDrawMode(DrawMode.IDLE);
-    selectShape(currentShape);
-    repaint();
-  }
-
-  private void finishMove() {
+  private void finish() {
     this.setUpdated(true);
     setDrawMode(DrawMode.IDLE);
     repaint();
@@ -185,10 +180,11 @@ public class DrawingPanel extends JPanel implements Printable {
       drawShape.ifPresent(shape -> setCursor(HAND_CURSOR));
 
       if (selectedShape != null) {
-        selectedShape.onAnchor(point).ifPresent(anchor -> {
-          AnchorCursor anchorCursor = AnchorCursor.valueOf(anchor.name());
+        Anchor selectedAnchor = selectedShape.onAnchor(point);
+        if (selectedAnchor != null) {
+          AnchorCursor anchorCursor = AnchorCursor.valueOf(selectedAnchor.name());
           setCursor(anchorCursor.getCursor());
-        });
+        }
       }
 
     } else {
@@ -196,7 +192,7 @@ public class DrawingPanel extends JPanel implements Printable {
     }
   }
 
-  private Optional<DrawShape> selectShape(Point point) {
+  private void selectShape(Point point) {
     deselectShapes();
 
     Optional<DrawShape> drawShape = onShape(point);
@@ -207,8 +203,6 @@ public class DrawingPanel extends JPanel implements Printable {
     });
     setDrawMode(DrawMode.IDLE);
     repaint();
-
-    return drawShape;
   }
 
   private void selectShape(DrawShape drawShape) {
@@ -237,12 +231,18 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
-        if (currentShape instanceof Selection) {
-          selectShape(e.getPoint()).ifPresent(shape -> {
-            transformer = new Translator(shape);
+        if (currentShape instanceof Selection && selectedShape != null) {
+          if (selectedShape.onAnchor(e.getPoint()) == null) {
+            if (selectedShape.onShape(e.getPoint())){
+              transformer = new Translator(selectedShape);
+              transformer.init(e.getPoint());
+              setDrawMode(DrawMode.TRANSLATE);
+            }
+          } else {
+            transformer = new Resizer(selectedShape);
             transformer.init(e.getPoint());
-            setDrawMode(DrawMode.TRANSLATE);
-          });
+            setDrawMode(DrawMode.RESIZE);
+          }
         } else {
           initDraw();
           transformer = new Drawer(currentShape);
@@ -257,7 +257,7 @@ public class DrawingPanel extends JPanel implements Printable {
       if (!isDrawMode(DrawMode.IDLE)) {
         transformer.transform((Graphics2D) getGraphics(), e.getPoint());
       }
-      if (isDrawMode(DrawMode.TRANSLATE)) {
+      if (isDrawMode(DrawMode.TRANSLATE) || isDrawMode(DrawMode.RESIZE)) {
         repaint();
       }
     }
@@ -266,10 +266,13 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mouseReleased(MouseEvent e) {
       if (isDrawMode(DrawMode.GENERAL)) {
         ((Drawer) transformer).finish(drawShapes);
-        finishDraw();
+        selectShape(currentShape);
+        finish();
       } else if (isDrawMode(DrawMode.TRANSLATE)) {
         ((Translator) transformer).finish();
-        finishMove();
+        finish();
+      } else if (isDrawMode(DrawMode.RESIZE)) {
+        finish();
       }
     }
 
@@ -281,7 +284,7 @@ public class DrawingPanel extends JPanel implements Printable {
             ((Drawer) transformer).continueTransform(e.getPoint());
           } else if (e.getClickCount() == 2) {
             ((Drawer) transformer).finish(drawShapes);
-            finishDraw();
+            finish();
           }
         }
       } else if (currentShape instanceof Selection) {
