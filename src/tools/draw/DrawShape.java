@@ -4,6 +4,8 @@ import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
+import static global.Constants.SHAPE_INTERSECT_HEIGHT;
+import static global.Constants.SHAPE_INTERSECT_WIDTH;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -93,7 +95,7 @@ public abstract class DrawShape implements Serializable {
   }
 
   public boolean onShape(Point point) {
-    return this.shape.contains(point);
+    return this.shape.intersects(point.x, point.y, SHAPE_INTERSECT_WIDTH, SHAPE_INTERSECT_HEIGHT);
   }
 
   public Anchor onAnchor(Point point) {
