@@ -26,9 +26,7 @@ public class Translator extends Transformer {
     Point changePoint = new Point(currentPoint.x - this.startPoint.x,
         currentPoint.y - this.startPoint.y);
     g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
-    drawShape.draw(g2D);
     drawShape.translateTo(changePoint);
-    drawShape.draw(g2D);
     this.startPoint = currentPoint;
   }
 

@@ -28,14 +28,12 @@ public class Resizer extends Transformer {
 
   @Override
   public void transform(Graphics2D g2D, Point currentPoint) {
-    if (anchor != null) {
-      ScalingRequestDto request = new ScalingRequestDto(
-          startPoint, currentPoint, drawShape.getBounds());
-      ScalingFactorDto scalingFactorDto = ScalingFactor.valueOf(anchor.name()).compute(request);
+    ScalingRequestDto request = new ScalingRequestDto(
+        startPoint, currentPoint, drawShape.getBounds());
+    ScalingFactorDto scalingFactorDto = ScalingFactor.valueOf(anchor.name()).compute(request);
 
-      g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
-      drawShape.scaleTo(scalingFactorDto);
-      this.startPoint = currentPoint;
-    }
+    g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
+    drawShape.scaleTo(scalingFactorDto);
+    this.startPoint = currentPoint;
   }
 }
