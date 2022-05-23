@@ -3,13 +3,13 @@ package views.dialogs;
 import static global.Constants.FILL_COLOR_TITLE;
 import static global.Constants.LINE_COLOR_TITLE;
 
-import views.containers.DrawingPanel;
 import java.awt.Color;
 import javax.swing.JColorChooser;
+import views.containers.DrawingPanel;
 
 public class ColorDialog {
 
-  private DrawingPanel drawingPanel;
+  private final DrawingPanel drawingPanel;
   private static ColorDialog colorDialog;
 
   private ColorDialog() {

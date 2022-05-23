@@ -39,13 +39,13 @@ public class FileMenu extends JMenu {
     });
   }
 
-  class ActionHandler implements ActionListener {
+  static class ActionHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
       Optional<FileMenuItem> fileMenuItem = Arrays.stream(FileMenuItem.values())
           .filter(item -> e.getActionCommand().equals(item.name())).findFirst();
-      fileMenuItem.ifPresent(item -> item.operate());
+      fileMenuItem.ifPresent(FileMenuItem::operate);
     }
   }
 }

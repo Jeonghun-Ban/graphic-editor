@@ -5,9 +5,9 @@ import java.awt.Rectangle;
 
 public class ScalingRequestDto {
 
-  Point startPoint;
-  Point currentPoint;
-  Rectangle bounds;
+  final Point startPoint;
+  final Point currentPoint;
+  final Rectangle bounds;
 
   public ScalingRequestDto(Point startPoint, Point currentPoint, Rectangle bounds) {
     this.startPoint = startPoint;

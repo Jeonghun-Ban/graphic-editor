@@ -2,12 +2,12 @@ package utils;
 
 public class ScalingFactorDto {
 
-  double initX;
-  double initY;
-  double scaleX;
-  double scaleY;
-  double finishX;
-  double finishY;
+  final double initX;
+  final double initY;
+  final double scaleX;
+  final double scaleY;
+  final double finishX;
+  final double finishY;
 
   public ScalingFactorDto(double initX, double initY, double scaleX, double scaleY, double finishX,
       double finishY) {

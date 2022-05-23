@@ -1,6 +1,5 @@
 package views.dialogs;
 
-import views.containers.DrawingPanel;
 import global.Exception;
 import global.Message;
 import java.awt.print.PrinterException;
@@ -12,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import tools.draw.DrawShape;
 import utils.FileStore;
+import views.containers.DrawingPanel;
 
 public class FileDialog {
 
@@ -22,7 +22,7 @@ public class FileDialog {
 
   private File file;
   private int dialogOption;
-  private DrawingPanel drawingPanel;
+  private final DrawingPanel drawingPanel;
 
   private FileDialog() {
     fileChooser = new JFileChooser();

@@ -37,6 +37,7 @@ import tools.transformer.Translator;
 public class DrawingPanel extends JPanel implements Printable {
 
   private static final long serialVersionUID = 1L;
+
   private static DrawingPanel drawingPanel;
 
   private boolean updated;
@@ -233,7 +234,7 @@ public class DrawingPanel extends JPanel implements Printable {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection && selectedShape != null) {
           if (selectedShape.onAnchor(e.getPoint()) == null) {
-            if (selectedShape.onShape(e.getPoint())){
+            if (selectedShape.onShape(e.getPoint())) {
               transformer = new Translator(selectedShape);
               transformer.init(e.getPoint());
               setDrawMode(DrawMode.TRANSLATE);

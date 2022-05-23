@@ -8,16 +8,13 @@ import views.menus.FileMenu;
 public class MenuBar extends JMenuBar {
 
   private static final long serialVersionUID = 1L;
+
   private static MenuBar menuBar;
 
-  private final FileMenu fileMenu;
-  private final EditMenu editMenu;
-  private final ColorMenu colorMenu;
-
   private MenuBar() {
-    fileMenu = FileMenu.getInstance();
-    editMenu = EditMenu.getInstance();
-    colorMenu = ColorMenu.getInstance();
+    FileMenu fileMenu = FileMenu.getInstance();
+    EditMenu editMenu = EditMenu.getInstance();
+    ColorMenu colorMenu = ColorMenu.getInstance();
 
     this.add(fileMenu);
     this.add(editMenu);

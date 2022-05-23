@@ -40,13 +40,13 @@ public class ColorMenu extends JMenu {
     });
   }
 
-  private class ActionHandler implements ActionListener {
+  private static class ActionHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
       Optional<ColorMenuItem> colorMenuItem = Arrays.stream(ColorMenuItem.values())
           .filter(item -> e.getActionCommand().equals(item.name())).findFirst();
-      colorMenuItem.ifPresent(item -> item.operate());
+      colorMenuItem.ifPresent(ColorMenuItem::operate);
     }
   }
 }

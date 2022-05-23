@@ -21,8 +21,4 @@ public enum Exception {
   public String getTitle() {
     return this.title;
   }
-
-  public String getMessage() {
-    return this.message;
-  }
 }

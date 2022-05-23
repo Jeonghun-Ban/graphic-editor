@@ -20,8 +20,4 @@ public enum Message {
   public String getTitle() {
     return this.title;
   }
-
-  public String getMessage() {
-    return this.message;
-  }
 }
