@@ -9,10 +9,11 @@ import views.containers.DrawingPanel;
 public abstract class Transformer {
 
   protected final DrawShape drawShape;
-  DrawingPanel drawingPanel = DrawingPanel.getInstance();
+  protected final DrawingPanel drawingPanel;
 
   public Transformer(DrawShape drawShape) {
     this.drawShape = drawShape;
+    drawingPanel = DrawingPanel.getInstance();
   }
 
   public abstract void init(Point startPoint);

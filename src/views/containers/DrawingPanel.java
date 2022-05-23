@@ -90,11 +90,11 @@ public class DrawingPanel extends JPanel implements Printable {
     this.drawMode = drawMode;
   }
 
-  public Object getDrawShapes() {
+  public List<DrawShape> getDrawShapes() {
     return this.drawShapes;
   }
 
-  public void setDrawShapes(ArrayList<DrawShape> drawShapes) {
+  public void setDrawShapes(List<DrawShape> drawShapes) {
     this.drawShapes = drawShapes;
     repaint();
   }

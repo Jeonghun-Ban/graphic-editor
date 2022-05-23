@@ -6,7 +6,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import tools.draw.DrawShape;
@@ -72,7 +72,7 @@ public class FileDialog {
       if (dialogOption == JFileChooser.APPROVE_OPTION) {
         this.file = fileChooser.getSelectedFile();
         @SuppressWarnings("unchecked")
-        ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) fileStore.load(file);
+        List<DrawShape> drawShapeList = (List<DrawShape>) fileStore.load(file);
         this.drawingPanel.setDrawShapes(drawShapeList);
       }
     } catch (IOException | ClassNotFoundException e) {
@@ -87,8 +87,7 @@ public class FileDialog {
         if (this.file == null) {
           saveFileAs();
         } else {
-          @SuppressWarnings("unchecked")
-          ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
+          List<DrawShape> drawShapeList = drawingPanel.getDrawShapes();
           fileStore.save(this.file, drawShapeList);
           this.drawingPanel.setUpdated(false);
         }
@@ -104,8 +103,7 @@ public class FileDialog {
       dialogOption = fileChooser.showSaveDialog(drawingPanel);
       if (dialogOption == JFileChooser.APPROVE_OPTION) {
         this.file = fileChooser.getSelectedFile();
-        @SuppressWarnings("unchecked")
-        ArrayList<DrawShape> drawShapeList = (ArrayList<DrawShape>) drawingPanel.getDrawShapes();
+        List<DrawShape> drawShapeList = drawingPanel.getDrawShapes();
         fileStore.save(this.file, drawShapeList);
         this.drawingPanel.setUpdated(false);
       }

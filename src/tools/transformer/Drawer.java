@@ -32,7 +32,7 @@ public class Drawer extends Transformer {
   @Override
   public void finish() {
     super.finish();
-    List<DrawShape> shapes = (List<DrawShape>) drawingPanel.getDrawShapes();
+    List<DrawShape> shapes = drawingPanel.getDrawShapes();
     shapes.add(drawShape);
     drawingPanel.selectShape(drawShape);
   }
