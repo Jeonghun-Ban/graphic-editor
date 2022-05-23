@@ -2,6 +2,8 @@ package utils;
 
 import java.awt.Rectangle;
 import java.util.function.Function;
+import utils.dto.ScalingFactorDto;
+import utils.dto.ScalingRequestDto;
 
 public enum ScalingFactor {
 

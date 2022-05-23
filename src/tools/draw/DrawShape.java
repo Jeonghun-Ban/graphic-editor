@@ -19,7 +19,7 @@ import tools.SerializableStroke;
 import tools.anchor.Anchor;
 import tools.anchor.AnchorList;
 import utils.CustomAffineTransform;
-import utils.ScalingFactorDto;
+import utils.dto.ScalingFactorDto;
 
 public abstract class DrawShape implements Serializable {
 
