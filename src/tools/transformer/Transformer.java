@@ -24,6 +24,4 @@ public abstract class Transformer {
     drawingPanel.setDrawMode(DrawMode.IDLE);
     drawingPanel.repaint();
   }
-
-  ;
 }
