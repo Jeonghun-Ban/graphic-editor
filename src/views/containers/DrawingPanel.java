@@ -227,24 +227,23 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection && selectedShape != null) {
-          if (selectedShape.onAnchor(e.getPoint()) == null) {
+          if (selectedShape.onAnchor(e.getPoint()) == null
+              || selectedShape.onAnchor(e.getPoint()) == Anchor.Rotate) {
             if (selectedShape.onShape(e.getPoint())) {
               transformer = new Translator(selectedShape);
-              transformer.init(e.getPoint());
               setDrawMode(DrawMode.TRANSLATE);
             }
           } else {
             transformer = new Resizer(selectedShape);
-            transformer.init(e.getPoint());
             setDrawMode(DrawMode.RESIZE);
           }
         } else {
           initDraw();
           transformer = new Drawer(currentShape);
-          transformer.init(e.getPoint());
           drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
         }
       }
+      transformer.init(e.getPoint());
     }
 
     @Override
