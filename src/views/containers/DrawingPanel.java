@@ -86,7 +86,7 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.drawMode == drawMode;
   }
 
-  private void setDrawMode(DrawMode drawMode) {
+  public void setDrawMode(DrawMode drawMode) {
     this.drawMode = drawMode;
   }
 
@@ -147,12 +147,6 @@ public class DrawingPanel extends JPanel implements Printable {
     deselectShapes();
   }
 
-  private void finish() {
-    this.setUpdated(true);
-    setDrawMode(DrawMode.IDLE);
-    repaint();
-  }
-
   public void clear() {
     drawShapes.clear();
     repaint();
@@ -206,7 +200,7 @@ public class DrawingPanel extends JPanel implements Printable {
     repaint();
   }
 
-  private void selectShape(DrawShape drawShape) {
+  public void selectShape(DrawShape drawShape) {
     this.setSelectedShape(drawShape);
     this.selectedShape.setSelected(true);
   }
@@ -265,15 +259,8 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-      if (isDrawMode(DrawMode.GENERAL)) {
-        ((Drawer) transformer).finish(drawShapes);
-        selectShape(currentShape);
-        finish();
-      } else if (isDrawMode(DrawMode.TRANSLATE)) {
-        ((Translator) transformer).finish();
-        finish();
-      } else if (isDrawMode(DrawMode.RESIZE)) {
-        finish();
+      if (!isDrawMode(DrawMode.POLYGON)) {
+        transformer.finish();
       }
     }
 
@@ -284,8 +271,7 @@ public class DrawingPanel extends JPanel implements Printable {
           if (e.getClickCount() == 1) {
             ((Drawer) transformer).continueTransform(e.getPoint());
           } else if (e.getClickCount() == 2) {
-            ((Drawer) transformer).finish(drawShapes);
-            finish();
+            transformer.finish();
           }
         }
       } else if (currentShape instanceof Selection) {

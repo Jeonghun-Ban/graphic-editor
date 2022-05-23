@@ -30,7 +30,9 @@ public class Translator extends Transformer {
     this.startPoint = currentPoint;
   }
 
+  @Override
   public void finish() {
+    super.finish();
     drawShape.setSelected(true);
   }
 }
