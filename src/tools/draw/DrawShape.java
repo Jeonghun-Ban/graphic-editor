@@ -15,6 +15,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.io.Serializable;
+import java.util.Optional;
 import tools.SerializableStroke;
 import tools.anchor.Anchor;
 import tools.anchor.AnchorList;
@@ -98,8 +99,8 @@ public abstract class DrawShape implements Serializable {
     return this.shape.intersects(point.x, point.y, SHAPE_INTERSECT_WIDTH, SHAPE_INTERSECT_HEIGHT);
   }
 
-  public Anchor onAnchor(Point point) {
-    return this.anchorList.contains(point);
+  public Optional<Anchor> onAnchor(Point point) {
+    return Optional.ofNullable(this.anchorList.contains(point));
   }
 
   public void translateTo(Point changePoint) {

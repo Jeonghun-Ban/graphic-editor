@@ -4,11 +4,12 @@ import static global.Constants.DEFAULT_BACKGROUND_COLOR;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import tools.anchor.Anchor;
 import tools.draw.DrawShape;
 import utils.ScalingFactor;
-import utils.ScalingFactorDto;
-import utils.ScalingRequestDto;
+import utils.dto.ScalingFactorDto;
+import utils.dto.ScalingRequestDto;
 
 public class Resizer extends Transformer {
 
@@ -20,20 +21,31 @@ public class Resizer extends Transformer {
     startPoint = new Point();
   }
 
+  public void setAnchor(Anchor anchor) {
+    this.anchor = anchor;
+  }
+
   @Override
   public void init(Point startPoint) {
     this.startPoint = startPoint;
-    this.anchor = drawShape.onAnchor(startPoint);
+    drawShape.onAnchor(startPoint).ifPresent(this::setAnchor);
   }
 
   @Override
   public void transform(Graphics2D g2D, Point currentPoint) {
-    ScalingRequestDto request = new ScalingRequestDto(
-        startPoint, currentPoint, drawShape.getBounds());
-    ScalingFactorDto scalingFactorDto = ScalingFactor.valueOf(anchor.name()).compute(request);
+    Rectangle bounds = drawShape.getBounds();
+    if (!isBoundsSizeZero(bounds)) {
+      ScalingRequestDto request = new ScalingRequestDto(
+          startPoint, currentPoint, bounds);
+      ScalingFactorDto scalingFactorDto = ScalingFactor.valueOf(anchor.name()).compute(request);
 
-    g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
-    drawShape.scaleTo(scalingFactorDto);
-    this.startPoint = currentPoint;
+      g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
+      drawShape.scaleTo(scalingFactorDto);
+      this.startPoint = currentPoint;
+    }
+  }
+
+  private boolean isBoundsSizeZero(Rectangle bounds) {
+    return bounds.getHeight() == 0 || bounds.getWidth() == 0;
   }
 }

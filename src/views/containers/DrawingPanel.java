@@ -104,6 +104,10 @@ public class DrawingPanel extends JPanel implements Printable {
     drawMode = DrawMode.IDLE;
   }
 
+  private Optional<DrawShape> getSelectedShape() {
+    return Optional.ofNullable(this.selectedShape);
+  }
+
   public void setSelectedShape(DrawShape selectedShape) {
     this.selectedShape = selectedShape;
   }
@@ -175,11 +179,10 @@ public class DrawingPanel extends JPanel implements Printable {
       drawShape.ifPresent(shape -> setCursor(HAND_CURSOR));
 
       if (selectedShape != null) {
-        Anchor selectedAnchor = selectedShape.onAnchor(point);
-        if (selectedAnchor != null) {
-          AnchorCursor anchorCursor = AnchorCursor.valueOf(selectedAnchor.name());
+        selectedShape.onAnchor(point).ifPresent(anchor -> {
+          AnchorCursor anchorCursor = AnchorCursor.valueOf(anchor.name());
           setCursor(anchorCursor.getCursor());
-        }
+        });
       }
 
     } else {
@@ -226,17 +229,18 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
-        if (currentShape instanceof Selection && selectedShape != null) {
-          if (selectedShape.onAnchor(e.getPoint()) == null
-              || selectedShape.onAnchor(e.getPoint()) == Anchor.Rotate) {
-            if (selectedShape.onShape(e.getPoint())) {
-              transformer = new Translator(selectedShape);
-              setDrawMode(DrawMode.TRANSLATE);
-            }
-          } else {
-            transformer = new Resizer(selectedShape);
-            setDrawMode(DrawMode.RESIZE);
-          }
+        if (currentShape instanceof Selection) {
+          getSelectedShape().ifPresent(shape -> shape.onAnchor(e.getPoint())
+              .filter(anchor -> anchor != Anchor.Rotate)
+              .ifPresentOrElse(anchor -> {
+                transformer = new Resizer(selectedShape);
+                setDrawMode(DrawMode.RESIZE);
+              }, () -> {
+                if (selectedShape.onShape(e.getPoint())) {
+                  transformer = new Translator(selectedShape);
+                  setDrawMode(DrawMode.TRANSLATE);
+                }
+              }));
         } else {
           initDraw();
           transformer = new Drawer(currentShape);
