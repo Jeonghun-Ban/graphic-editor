@@ -21,6 +21,7 @@ public abstract class Transformer {
   public abstract void transform(Graphics2D g2D, Point currentPoint);
 
   public void finish() {
+    drawingPanel.setTransformer(null);
     drawingPanel.setUpdated(true);
     drawingPanel.setDrawMode(DrawMode.IDLE);
     drawingPanel.repaint();

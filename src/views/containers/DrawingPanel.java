@@ -112,6 +112,14 @@ public class DrawingPanel extends JPanel implements Printable {
     this.selectedShape = selectedShape;
   }
 
+  public void setTransformer(Transformer transformer) {
+    this.transformer = transformer;
+  }
+
+  public Optional<Transformer> getTransformer() {
+    return Optional.ofNullable(this.transformer);
+  }
+
   public void setLineColor(Color color) {
     this.lineColor = color;
   }
@@ -158,9 +166,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
   public void remove() {
     getSelectedShape().ifPresent(shape -> {
-      this.drawShapes.remove(shape);
-      setSelectedShape(null);
-      setDrawMode(DrawMode.IDLE);
+      getDrawShapes().remove(shape);
       repaint();
     });
   }
@@ -197,18 +203,18 @@ public class DrawingPanel extends JPanel implements Printable {
       getDrawShapes().remove(shape);
       getDrawShapes().add(shape);
     });
-    setDrawMode(DrawMode.IDLE);
-    repaint();
   }
 
   public void selectShape(DrawShape drawShape) {
     setSelectedShape(drawShape);
-    getSelectedShape().ifPresent(shape -> shape.setSelected(true));
+    drawShape.setSelected(true);
+    repaint();
   }
 
   private void unselectShapes() {
     setSelectedShape(null);
-    this.drawShapes.forEach(shape -> shape.setSelected(false));
+    getDrawShapes().forEach(shape -> shape.setSelected(false));
+    repaint();
   }
 
   @Override
@@ -228,30 +234,31 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection) {
-          getSelectedShape().ifPresent(shape -> shape.onAnchor(e.getPoint())
-              .filter(anchor -> anchor != Anchor.Rotate)
-              .ifPresentOrElse(anchor -> {
-                transformer = new Resizer(selectedShape);
-                setDrawMode(DrawMode.RESIZE);
-              }, () -> {
-                if (selectedShape.onShape(e.getPoint())) {
-                  transformer = new Translator(selectedShape);
-                  setDrawMode(DrawMode.TRANSLATE);
-                }
-              }));
+          getSelectedShape().ifPresent(
+              shape -> shape.onAnchor(e.getPoint()).filter(anchor -> anchor != Anchor.Rotate)
+                  .ifPresentOrElse(anchor -> {
+                    setTransformer(new Resizer(selectedShape));
+                    setDrawMode(DrawMode.RESIZE);
+                  }, () -> {
+                    if (selectedShape.onShape(e.getPoint())) {
+                      setTransformer(new Translator(selectedShape));
+                      setDrawMode(DrawMode.TRANSLATE);
+                    }
+                  }));
         } else {
           initDraw();
-          transformer = new Drawer(currentShape);
-          drawMode = (currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL;
+          setTransformer(new Drawer(currentShape));
+          setDrawMode((currentShape instanceof Polygon) ? DrawMode.POLYGON : DrawMode.GENERAL);
         }
       }
-      transformer.init(e.getPoint());
+      getTransformer().ifPresent(transformer -> transformer.init(e.getPoint()));
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
       if (!isDrawMode(DrawMode.IDLE)) {
-        transformer.transform((Graphics2D) getGraphics(), e.getPoint());
+        getTransformer().ifPresent(
+            transformer -> transformer.transform((Graphics2D) getGraphics(), e.getPoint()));
       }
       if (isDrawMode(DrawMode.TRANSLATE) || isDrawMode(DrawMode.RESIZE)) {
         repaint();
@@ -261,7 +268,7 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mouseReleased(MouseEvent e) {
       if (!isDrawMode(DrawMode.POLYGON)) {
-        transformer.finish();
+        getTransformer().ifPresent(transformer -> transformer.finish());
       }
     }
 
@@ -272,7 +279,7 @@ public class DrawingPanel extends JPanel implements Printable {
           if (e.getClickCount() == 1) {
             ((Drawer) transformer).continueTransform(e.getPoint());
           } else if (e.getClickCount() == 2) {
-            transformer.finish();
+            getTransformer().ifPresent(transformer -> transformer.finish());
           }
         }
       } else if (currentShape instanceof Selection) {
@@ -284,7 +291,8 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mouseMoved(MouseEvent e) {
       changeCursor(e.getPoint());
       if (isDrawMode(DrawMode.POLYGON)) {
-        transformer.transform((Graphics2D) getGraphics(), e.getPoint());
+        getTransformer().ifPresent(
+            transformer -> transformer.transform((Graphics2D) getGraphics(), e.getPoint()));
       }
     }
   }
