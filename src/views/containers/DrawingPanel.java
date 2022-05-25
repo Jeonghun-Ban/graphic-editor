@@ -139,16 +139,16 @@ public class DrawingPanel extends JPanel implements Printable {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2D = (Graphics2D) g;
-    drawShapes.forEach(drawShape -> drawShape.draw(g2D));
+    drawShapes.forEach(shape -> shape.draw(g2D));
   }
 
   private void initDraw() {
+    unselectShapes();
     currentShape = currentShape.clone();
     currentShape.setLineSize(lineSize);
     currentShape.setDashSize(dashSize);
     currentShape.setLineColor(lineColor);
     currentShape.setFillColor(fillColor);
-    deselectShapes();
   }
 
   public void clear() {
@@ -157,18 +157,18 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void remove() {
-    if (selectedShape != null) {
-      drawShapes.remove(selectedShape);
+    getSelectedShape().ifPresent(shape -> {
+      this.drawShapes.remove(shape);
       setSelectedShape(null);
       setDrawMode(DrawMode.IDLE);
       repaint();
-    }
+    });
   }
 
   private Optional<DrawShape> onShape(Point point) {
     List<DrawShape> reversedList = new ArrayList<>(List.copyOf(drawShapes));
     Collections.reverse(reversedList);
-    return reversedList.stream().filter(drawShape -> drawShape.onShape(point)).findFirst();
+    return reversedList.stream().filter(shape -> shape.onShape(point)).findFirst();
   }
 
   private void changeCursor(Point point) {
@@ -191,26 +191,24 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private void selectShape(Point point) {
-    deselectShapes();
-
-    Optional<DrawShape> drawShape = onShape(point);
-    drawShape.ifPresent(shape -> {
+    unselectShapes();
+    onShape(point).ifPresent(shape -> {
       selectShape(shape);
-      drawShapes.remove(selectedShape);
-      drawShapes.add(selectedShape);
+      getDrawShapes().remove(shape);
+      getDrawShapes().add(shape);
     });
     setDrawMode(DrawMode.IDLE);
     repaint();
   }
 
   public void selectShape(DrawShape drawShape) {
-    this.setSelectedShape(drawShape);
-    this.selectedShape.setSelected(true);
+    setSelectedShape(drawShape);
+    getSelectedShape().ifPresent(shape -> shape.setSelected(true));
   }
 
-  private void deselectShapes() {
-    drawShapes.forEach(drawShape -> drawShape.setSelected(false));
-    this.setSelectedShape(null);
+  private void unselectShapes() {
+    setSelectedShape(null);
+    this.drawShapes.forEach(shape -> shape.setSelected(false));
   }
 
   @Override
@@ -220,7 +218,7 @@ public class DrawingPanel extends JPanel implements Printable {
     }
     Graphics2D graphics2D = (Graphics2D) graphics;
     graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-    drawShapes.forEach(drawShape -> drawShape.draw(graphics2D));
+    drawShapes.forEach(shape -> shape.draw(graphics2D));
     return PAGE_EXISTS;
   }
 
