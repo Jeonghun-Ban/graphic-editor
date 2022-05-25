@@ -261,7 +261,7 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mouseReleased(MouseEvent e) {
       if (!isDrawMode(DrawMode.POLYGON)) {
-        getTransformer().ifPresent(transformer -> transformer.finish());
+        getTransformer().ifPresent(Transformer::finish);
       }
     }
 
@@ -272,7 +272,7 @@ public class DrawingPanel extends JPanel implements Printable {
           if (e.getClickCount() == 1) {
             ((Drawer) transformer).continueTransform(e.getPoint());
           } else if (e.getClickCount() == 2) {
-            getTransformer().ifPresent(transformer -> transformer.finish());
+            getTransformer().ifPresent(Transformer::finish);
           }
         }
       } else if (currentShape instanceof Selection) {
