@@ -7,6 +7,9 @@ import java.awt.Toolkit;
 
 public class CursorManager {
 
+  public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+  public static final Cursor CROSSHAIR_CURSOR = new Cursor(Cursor.CROSSHAIR_CURSOR);
+
   public static final Cursor ROTATE_CURSOR = createCustomCursor("rotate",
       "resources/static/image/cursor/rotate.png", 8);
 

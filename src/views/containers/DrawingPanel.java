@@ -1,8 +1,6 @@
 package views.containers;
 
-import static global.Constants.CROSSHAIR_CURSOR;
 import static global.Constants.DEFAULT_BACKGROUND_COLOR;
-import static global.Constants.DEFAULT_CURSOR;
 import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
@@ -178,7 +176,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void changeCursor(Point point) {
     if (currentShape instanceof Selection) {
-      setCursor(DEFAULT_CURSOR);
+      setCursor(CursorManager.DEFAULT_CURSOR);
       getSelectedShape().ifPresent(shape -> {
         setCursor(CursorManager.MOVE_CURSOR);
         shape.onAnchor(point).ifPresent(anchor -> {
@@ -187,7 +185,7 @@ public class DrawingPanel extends JPanel implements Printable {
         });
       });
     } else {
-      setCursor(CROSSHAIR_CURSOR);
+      setCursor(CursorManager.CROSSHAIR_CURSOR);
     }
   }
 

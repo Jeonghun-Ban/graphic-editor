@@ -2,7 +2,6 @@ package global;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
@@ -40,11 +39,6 @@ public class Constants {
   public static final String FILE_MENU_TITLE = "File";
   public static final String EDIT_MENU_TITLE = "Edit";
   public static final String COLOR_MENU_TITLE = "Color";
-
-  // Cursor
-  public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
-  public static final Cursor CROSSHAIR_CURSOR = new Cursor(Cursor.CROSSHAIR_CURSOR);
-  public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
   // Anchor
   public static final int ANCHOR_WIDTH = 10;
