@@ -1,6 +1,7 @@
 package tools;
 
 import java.awt.Cursor;
+import utils.CursorManager;
 
 public enum AnchorCursor {
   NW(new Cursor(Cursor.NW_RESIZE_CURSOR)),
@@ -11,7 +12,7 @@ public enum AnchorCursor {
   S(new Cursor(Cursor.S_RESIZE_CURSOR)),
   SW(new Cursor(Cursor.SW_RESIZE_CURSOR)),
   W(new Cursor(Cursor.W_RESIZE_CURSOR)),
-  Rotate(new Cursor(Cursor.DEFAULT_CURSOR)),
+  Rotate(CursorManager.ROTATE_CURSOR),
   ;
 
   private final Cursor cursor;

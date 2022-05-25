@@ -7,7 +7,6 @@ import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
-import static global.Constants.HAND_CURSOR;
 
 import enums.DrawMode;
 import java.awt.Color;
@@ -32,6 +31,7 @@ import tools.transformer.Drawer;
 import tools.transformer.Resizer;
 import tools.transformer.Transformer;
 import tools.transformer.Translator;
+import utils.CursorManager;
 
 
 public class DrawingPanel extends JPanel implements Printable {
@@ -59,7 +59,6 @@ public class DrawingPanel extends JPanel implements Printable {
     transformer = null;
 
     setDrawMode(DrawMode.IDLE);
-    setCursor(DEFAULT_CURSOR);
     setDefaultStyle();
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
@@ -180,17 +179,13 @@ public class DrawingPanel extends JPanel implements Printable {
   private void changeCursor(Point point) {
     if (currentShape instanceof Selection) {
       setCursor(DEFAULT_CURSOR);
-
-      Optional<DrawShape> drawShape = onShape(point);
-      drawShape.ifPresent(shape -> setCursor(HAND_CURSOR));
-
-      if (selectedShape != null) {
-        selectedShape.onAnchor(point).ifPresent(anchor -> {
+      getSelectedShape().ifPresent(shape -> {
+        setCursor(CursorManager.MOVE_CURSOR);
+        shape.onAnchor(point).ifPresent(anchor -> {
           AnchorCursor anchorCursor = AnchorCursor.valueOf(anchor.name());
           setCursor(anchorCursor.getCursor());
         });
-      }
-
+      });
     } else {
       setCursor(CROSSHAIR_CURSOR);
     }
