@@ -27,6 +27,7 @@ import tools.draw.Polygon;
 import tools.draw.Selection;
 import tools.transformer.Drawer;
 import tools.transformer.Resizer;
+import tools.transformer.Rotator;
 import tools.transformer.Transformer;
 import tools.transformer.Translator;
 import utils.CursorManager;
@@ -228,10 +229,15 @@ public class DrawingPanel extends JPanel implements Printable {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection) {
           getSelectedShape().ifPresent(
-              shape -> shape.onAnchor(e.getPoint()).filter(anchor -> anchor != Anchor.Rotate)
+              shape -> shape.onAnchor(e.getPoint())
                   .ifPresentOrElse(anchor -> {
-                    setTransformer(new Resizer(selectedShape));
-                    setDrawMode(DrawMode.RESIZE);
+                    if (anchor == Anchor.Rotate) {
+                      setTransformer(new Rotator(selectedShape));
+                      setDrawMode(DrawMode.ROTATE);
+                    } else {
+                      setTransformer(new Resizer(selectedShape));
+                      setDrawMode(DrawMode.RESIZE);
+                    }
                   }, () -> {
                     if (selectedShape.onShape(e.getPoint())) {
                       setTransformer(new Translator(selectedShape));
@@ -253,7 +259,7 @@ public class DrawingPanel extends JPanel implements Printable {
         getTransformer().ifPresent(
             transformer -> transformer.transform((Graphics2D) getGraphics(), e.getPoint()));
       }
-      if (isDrawMode(DrawMode.TRANSLATE) || isDrawMode(DrawMode.RESIZE)) {
+      if (isDrawMode(DrawMode.TRANSLATE) || isDrawMode(DrawMode.RESIZE) || isDrawMode(DrawMode.ROTATE)) {
         repaint();
       }
     }
