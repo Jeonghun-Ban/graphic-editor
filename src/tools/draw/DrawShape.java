@@ -14,6 +14,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Optional;
 import tools.SerializableStroke;
@@ -109,13 +110,32 @@ public abstract class DrawShape implements Serializable {
   }
 
   public void scaleTo(ScalingFactorDto scalingFactorDto) {
-    affineTransform.setToTranslation(scalingFactorDto.getInitX(),
-        scalingFactorDto.getInitY());
-    affineTransform.scale(scalingFactorDto.getScaleX(),
-        scalingFactorDto.getScaleY());
-    affineTransform.translate(scalingFactorDto.getFinishX(),
-        scalingFactorDto.getFinishY());
+    affineTransform.setToTranslation(scalingFactorDto.getInitX(), scalingFactorDto.getInitY());
+    affineTransform.scale(scalingFactorDto.getScaleX(), scalingFactorDto.getScaleY());
+    affineTransform.translate(scalingFactorDto.getFinishX(), scalingFactorDto.getFinishY());
     shape = affineTransform.createTransformedShape(shape);
+  }
+
+  public void rotateTo(Point2D startPoint, Point2D currentPoint) {
+    Point2D centerPoint = new Point2D.Double(shape.getBounds2D().getCenterX(),
+        shape.getBounds2D().getCenterY());
+    double rotateAngle = getRotateAngle(centerPoint, startPoint, currentPoint);
+    affineTransform.setToRotation(Math.toRadians(rotateAngle), centerPoint.getX(),
+        centerPoint.getY());
+    shape = affineTransform.createTransformedShape(shape);
+  }
+
+  private double getRotateAngle(Point2D centerPoint, Point2D startPoint, Point2D currentPoint) {
+    double startAngle = Math.toDegrees(
+        Math.atan2(centerPoint.getX() - startPoint.getX(), centerPoint.getY() - startPoint.getY()));
+    double endAngle = Math.toDegrees(Math.atan2(centerPoint.getX() - currentPoint.getX(),
+        centerPoint.getY() - currentPoint.getY()));
+
+    double rotationAngle = startAngle - endAngle;
+    if (rotationAngle < 0) {
+      rotationAngle += 360;
+    }
+    return rotationAngle;
   }
 
   private boolean isBrush() {
