@@ -186,13 +186,15 @@ public class DrawingPanel extends JPanel implements Printable {
     }
   }
 
-  private void selectShape(Point point) {
+  private Optional<DrawShape> selectShape(Point point) {
     unselectShapes();
-    onShape(point).ifPresent(shape -> {
+    Optional<DrawShape> selectedShape = onShape(point);
+    selectedShape.ifPresent(shape -> {
       selectShape(shape);
       getDrawShapes().remove(shape);
       getDrawShapes().add(shape);
     });
+    return selectedShape;
   }
 
   public void selectShape(DrawShape drawShape) {
@@ -224,8 +226,7 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection) {
-          selectShape(e.getPoint());
-          getSelectedShape().ifPresent(
+          selectShape(e.getPoint()).ifPresent(
               shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
                 if (anchor == Anchor.Rotate) {
                   setTransformer(new Rotator(selectedShape));
