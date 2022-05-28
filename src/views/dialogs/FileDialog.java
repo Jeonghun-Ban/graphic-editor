@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import tools.draw.DrawShape;
 import utils.FileStore;
 import views.containers.DrawingPanel;
+import views.containers.MainFrame;
 
 public class FileDialog {
 
@@ -74,6 +75,7 @@ public class FileDialog {
         @SuppressWarnings("unchecked")
         List<DrawShape> drawShapeList = (List<DrawShape>) fileStore.load(file);
         this.drawingPanel.setDrawShapes(drawShapeList);
+        MainFrame.getInstance().setTitle(file.getName());
       }
     } catch (IOException | ClassNotFoundException e) {
       JOptionPane.showMessageDialog(drawingPanel, Exception.FILE_STORE_LOAD_ERROR,
