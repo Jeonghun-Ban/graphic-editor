@@ -35,6 +35,7 @@ public class FileMenu extends JMenu {
       menuItem.addActionListener(actionHandler);
       menuItem.setActionCommand(item.name());
       menuItem.setToolTipText(item.toString());
+      menuItem.setAccelerator(item.getKeyStroke());
       this.add(menuItem);
     });
   }
