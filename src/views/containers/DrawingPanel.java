@@ -177,14 +177,10 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void changeCursor(Point point) {
     if (currentShape instanceof Selection) {
-      setCursor(CursorManager.DEFAULT_CURSOR);
-      getSelectedShape().ifPresent(shape -> {
-        setCursor(CursorManager.MOVE_CURSOR);
-        shape.onAnchor(point).ifPresent(anchor -> {
-          AnchorCursor anchorCursor = AnchorCursor.valueOf(anchor.name());
-          setCursor(anchorCursor.getCursor());
-        });
-      });
+      setCursor(
+          onShape(point).isPresent() ? CursorManager.MOVE_CURSOR : CursorManager.DEFAULT_CURSOR);
+      getSelectedShape().flatMap(shape -> shape.onAnchor(point))
+          .ifPresent(anchor -> setCursor(AnchorCursor.valueOf(anchor.name()).getCursor()));
     } else {
       setCursor(CursorManager.CROSSHAIR_CURSOR);
     }
@@ -229,21 +225,20 @@ public class DrawingPanel extends JPanel implements Printable {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection) {
           getSelectedShape().ifPresent(
-              shape -> shape.onAnchor(e.getPoint())
-                  .ifPresentOrElse(anchor -> {
-                    if (anchor == Anchor.Rotate) {
-                      setTransformer(new Rotator(selectedShape));
-                      setDrawMode(DrawMode.ROTATE);
-                    } else {
-                      setTransformer(new Resizer(selectedShape));
-                      setDrawMode(DrawMode.RESIZE);
-                    }
-                  }, () -> {
-                    if (selectedShape.onShape(e.getPoint())) {
-                      setTransformer(new Translator(selectedShape));
-                      setDrawMode(DrawMode.TRANSLATE);
-                    }
-                  }));
+              shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
+                if (anchor == Anchor.Rotate) {
+                  setTransformer(new Rotator(selectedShape));
+                  setDrawMode(DrawMode.ROTATE);
+                } else {
+                  setTransformer(new Resizer(selectedShape));
+                  setDrawMode(DrawMode.RESIZE);
+                }
+              }, () -> {
+                if (selectedShape.onShape(e.getPoint())) {
+                  setTransformer(new Translator(selectedShape));
+                  setDrawMode(DrawMode.TRANSLATE);
+                }
+              }));
         } else {
           initDraw();
           setTransformer(new Drawer(currentShape));
@@ -259,7 +254,8 @@ public class DrawingPanel extends JPanel implements Printable {
         getTransformer().ifPresent(
             transformer -> transformer.transform((Graphics2D) getGraphics(), e.getPoint()));
       }
-      if (isDrawMode(DrawMode.TRANSLATE) || isDrawMode(DrawMode.RESIZE) || isDrawMode(DrawMode.ROTATE)) {
+      if (isDrawMode(DrawMode.TRANSLATE) || isDrawMode(DrawMode.RESIZE) || isDrawMode(
+          DrawMode.ROTATE)) {
         repaint();
       }
     }
