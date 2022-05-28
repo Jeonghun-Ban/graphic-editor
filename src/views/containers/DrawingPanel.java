@@ -44,10 +44,6 @@ public class DrawingPanel extends JPanel implements Printable {
   private DrawShape currentShape;
   private DrawShape selectedShape;
   private Transformer transformer;
-  private Color lineColor;
-  private Color fillColor;
-  private int lineSize;
-  private int dashSize;
   private DrawMode drawMode;
 
   private DrawingPanel() {
@@ -58,7 +54,6 @@ public class DrawingPanel extends JPanel implements Printable {
     transformer = null;
 
     setDrawMode(DrawMode.IDLE);
-    setDefaultStyle();
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
     addMouseListener(drawingHandler);
@@ -119,19 +114,35 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void setLineColor(Color color) {
-    this.lineColor = color;
+    getSelectedShape().ifPresent(shape -> {
+      shape.setLineColor(color);
+      setUpdated(true);
+      repaint();
+    });
   }
 
   public void setFillColor(Color color) {
-    this.fillColor = color;
+    getSelectedShape().ifPresent(shape -> {
+      shape.setFillColor(color);
+      setUpdated(true);
+      repaint();
+    });
   }
 
   public void setLineSize(int lineSize) {
-    this.lineSize = lineSize;
+    getSelectedShape().ifPresent(shape -> {
+      shape.setLineSize(lineSize);
+      setUpdated(true);
+      repaint();
+    });
   }
 
   public void setDashSize(int dashSize) {
-    this.dashSize = dashSize;
+    getSelectedShape().ifPresent(shape -> {
+      shape.setDashSize(dashSize);
+      setUpdated(true);
+      repaint();
+    });
   }
 
   public void setDefaultStyle() {
@@ -151,10 +162,6 @@ public class DrawingPanel extends JPanel implements Printable {
   private void initDraw() {
     unselectShapes();
     currentShape = currentShape.clone();
-    currentShape.setLineSize(lineSize);
-    currentShape.setDashSize(dashSize);
-    currentShape.setLineColor(lineColor);
-    currentShape.setFillColor(fillColor);
   }
 
   public void clear() {
@@ -200,6 +207,10 @@ public class DrawingPanel extends JPanel implements Printable {
   public void selectShape(DrawShape drawShape) {
     setSelectedShape(drawShape);
     drawShape.setSelected(true);
+
+    ToolBar.getInstance().updateDashSizeSpinner(drawShape.getDashSize());
+    ToolBar.getInstance().updateLineSizeSpinner(drawShape.getLineSize());
+
     repaint();
   }
 
@@ -226,21 +237,22 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection) {
-          selectShape(e.getPoint()).ifPresent(
-              shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
-                if (anchor == Anchor.Rotate) {
-                  setTransformer(new Rotator(selectedShape));
-                  setDrawMode(DrawMode.ROTATE);
-                } else {
-                  setTransformer(new Resizer(selectedShape));
-                  setDrawMode(DrawMode.RESIZE);
-                }
-              }, () -> {
-                if (selectedShape.onShape(e.getPoint())) {
-                  setTransformer(new Translator(selectedShape));
-                  setDrawMode(DrawMode.TRANSLATE);
-                }
-              }));
+          selectShape(e.getPoint()).ifPresent(shape -> {
+            shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
+              if (anchor == Anchor.Rotate) {
+                setTransformer(new Rotator(shape));
+                setDrawMode(DrawMode.ROTATE);
+              } else {
+                setTransformer(new Resizer(shape));
+                setDrawMode(DrawMode.RESIZE);
+              }
+            }, () -> {
+              if (shape.onShape(e.getPoint())) {
+                setTransformer(new Translator(shape));
+                setDrawMode(DrawMode.TRANSLATE);
+              }
+            });
+          });
         } else {
           initDraw();
           setTransformer(new Drawer(currentShape));

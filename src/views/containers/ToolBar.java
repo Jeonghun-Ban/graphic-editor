@@ -57,6 +57,14 @@ public class ToolBar extends JToolBar {
     return toolBar;
   }
 
+  public void updateLineSizeSpinner(int lineSize) {
+    lineSizeSpinner.setValue(lineSize);
+  }
+
+  public void updateDashSizeSpinner(int dashSize) {
+    dashSizeSpinner.setValue(dashSize);
+  }
+
   public void setDefaultButton() {
     JRadioButton defaultButton = (JRadioButton) this.getComponent(DrawTool.Selection.ordinal());
     defaultButton.doClick();

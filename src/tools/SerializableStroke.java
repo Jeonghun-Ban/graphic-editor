@@ -29,8 +29,16 @@ public class SerializableStroke implements Serializable {
     return this.basicStroke;
   }
 
+  public int getDashSize() {
+    return this.dashSize;
+  }
+
   public void setDashSize(int dashSize) {
     this.dashSize = dashSize;
+  }
+
+  public int getLineSize() {
+    return this.lineSize;
   }
 
   public void setLineSize(int lineSize) {
