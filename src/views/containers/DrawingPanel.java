@@ -207,6 +207,10 @@ public class DrawingPanel extends JPanel implements Printable {
   public void selectShape(DrawShape drawShape) {
     setSelectedShape(drawShape);
     drawShape.setSelected(true);
+
+    ToolBar.getInstance().updateDashSizeSpinner(drawShape.getDashSize());
+    ToolBar.getInstance().updateLineSizeSpinner(drawShape.getLineSize());
+
     repaint();
   }
 
@@ -233,21 +237,22 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection) {
-          selectShape(e.getPoint()).ifPresent(
-              shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
-                if (anchor == Anchor.Rotate) {
-                  setTransformer(new Rotator(selectedShape));
-                  setDrawMode(DrawMode.ROTATE);
-                } else {
-                  setTransformer(new Resizer(selectedShape));
-                  setDrawMode(DrawMode.RESIZE);
-                }
-              }, () -> {
-                if (selectedShape.onShape(e.getPoint())) {
-                  setTransformer(new Translator(selectedShape));
-                  setDrawMode(DrawMode.TRANSLATE);
-                }
-              }));
+          selectShape(e.getPoint()).ifPresent(shape -> {
+            shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
+              if (anchor == Anchor.Rotate) {
+                setTransformer(new Rotator(shape));
+                setDrawMode(DrawMode.ROTATE);
+              } else {
+                setTransformer(new Resizer(shape));
+                setDrawMode(DrawMode.RESIZE);
+              }
+            }, () -> {
+              if (shape.onShape(e.getPoint())) {
+                setTransformer(new Translator(shape));
+                setDrawMode(DrawMode.TRANSLATE);
+              }
+            });
+          });
         } else {
           initDraw();
           setTransformer(new Drawer(currentShape));

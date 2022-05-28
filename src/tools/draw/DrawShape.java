@@ -88,8 +88,16 @@ public abstract class DrawShape implements Serializable {
     this.fillColor = fillColor;
   }
 
+  public int getLineSize() {
+    return this.serializableStroke.getLineSize();
+  }
+
   public void setLineSize(int lineSize) {
     this.serializableStroke.setLineSize(lineSize);
+  }
+
+  public int getDashSize() {
+    return this.serializableStroke.getDashSize();
   }
 
   public void setDashSize(int dashSize) {
