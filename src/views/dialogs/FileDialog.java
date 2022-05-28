@@ -27,6 +27,9 @@ public class FileDialog {
 
   private FileDialog() {
     fileChooser = new JFileChooser();
+    fileChooser.setFileFilter(FileStore.filter);
+    fileChooser.setAcceptAllFileFilterUsed(false);
+
     fileStore = new FileStore();
     file = null;
     drawingPanel = DrawingPanel.getInstance();

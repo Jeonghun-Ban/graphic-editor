@@ -6,8 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileStore {
+
+  public static FileNameExtensionFilter filter =
+      new FileNameExtensionFilter("graphic editor(.grt)", "grt");
 
   public void save(File file, Object object) throws IOException {
     FileOutputStream fileOutputStream = new FileOutputStream(file);
