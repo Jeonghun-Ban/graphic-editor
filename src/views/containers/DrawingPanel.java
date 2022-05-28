@@ -44,10 +44,6 @@ public class DrawingPanel extends JPanel implements Printable {
   private DrawShape currentShape;
   private DrawShape selectedShape;
   private Transformer transformer;
-  private Color lineColor;
-  private Color fillColor;
-  private int lineSize;
-  private int dashSize;
   private DrawMode drawMode;
 
   private DrawingPanel() {
@@ -58,7 +54,6 @@ public class DrawingPanel extends JPanel implements Printable {
     transformer = null;
 
     setDrawMode(DrawMode.IDLE);
-    setDefaultStyle();
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
     addMouseListener(drawingHandler);
@@ -119,19 +114,35 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void setLineColor(Color color) {
-    this.lineColor = color;
+    getSelectedShape().ifPresent(shape -> {
+      shape.setLineColor(color);
+      setUpdated(true);
+      repaint();
+    });
   }
 
   public void setFillColor(Color color) {
-    this.fillColor = color;
+    getSelectedShape().ifPresent(shape -> {
+      shape.setFillColor(color);
+      setUpdated(true);
+      repaint();
+    });
   }
 
   public void setLineSize(int lineSize) {
-    this.lineSize = lineSize;
+    getSelectedShape().ifPresent(shape -> {
+      shape.setLineSize(lineSize);
+      setUpdated(true);
+      repaint();
+    });
   }
 
   public void setDashSize(int dashSize) {
-    this.dashSize = dashSize;
+    getSelectedShape().ifPresent(shape -> {
+      shape.setDashSize(dashSize);
+      setUpdated(true);
+      repaint();
+    });
   }
 
   public void setDefaultStyle() {
@@ -151,10 +162,6 @@ public class DrawingPanel extends JPanel implements Printable {
   private void initDraw() {
     unselectShapes();
     currentShape = currentShape.clone();
-    currentShape.setLineSize(lineSize);
-    currentShape.setDashSize(dashSize);
-    currentShape.setLineColor(lineColor);
-    currentShape.setFillColor(fillColor);
   }
 
   public void clear() {
