@@ -97,7 +97,8 @@ public abstract class DrawShape implements Serializable {
   }
 
   public boolean onShape(Point point) {
-    return this.shape.intersects(point.x, point.y, SHAPE_INTERSECT_WIDTH, SHAPE_INTERSECT_HEIGHT);
+    return shape.intersects(point.x, point.y, SHAPE_INTERSECT_WIDTH, SHAPE_INTERSECT_HEIGHT)
+        || onAnchor(point).isPresent();
   }
 
   public Optional<Anchor> onAnchor(Point point) {

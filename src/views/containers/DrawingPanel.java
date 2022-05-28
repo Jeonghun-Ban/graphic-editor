@@ -224,6 +224,7 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
         if (currentShape instanceof Selection) {
+          selectShape(e.getPoint());
           getSelectedShape().ifPresent(
               shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
                 if (anchor == Anchor.Rotate) {
@@ -277,8 +278,6 @@ public class DrawingPanel extends JPanel implements Printable {
             getTransformer().ifPresent(Transformer::finish);
           }
         }
-      } else if (currentShape instanceof Selection) {
-        selectShape(e.getPoint());
       }
     }
 
