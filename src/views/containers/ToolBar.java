@@ -2,10 +2,6 @@ package views.containers;
 
 import static global.Constants.DASH_SIZE_MODEL;
 import static global.Constants.DASH_SIZE_SPINNER;
-import static global.Constants.ICON_RESOURCE_FORMAT;
-import static global.Constants.ICON_RESOURCE_GENERAL_PATH;
-import static global.Constants.ICON_RESOURCE_PRESSED_PATH;
-import static global.Constants.ICON_RESOURCE_ROOT_PATH;
 import static global.Constants.LINE_SIZE_SPINNER;
 import static global.Constants.LiNE_SIZE_MODEL;
 
@@ -14,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
@@ -72,22 +67,15 @@ public class ToolBar extends JToolBar {
   }
 
   public void createRadioBtns() {
-    Arrays.stream(DrawTool.values()).forEach(value -> {
+    Arrays.stream(DrawTool.values()).forEach(item -> {
       JRadioButton button = new JRadioButton();
-      button.setActionCommand(value.name());
-      button.setIcon(getIcon(value.name().toLowerCase(), false));
-      button.setSelectedIcon(getIcon(value.name().toLowerCase(), true));
+      button.setActionCommand(item.name());
+      button.setIcon(item.getIcon(false));
+      button.setSelectedIcon(item.getIcon(true));
       this.add(button);
       buttonGroup.add(button);
       button.addActionListener(radioBtnsHandler);
     });
-  }
-
-
-  private ImageIcon getIcon(String iconName, boolean isPressed) {
-    return new ImageIcon(ICON_RESOURCE_ROOT_PATH.concat(
-            isPressed ? ICON_RESOURCE_PRESSED_PATH : ICON_RESOURCE_GENERAL_PATH).concat(iconName)
-        .concat(ICON_RESOURCE_FORMAT));
   }
 
   public void createSpinner(String label, JSpinner spinner) {
