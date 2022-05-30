@@ -57,11 +57,11 @@ public class ToolBar extends JToolBar {
     return toolBar;
   }
 
-  public void updateLineSizeSpinner(int lineSize) {
+  public void setLineSize(int lineSize) {
     lineSizeSpinner.setValue(lineSize);
   }
 
-  public void updateDashSizeSpinner(int dashSize) {
+  public void setDashSize(int dashSize) {
     dashSizeSpinner.setValue(dashSize);
   }
 

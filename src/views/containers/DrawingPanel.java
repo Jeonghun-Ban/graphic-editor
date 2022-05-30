@@ -208,8 +208,8 @@ public class DrawingPanel extends JPanel implements Printable {
     setSelectedShape(drawShape);
     drawShape.setSelected(true);
 
-    ToolBar.getInstance().updateDashSizeSpinner(drawShape.getDashSize());
-    ToolBar.getInstance().updateLineSizeSpinner(drawShape.getLineSize());
+    ToolBar.getInstance().setDashSize(drawShape.getDashSize());
+    ToolBar.getInstance().setLineSize(drawShape.getLineSize());
 
     repaint();
   }
