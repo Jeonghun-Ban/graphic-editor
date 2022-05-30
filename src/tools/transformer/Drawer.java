@@ -33,6 +33,5 @@ public class Drawer extends Transformer {
     super.finish();
     drawingPanel.getDrawShapes().add(drawShape);
     drawingPanel.selectShape(drawShape);
-    drawingPanel.setDefaultStyle();
   }
 }

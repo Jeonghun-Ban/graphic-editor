@@ -1,10 +1,6 @@
 package views.containers;
 
 import static global.Constants.DEFAULT_BACKGROUND_COLOR;
-import static global.Constants.DEFAULT_DASH_SIZE;
-import static global.Constants.DEFAULT_FILL_COLOR;
-import static global.Constants.DEFAULT_LINE_COLOR;
-import static global.Constants.DEFAULT_LINE_SIZE;
 
 import global.DrawMode;
 import java.awt.Color;
@@ -147,13 +143,6 @@ public class DrawingPanel extends JPanel implements Printable {
       setUpdated(true);
       repaint();
     });
-  }
-
-  public void setDefaultStyle() {
-    setLineColor(DEFAULT_LINE_COLOR);
-    setFillColor(DEFAULT_FILL_COLOR);
-    setLineSize(DEFAULT_LINE_SIZE);
-    setDashSize(DEFAULT_DASH_SIZE);
   }
 
   @Override
