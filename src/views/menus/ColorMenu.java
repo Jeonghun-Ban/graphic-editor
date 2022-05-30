@@ -17,7 +17,6 @@ public class ColorMenu extends JMenu {
 
   private ColorMenu() {
     super(COLOR_MENU_TITLE);
-
     ActionHandler actionHandler = new ActionHandler();
     createMenuItems(actionHandler);
   }
