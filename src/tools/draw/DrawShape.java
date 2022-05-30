@@ -80,8 +80,16 @@ public abstract class DrawShape implements Serializable {
     this.selected = selected;
   }
 
+  public Color getLineColor() {
+    return this.lineColor;
+  }
+
   public void setLineColor(Color lineColor) {
     this.lineColor = lineColor;
+  }
+
+  public Color getFillColor() {
+    return this.fillColor;
   }
 
   public void setFillColor(Color fillColor) {

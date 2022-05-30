@@ -31,6 +31,7 @@ import tools.transformer.Rotator;
 import tools.transformer.Transformer;
 import tools.transformer.Translator;
 import utils.CursorManager;
+import views.dialogs.ColorDialog;
 
 
 public class DrawingPanel extends JPanel implements Printable {
@@ -210,6 +211,8 @@ public class DrawingPanel extends JPanel implements Printable {
 
     ToolBar.getInstance().setDashSize(drawShape.getDashSize());
     ToolBar.getInstance().setLineSize(drawShape.getLineSize());
+    ColorDialog.getInstance().setLineColor(drawShape.getLineColor());
+    ColorDialog.getInstance().setFillColor(drawShape.getFillColor());
 
     repaint();
   }

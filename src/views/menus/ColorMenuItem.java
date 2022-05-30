@@ -3,8 +3,8 @@ package views.menus;
 import views.dialogs.ColorDialog;
 
 public enum ColorMenuItem {
-  SetLineColor("Set Line Color", (() -> ColorDialog.getInstance().setLineColor())),
-  SetFillColor("Set Fill Color", (() -> ColorDialog.getInstance().setFillColor()));
+  SetLineColor("Set Line Color", (() -> ColorDialog.getInstance().updateLineColor())),
+  SetFillColor("Set Fill Color", (() -> ColorDialog.getInstance().updateFillColor()));
 
   private final String label;
   private final Runnable operator;
