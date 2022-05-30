@@ -39,14 +39,14 @@ public class ColorDialog {
   public void updateLineColor() {
     lineColor = JColorChooser.showDialog(null, LINE_COLOR_TITLE, lineColor);
     if (lineColor != null) {
-      drawingPanel.setLineColor(lineColor);
+      drawingPanel.updateLineColor(lineColor);
     }
   }
 
   public void updateFillColor() {
     fillColor = JColorChooser.showDialog(null, FILL_COLOR_TITLE, fillColor);
     if (fillColor != null) {
-      drawingPanel.setFillColor(fillColor);
+      drawingPanel.updateFillColor(fillColor);
     }
   }
 }

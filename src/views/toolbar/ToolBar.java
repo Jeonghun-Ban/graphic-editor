@@ -131,9 +131,9 @@ public class ToolBar extends JToolBar {
       int spinnerValue = (int) spinner.getValue();
 
       if (spinnerModel == LiNE_SIZE_MODEL) {
-        drawingPanel.setLineSize(spinnerValue);
+        drawingPanel.updateLineSize(spinnerValue);
       } else if (spinnerModel == DASH_SIZE_MODEL) {
-        drawingPanel.setDashSize(spinnerValue);
+        drawingPanel.updateDashSize(spinnerValue);
       }
     }
   }

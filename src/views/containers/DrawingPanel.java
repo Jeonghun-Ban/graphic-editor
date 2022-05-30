@@ -113,7 +113,7 @@ public class DrawingPanel extends JPanel implements Printable {
     return Optional.ofNullable(this.transformer);
   }
 
-  public void setLineColor(Color color) {
+  public void updateLineColor(Color color) {
     getSelectedShape().ifPresent(shape -> {
       shape.setLineColor(color);
       setUpdated(true);
@@ -121,7 +121,7 @@ public class DrawingPanel extends JPanel implements Printable {
     });
   }
 
-  public void setFillColor(Color color) {
+  public void updateFillColor(Color color) {
     getSelectedShape().ifPresent(shape -> {
       shape.setFillColor(color);
       setUpdated(true);
@@ -129,7 +129,7 @@ public class DrawingPanel extends JPanel implements Printable {
     });
   }
 
-  public void setLineSize(int lineSize) {
+  public void updateLineSize(int lineSize) {
     getSelectedShape().ifPresent(shape -> {
       shape.setLineSize(lineSize);
       setUpdated(true);
@@ -137,7 +137,7 @@ public class DrawingPanel extends JPanel implements Printable {
     });
   }
 
-  public void setDashSize(int dashSize) {
+  public void updateDashSize(int dashSize) {
     getSelectedShape().ifPresent(shape -> {
       shape.setDashSize(dashSize);
       setUpdated(true);
