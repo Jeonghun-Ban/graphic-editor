@@ -29,6 +29,7 @@ public class EditMenu extends JMenu {
       JMenuItem menuItem = new JMenuItem();
       menuItem.setText(item.toString());
       menuItem.setToolTipText(item.toString());
+      menuItem.setAccelerator(item.getKeyStroke());
       this.add(menuItem);
     });
   }
