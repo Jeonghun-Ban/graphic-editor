@@ -1,6 +1,6 @@
-package views.menus;
+package views.menubar;
 
-import static global.Constants.FILE_MENU_TITLE;
+import static global.Constants.EDIT_MENU_TITLE;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,28 +8,29 @@ import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import views.menubar.item.EditMenuItem;
 
-public class FileMenu extends JMenu {
+public class EditMenu extends JMenu {
 
   private static final long serialVersionUID = 1L;
 
-  private static FileMenu fileMenu;
+  private static EditMenu editMenu;
 
-  private FileMenu() {
-    super(FILE_MENU_TITLE);
+  private EditMenu() {
+    super(EDIT_MENU_TITLE);
     ActionHandler actionHandler = new ActionHandler();
     createMenuItems(actionHandler);
   }
 
-  public static FileMenu getInstance() {
-    if (fileMenu == null) {
-      fileMenu = new FileMenu();
+  public static EditMenu getInstance() {
+    if (editMenu == null) {
+      editMenu = new EditMenu();
     }
-    return fileMenu;
+    return editMenu;
   }
 
   private void createMenuItems(ActionHandler actionHandler) {
-    Arrays.stream(FileMenuItem.values()).forEach(item -> {
+    Arrays.stream(EditMenuItem.values()).forEach(item -> {
       JMenuItem menuItem = new JMenuItem();
       menuItem.setText(item.toString());
       menuItem.addActionListener(actionHandler);
@@ -40,14 +41,13 @@ public class FileMenu extends JMenu {
     });
   }
 
-  static class ActionHandler implements ActionListener {
+  private static class ActionHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      Optional<FileMenuItem> fileMenuItem = Arrays.stream(FileMenuItem.values())
+      Optional<EditMenuItem> editMenuItem = Arrays.stream(EditMenuItem.values())
           .filter(item -> e.getActionCommand().equals(item.name())).findFirst();
-      fileMenuItem.ifPresent(FileMenuItem::operate);
+      editMenuItem.ifPresent(EditMenuItem::operate);
     }
   }
 }
-

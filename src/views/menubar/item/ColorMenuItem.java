@@ -1,4 +1,4 @@
-package views.menus;
+package views.menubar.item;
 
 import views.dialogs.ColorDialog;
 

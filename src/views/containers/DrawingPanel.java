@@ -6,7 +6,7 @@ import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
 import static global.Constants.DEFAULT_LINE_SIZE;
 
-import enums.DrawMode;
+import global.DrawMode;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -32,6 +32,7 @@ import tools.transformer.Transformer;
 import tools.transformer.Translator;
 import utils.CursorManager;
 import views.dialogs.ColorDialog;
+import views.toolbar.ToolBar;
 
 
 public class DrawingPanel extends JPanel implements Printable {

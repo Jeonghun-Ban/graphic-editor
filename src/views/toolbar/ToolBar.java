@@ -1,11 +1,10 @@
-package views.containers;
+package views.toolbar;
 
 import static global.Constants.DASH_SIZE_MODEL;
 import static global.Constants.DASH_SIZE_SPINNER;
 import static global.Constants.LINE_SIZE_SPINNER;
 import static global.Constants.LiNE_SIZE_MODEL;
 
-import enums.DrawTool;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import views.containers.DrawingPanel;
 
 public class ToolBar extends JToolBar {
 

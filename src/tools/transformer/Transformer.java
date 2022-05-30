@@ -1,6 +1,6 @@
 package tools.transformer;
 
-import enums.DrawMode;
+import global.DrawMode;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import tools.draw.DrawShape;

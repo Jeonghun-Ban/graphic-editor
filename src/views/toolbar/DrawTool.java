@@ -1,4 +1,4 @@
-package enums;
+package views.toolbar;
 
 import static global.Constants.ICON_RESOURCE_FORMAT;
 import static global.Constants.ICON_RESOURCE_GENERAL_PATH;

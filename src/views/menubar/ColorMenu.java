@@ -1,6 +1,6 @@
-package views.menus;
+package views.menubar;
 
-import static global.Constants.EDIT_MENU_TITLE;
+import static global.Constants.COLOR_MENU_TITLE;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,34 +8,34 @@ import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import views.menubar.item.ColorMenuItem;
 
-public class EditMenu extends JMenu {
+public class ColorMenu extends JMenu {
 
   private static final long serialVersionUID = 1L;
 
-  private static EditMenu editMenu;
+  private static ColorMenu colorMenu;
 
-  private EditMenu() {
-    super(EDIT_MENU_TITLE);
+  private ColorMenu() {
+    super(COLOR_MENU_TITLE);
     ActionHandler actionHandler = new ActionHandler();
     createMenuItems(actionHandler);
   }
 
-  public static EditMenu getInstance() {
-    if (editMenu == null) {
-      editMenu = new EditMenu();
+  public static ColorMenu getInstance() {
+    if (colorMenu == null) {
+      colorMenu = new ColorMenu();
     }
-    return editMenu;
+    return colorMenu;
   }
 
   private void createMenuItems(ActionHandler actionHandler) {
-    Arrays.stream(EditMenuItem.values()).forEach(item -> {
+    Arrays.stream(ColorMenuItem.values()).forEach(item -> {
       JMenuItem menuItem = new JMenuItem();
       menuItem.setText(item.toString());
       menuItem.addActionListener(actionHandler);
       menuItem.setActionCommand(item.name());
       menuItem.setToolTipText(item.toString());
-      menuItem.setAccelerator(item.getKeyStroke());
       this.add(menuItem);
     });
   }
@@ -44,9 +44,10 @@ public class EditMenu extends JMenu {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      Optional<EditMenuItem> editMenuItem = Arrays.stream(EditMenuItem.values())
+      Optional<ColorMenuItem> colorMenuItem = Arrays.stream(ColorMenuItem.values())
           .filter(item -> e.getActionCommand().equals(item.name())).findFirst();
-      editMenuItem.ifPresent(EditMenuItem::operate);
+      colorMenuItem.ifPresent(ColorMenuItem::operate);
     }
   }
 }
+

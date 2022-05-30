@@ -1,6 +1,6 @@
-package views.menus;
+package views.menubar;
 
-import static global.Constants.COLOR_MENU_TITLE;
+import static global.Constants.FILE_MENU_TITLE;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,44 +8,46 @@ import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import views.menubar.item.FileMenuItem;
 
-public class ColorMenu extends JMenu {
+public class FileMenu extends JMenu {
 
   private static final long serialVersionUID = 1L;
 
-  private static ColorMenu colorMenu;
+  private static FileMenu fileMenu;
 
-  private ColorMenu() {
-    super(COLOR_MENU_TITLE);
+  private FileMenu() {
+    super(FILE_MENU_TITLE);
     ActionHandler actionHandler = new ActionHandler();
     createMenuItems(actionHandler);
   }
 
-  public static ColorMenu getInstance() {
-    if (colorMenu == null) {
-      colorMenu = new ColorMenu();
+  public static FileMenu getInstance() {
+    if (fileMenu == null) {
+      fileMenu = new FileMenu();
     }
-    return colorMenu;
+    return fileMenu;
   }
 
   private void createMenuItems(ActionHandler actionHandler) {
-    Arrays.stream(ColorMenuItem.values()).forEach(item -> {
+    Arrays.stream(FileMenuItem.values()).forEach(item -> {
       JMenuItem menuItem = new JMenuItem();
       menuItem.setText(item.toString());
       menuItem.addActionListener(actionHandler);
       menuItem.setActionCommand(item.name());
       menuItem.setToolTipText(item.toString());
+      menuItem.setAccelerator(item.getKeyStroke());
       this.add(menuItem);
     });
   }
 
-  private static class ActionHandler implements ActionListener {
+  static class ActionHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      Optional<ColorMenuItem> colorMenuItem = Arrays.stream(ColorMenuItem.values())
+      Optional<FileMenuItem> fileMenuItem = Arrays.stream(FileMenuItem.values())
           .filter(item -> e.getActionCommand().equals(item.name())).findFirst();
-      colorMenuItem.ifPresent(ColorMenuItem::operate);
+      fileMenuItem.ifPresent(FileMenuItem::operate);
     }
   }
 }
