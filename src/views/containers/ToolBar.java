@@ -31,7 +31,7 @@ public class ToolBar extends JToolBar {
   private static final JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
 
   private final ButtonGroup buttonGroup;
-  private final ToolBarHandler toolBarHandler;
+  private final RadioBtnsHandler radioBtnsHandler;
   private final SpinnerHandler spinnerHandler;
 
   private final DrawingPanel drawingPanel;
@@ -40,10 +40,11 @@ public class ToolBar extends JToolBar {
 
   private ToolBar() {
     buttonGroup = new ButtonGroup();
-    toolBarHandler = new ToolBarHandler();
+    radioBtnsHandler = new RadioBtnsHandler();
     spinnerHandler = new SpinnerHandler();
 
-    createToolButtons();
+    createRadioBtns();
+
     createSpinner(LINE_SIZE_SPINNER, lineSizeSpinner);
     createSpinner(DASH_SIZE_SPINNER, dashSizeSpinner);
 
@@ -70,7 +71,7 @@ public class ToolBar extends JToolBar {
     defaultButton.doClick();
   }
 
-  public void createToolButtons() {
+  public void createRadioBtns() {
     Arrays.stream(DrawTool.values()).forEach(value -> {
       JRadioButton button = new JRadioButton();
       button.setActionCommand(value.name());
@@ -78,9 +79,10 @@ public class ToolBar extends JToolBar {
       button.setSelectedIcon(getIcon(value.name().toLowerCase(), true));
       this.add(button);
       buttonGroup.add(button);
-      button.addActionListener(toolBarHandler);
+      button.addActionListener(radioBtnsHandler);
     });
   }
+
 
   private ImageIcon getIcon(String iconName, boolean isPressed) {
     return new ImageIcon(ICON_RESOURCE_ROOT_PATH.concat(
@@ -94,19 +96,15 @@ public class ToolBar extends JToolBar {
     spinner.addChangeListener(spinnerHandler);
   }
 
-  private class ToolBarHandler implements ActionListener {
+  private class RadioBtnsHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
       JRadioButton button = (JRadioButton) e.getSource();
       String command = button.getActionCommand();
       try {
-        if (command.equals(DrawTool.Remove.toString())) {
-          drawingPanel.remove();
-        } else {
-          DrawTool drawTool = DrawTool.valueOf(command);
-          drawingPanel.setCurrentShape(drawTool.getDrawShape());
-        }
+        DrawTool drawTool = DrawTool.valueOf(command);
+        drawingPanel.setCurrentShape(drawTool.getDrawShape());
       } catch (Exception ex) {
         ex.printStackTrace();
       }

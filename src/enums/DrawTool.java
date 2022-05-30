@@ -15,7 +15,7 @@ public enum DrawTool {
   Oval(new Oval()),
   Line(new Line()),
   Polygon(new Polygon()),
-  Remove(null);
+  ;
 
   private final DrawShape drawShape;
 
