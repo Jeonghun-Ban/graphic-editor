@@ -80,6 +80,7 @@ public class ToolBar extends JToolBar {
       buttonGroup.add(button);
       button.addActionListener(drawToolHandler);
     });
+    this.addSeparator();
   }
 
   public void createEditTool() {
@@ -90,6 +91,7 @@ public class ToolBar extends JToolBar {
       this.add(button);
       button.addActionListener(editToolHandler);
     });
+    this.addSeparator();
   }
 
   public void createSpinner(String label, JSpinner spinner) {
