@@ -26,7 +26,7 @@ public class ToolBar extends JToolBar {
   private static final JSpinner dashSizeSpinner = new JSpinner(DASH_SIZE_MODEL);
 
   private final ButtonGroup buttonGroup;
-  private final RadioBtnsHandler radioBtnsHandler;
+  private final DrawToolHandler drawToolHandler;
   private final SpinnerHandler spinnerHandler;
 
   private final DrawingPanel drawingPanel;
@@ -35,10 +35,10 @@ public class ToolBar extends JToolBar {
 
   private ToolBar() {
     buttonGroup = new ButtonGroup();
-    radioBtnsHandler = new RadioBtnsHandler();
+    drawToolHandler = new DrawToolHandler();
     spinnerHandler = new SpinnerHandler();
 
-    createRadioBtns();
+    createDrawTool();
 
     createSpinner(LINE_SIZE_SPINNER, lineSizeSpinner);
     createSpinner(DASH_SIZE_SPINNER, dashSizeSpinner);
@@ -66,7 +66,7 @@ public class ToolBar extends JToolBar {
     defaultButton.doClick();
   }
 
-  public void createRadioBtns() {
+  public void createDrawTool() {
     Arrays.stream(DrawTool.values()).forEach(item -> {
       JRadioButton button = new JRadioButton();
       button.setActionCommand(item.name());
@@ -74,7 +74,7 @@ public class ToolBar extends JToolBar {
       button.setSelectedIcon(item.getIcon(true));
       this.add(button);
       buttonGroup.add(button);
-      button.addActionListener(radioBtnsHandler);
+      button.addActionListener(drawToolHandler);
     });
   }
 
@@ -84,7 +84,7 @@ public class ToolBar extends JToolBar {
     spinner.addChangeListener(spinnerHandler);
   }
 
-  private class RadioBtnsHandler implements ActionListener {
+  private class DrawToolHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
