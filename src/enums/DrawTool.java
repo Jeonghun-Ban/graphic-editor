@@ -9,22 +9,22 @@ import tools.draw.Rectangle;
 import tools.draw.Selection;
 
 public enum DrawTool {
-  Selection(new Selection()),
-  Brush(new Brush()),
-  Rectangle(new Rectangle()),
-  Oval(new Oval()),
-  Line(new Line()),
-  Polygon(new Polygon()),
+  Selection(Selection.class),
+  Brush(Brush.class),
+  Rectangle(Rectangle.class),
+  Oval(Oval.class),
+  Line(Line.class),
+  Polygon(Polygon.class),
   ;
 
-  private final DrawShape drawShape;
+  private final Class<? extends DrawShape> shapeClass;
 
-  DrawTool(DrawShape drawShape) {
-    this.drawShape = drawShape;
+  DrawTool(Class<? extends DrawShape> shapeClass) {
+    this.shapeClass = shapeClass;
   }
 
-  public DrawShape getDrawShape() {
-    return this.drawShape;
+  public Class<? extends DrawShape> getShapeClass() {
+    return this.shapeClass;
   }
 
   @Override

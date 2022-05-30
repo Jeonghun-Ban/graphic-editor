@@ -104,7 +104,7 @@ public class ToolBar extends JToolBar {
       String command = button.getActionCommand();
       try {
         DrawTool drawTool = DrawTool.valueOf(command);
-        drawingPanel.setCurrentShape(drawTool.getDrawShape());
+        drawingPanel.setShapeClass(drawTool.getShapeClass());
       } catch (Exception ex) {
         ex.printStackTrace();
       }

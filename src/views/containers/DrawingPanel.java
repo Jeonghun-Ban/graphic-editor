@@ -40,6 +40,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private static DrawingPanel drawingPanel;
 
+  private Class<? extends DrawShape> shapeClass;
   private boolean updated;
   private List<DrawShape> drawShapes;
   private DrawShape currentShape;
@@ -51,6 +52,7 @@ public class DrawingPanel extends JPanel implements Printable {
     super();
     this.setBackground(DEFAULT_BACKGROUND_COLOR);
 
+    shapeClass = null;
     drawShapes = new ArrayList<>();
     transformer = null;
 
@@ -80,6 +82,11 @@ public class DrawingPanel extends JPanel implements Printable {
     return this.drawMode == drawMode;
   }
 
+  public void setShapeClass(Class<? extends DrawShape> shapeClass) {
+    drawMode = DrawMode.IDLE;
+    this.shapeClass = shapeClass;
+  }
+
   public void setDrawMode(DrawMode drawMode) {
     this.drawMode = drawMode;
   }
@@ -91,11 +98,6 @@ public class DrawingPanel extends JPanel implements Printable {
   public void setDrawShapes(List<DrawShape> drawShapes) {
     this.drawShapes = drawShapes;
     repaint();
-  }
-
-  public void setCurrentShape(DrawShape currentShape) {
-    this.currentShape = currentShape;
-    drawMode = DrawMode.IDLE;
   }
 
   private Optional<DrawShape> getSelectedShape() {
@@ -162,7 +164,11 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private void initDraw() {
     unselectShapes();
-    currentShape = currentShape.clone();
+    try {
+      currentShape = shapeClass.getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public void clear() {
@@ -184,7 +190,7 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private void changeCursor(Point point) {
-    if (currentShape instanceof Selection) {
+    if (shapeClass.equals(Selection.class)) {
       setCursor(
           onShape(point).isPresent() ? CursorManager.MOVE_CURSOR : CursorManager.DEFAULT_CURSOR);
       getSelectedShape().flatMap(shape -> shape.onAnchor(point))
@@ -239,7 +245,7 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
-        if (currentShape instanceof Selection) {
+        if (shapeClass.equals(Selection.class)) {
           selectShape(e.getPoint()).ifPresent(
               shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
                 if (anchor == Anchor.Rotate) {
