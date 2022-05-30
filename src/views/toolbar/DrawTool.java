@@ -5,7 +5,6 @@ import static global.Constants.ICON_RESOURCE_GENERAL_PATH;
 import static global.Constants.ICON_RESOURCE_PRESSED_PATH;
 import static global.Constants.ICON_RESOURCE_ROOT_PATH;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import tools.draw.Brush;
 import tools.draw.DrawShape;
@@ -44,9 +43,5 @@ public enum DrawTool {
             isPressed ? ICON_RESOURCE_PRESSED_PATH : ICON_RESOURCE_GENERAL_PATH)
         .concat(toString().toLowerCase())
         .concat(ICON_RESOURCE_FORMAT));
-  }
-
-  public Icon getIcon() {
-    return this.getIcon();
   }
 }
