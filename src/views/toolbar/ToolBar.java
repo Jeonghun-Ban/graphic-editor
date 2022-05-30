@@ -88,6 +88,7 @@ public class ToolBar extends JToolBar {
       JButton button = new JButton();
       button.setActionCommand(item.name());
       button.setIcon(item.getIcon());
+      button.setBorderPainted(false);
       this.add(button);
       button.addActionListener(editToolHandler);
     });
