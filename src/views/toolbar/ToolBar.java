@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
@@ -27,6 +28,7 @@ public class ToolBar extends JToolBar {
 
   private final ButtonGroup buttonGroup;
   private final DrawToolHandler drawToolHandler;
+  private final EditToolHandler editToolHandler;
   private final SpinnerHandler spinnerHandler;
 
   private final DrawingPanel drawingPanel;
@@ -36,9 +38,11 @@ public class ToolBar extends JToolBar {
   private ToolBar() {
     buttonGroup = new ButtonGroup();
     drawToolHandler = new DrawToolHandler();
+    editToolHandler = new EditToolHandler();
     spinnerHandler = new SpinnerHandler();
 
     createDrawTool();
+    createEditTool();
 
     createSpinner(LINE_SIZE_SPINNER, lineSizeSpinner);
     createSpinner(DASH_SIZE_SPINNER, dashSizeSpinner);
@@ -78,6 +82,16 @@ public class ToolBar extends JToolBar {
     });
   }
 
+  public void createEditTool() {
+    Arrays.stream(EditTool.values()).forEach(item -> {
+      JButton button = new JButton();
+      button.setActionCommand(item.name());
+      button.setIcon(item.getIcon());
+      this.add(button);
+      button.addActionListener(editToolHandler);
+    });
+  }
+
   public void createSpinner(String label, JSpinner spinner) {
     this.add(new JLabel(label));
     this.add(spinner);
@@ -96,6 +110,15 @@ public class ToolBar extends JToolBar {
       } catch (Exception ex) {
         ex.printStackTrace();
       }
+    }
+  }
+
+  private class EditToolHandler implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      JButton button = (JButton) e.getSource();
+      EditTool.valueOf(button.getActionCommand()).operate();
     }
   }
 

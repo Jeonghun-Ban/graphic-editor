@@ -41,7 +41,7 @@ public enum DrawTool {
   public ImageIcon getIcon(boolean isPressed) {
     return new ImageIcon(ICON_RESOURCE_ROOT_PATH.concat(
             isPressed ? ICON_RESOURCE_PRESSED_PATH : ICON_RESOURCE_GENERAL_PATH)
-        .concat(toString().toLowerCase())
+        .concat(this.name().toLowerCase())
         .concat(ICON_RESOURCE_FORMAT));
   }
 }
