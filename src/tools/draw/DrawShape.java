@@ -34,19 +34,19 @@ public abstract class DrawShape implements Serializable {
   protected Shape shape;
   protected Point startPoint;
 
-  protected Color lineColor;
-  protected Color fillColor;
+  protected Color lineColor = DEFAULT_LINE_COLOR;
+  protected Color fillColor = DEFAULT_FILL_COLOR;
 
   protected boolean selected;
 
   public DrawShape(Shape shape) {
+    this.shape = shape;
     this.affineTransform = new CustomAffineTransform();
     this.serializableStroke = new SerializableStroke();
     this.anchorList = new AnchorList();
 
-    this.shape = shape;
-
-    setDefaultStyle();
+    setLineSize(DEFAULT_LINE_SIZE);
+    setDashSize(DEFAULT_DASH_SIZE);
     setSelected(false);
   }
 
@@ -67,13 +67,6 @@ public abstract class DrawShape implements Serializable {
 
   public Rectangle getBounds() {
     return shape.getBounds();
-  }
-
-  public void setDefaultStyle() {
-    setLineColor(DEFAULT_LINE_COLOR);
-    setFillColor(DEFAULT_FILL_COLOR);
-    setLineSize(DEFAULT_LINE_SIZE);
-    setDashSize(DEFAULT_DASH_SIZE);
   }
 
   public void setSelected(boolean selected) {

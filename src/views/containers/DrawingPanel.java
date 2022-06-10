@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
@@ -37,9 +38,12 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private static DrawingPanel drawingPanel;
 
-  private Class<? extends DrawShape> shapeClass;
-  private boolean updated;
   private List<DrawShape> drawShapes;
+  private BufferedImage bufferedImage;
+  private Graphics2D graphicsBufferedImage;
+
+  private boolean updated;
+  private Class<? extends DrawShape> shapeClass;
   private DrawShape currentShape;
   private DrawShape selectedShape;
   private Transformer transformer;
@@ -47,12 +51,12 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private DrawingPanel() {
     super();
-    this.setBackground(DEFAULT_BACKGROUND_COLOR);
 
-    shapeClass = null;
-    drawShapes = new ArrayList<>();
-    transformer = null;
+    this.drawShapes = new ArrayList<>();
+    this.shapeClass = null;
+    this.transformer = null;
 
+    setBackground(DEFAULT_BACKGROUND_COLOR);
     setDrawMode(DrawMode.IDLE);
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
@@ -65,6 +69,13 @@ public class DrawingPanel extends JPanel implements Printable {
       drawingPanel = new DrawingPanel();
     }
     return drawingPanel;
+  }
+
+  public void initialize() {
+    this.bufferedImage = (BufferedImage) this.createImage(
+        this.getWidth(), this.getHeight());
+    this.graphicsBufferedImage = this.bufferedImage.createGraphics();
+    this.graphicsBufferedImage.setBackground(DEFAULT_BACKGROUND_COLOR);
   }
 
   public boolean isUpdated() {
@@ -146,10 +157,12 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   @Override
-  public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    Graphics2D g2D = (Graphics2D) g;
-    drawShapes.forEach(shape -> shape.draw(g2D));
+  public void paint(Graphics g) {
+    super.paint(g);
+    this.graphicsBufferedImage.clearRect(0, 0, this.bufferedImage.getWidth(),
+        this.bufferedImage.getHeight());
+    drawShapes.forEach(shape -> shape.draw(graphicsBufferedImage));
+    g.drawImage(this.bufferedImage, 0, 0, this);
   }
 
   private void initDraw() {
@@ -264,7 +277,10 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mouseDragged(MouseEvent e) {
       if (!isDrawMode(DrawMode.IDLE)) {
         getTransformer().ifPresent(
-            transformer -> transformer.transform((Graphics2D) getGraphics(), e.getPoint()));
+            transformer -> {
+              transformer.transform(graphicsBufferedImage, e.getPoint());
+              getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
+            });
       }
       if (isDrawMode(DrawMode.TRANSLATE) || isDrawMode(DrawMode.RESIZE) || isDrawMode(
           DrawMode.ROTATE)) {
@@ -297,7 +313,7 @@ public class DrawingPanel extends JPanel implements Printable {
       changeCursor(e.getPoint());
       if (isDrawMode(DrawMode.POLYGON)) {
         getTransformer().ifPresent(
-            transformer -> transformer.transform((Graphics2D) getGraphics(), e.getPoint()));
+            transformer -> transformer.transform(graphicsBufferedImage, e.getPoint()));
       }
     }
   }

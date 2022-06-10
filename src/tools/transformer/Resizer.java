@@ -1,7 +1,5 @@
 package tools.transformer;
 
-import static global.Constants.DEFAULT_BACKGROUND_COLOR;
-
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -39,7 +37,6 @@ public class Resizer extends Transformer {
           startPoint, currentPoint, bounds);
       ScalingFactorDto scalingFactorDto = ScalingFactor.valueOf(anchor.name()).compute(request);
 
-      g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
       drawShape.scaleTo(scalingFactorDto);
       this.startPoint = currentPoint;
     }

@@ -18,8 +18,6 @@ public class Drawer extends Transformer {
 
   @Override
   public void transform(Graphics2D g2D, Point currentPoint) {
-    g2D.setXORMode(g2D.getBackground());
-    drawShape.draw(g2D);
     drawShape.setCurrentPoint(currentPoint);
     drawShape.draw(g2D);
   }
