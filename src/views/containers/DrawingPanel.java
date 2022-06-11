@@ -198,7 +198,7 @@ public class DrawingPanel extends JPanel implements Printable {
     boolean groupAble = false;
 
     Iterator<DrawShape> iterator = drawShapes.listIterator();
-    while(iterator.hasNext()) {
+    while (iterator.hasNext()) {
       DrawShape drawShape = iterator.next();
       if (drawShape.isSelected()) {
         drawShape.setSelected(false);
@@ -217,10 +217,10 @@ public class DrawingPanel extends JPanel implements Printable {
   public void unGroup() {
     List<DrawShape> tmpList = new ArrayList<>();
     Iterator<DrawShape> iterator = drawShapes.listIterator();
-    while(iterator.hasNext()) {
+    while (iterator.hasNext()) {
       DrawShape drawShape = iterator.next();
       if (drawShape instanceof Group && drawShape.isSelected()) {
-        ((Group)drawShape).getDrawShapes().forEach(childShape -> {
+        ((Group) drawShape).getDrawShapes().forEach(childShape -> {
           childShape.setSelected(true);
           tmpList.add(childShape);
         });
@@ -394,7 +394,10 @@ public class DrawingPanel extends JPanel implements Printable {
       changeCursor(e.getPoint());
       if (isDrawMode(DrawMode.POLYGON)) {
         getTransformer().ifPresent(
-            transformer -> transformer.transform(graphicsBufferedImage, e.getPoint()));
+            transformer -> {
+              transformer.transform(graphicsBufferedImage, e.getPoint());
+              getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
+            });
       }
     }
   }
