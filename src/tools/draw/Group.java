@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import tools.anchor.AnchorList;
 import utils.dto.ScalingFactorDto;
 
 public class Group extends DrawShape {
@@ -43,17 +42,6 @@ public class Group extends DrawShape {
   }
 
   @Override
-  public void setSelected(boolean selected) {
-    super.setSelected(selected);
-    if (selected) {
-      anchorList = new AnchorList();
-      anchorList.setBound(shape.getBounds());
-    } else {
-      anchorList = null;
-    }
-  }
-
-  @Override
   public void setLineColor(Color lineColor) {
     drawShapes.forEach(drawShape -> drawShape.setLineColor(lineColor));
   }
@@ -71,16 +59,6 @@ public class Group extends DrawShape {
   @Override
   public void setDashSize(int dashSize) {
     drawShapes.forEach(drawShape -> drawShape.setDashSize(dashSize));
-  }
-
-  @Override
-  public boolean onShape(Point point) {
-    for (DrawShape drawShape : drawShapes) {
-      if (drawShape.onShape(point)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   @Override
