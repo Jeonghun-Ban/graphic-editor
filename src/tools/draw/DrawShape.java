@@ -1,9 +1,7 @@
 package tools.draw;
 
-import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
-import static global.Constants.DEFAULT_LINE_SIZE;
 import static global.Constants.SHAPE_INTERSECT_HEIGHT;
 import static global.Constants.SHAPE_INTERSECT_WIDTH;
 
@@ -28,7 +26,7 @@ public abstract class DrawShape implements Serializable, Cloneable {
 
   protected final AffineTransform affineTransform;
   protected final SerializableStroke serializableStroke;
-  protected final AnchorList anchorList;
+  protected AnchorList anchorList;
 
   protected Shape shape;
   protected Point startPoint;
@@ -43,9 +41,6 @@ public abstract class DrawShape implements Serializable, Cloneable {
     this.affineTransform = new CustomAffineTransform();
     this.serializableStroke = new SerializableStroke();
     this.anchorList = new AnchorList();
-
-    setLineSize(DEFAULT_LINE_SIZE);
-    setDashSize(DEFAULT_DASH_SIZE);
     setSelected(false);
   }
 
@@ -59,13 +54,17 @@ public abstract class DrawShape implements Serializable, Cloneable {
     g2D.draw(shape);
 
     if (selected) {
-      Rectangle boundRectangle = shape.getBounds();
-      anchorList.draw(g2D, boundRectangle);
+      anchorList.setBound(shape.getBounds());
+      anchorList.draw(g2D);
     }
   }
 
   public Rectangle getBounds() {
     return shape.getBounds();
+  }
+
+  public boolean isSelected() {
+    return selected;
   }
 
   public void setSelected(boolean selected) {

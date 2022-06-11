@@ -17,16 +17,21 @@ public class AnchorList implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private final ArrayList<Ellipse2D> anchorList;
+  private Rectangle bound;
 
   public AnchorList() {
     this.anchorList = new ArrayList<>();
     Arrays.stream(Anchor.values()).forEach(anchor -> this.anchorList.add(new Ellipse2D.Double()));
   }
 
-  public void draw(Graphics2D g2D, Rectangle rectangle) {
+  public void setBound(Rectangle rectangle) {
+    this.bound = rectangle;
+  }
+
+  public void draw(Graphics2D g2D) {
     g2D.setStroke(ANCHOR_STROKE);
     Arrays.stream(Anchor.values()).forEach(anchor -> {
-      Ellipse2D ellipse2D = anchor.getBoundAnchor(this.anchorList.get(anchor.ordinal()), rectangle);
+      Ellipse2D ellipse2D = anchor.getBoundAnchor(this.anchorList.get(anchor.ordinal()), bound);
       g2D.setColor(DEFAULT_BACKGROUND_COLOR);
       g2D.fill(ellipse2D);
       g2D.setColor(DEFAULT_LINE_COLOR);

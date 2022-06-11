@@ -18,9 +18,9 @@ public enum EditMenuItem {
   Paste("Paste", KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.META_DOWN_MASK),
       () -> DrawingPanel.getInstance().paste()),
   Group("Group", KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.META_DOWN_MASK),
-      () -> {}),
+      () -> DrawingPanel.getInstance().group()),
   Ungroup("Ungroup", KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_DOWN_MASK),
-      () -> {});
+      () -> DrawingPanel.getInstance().unGroup());
 
   private final String label;
   private final KeyStroke keyStroke;

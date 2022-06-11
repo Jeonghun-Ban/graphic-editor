@@ -13,6 +13,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ import javax.swing.event.MouseInputAdapter;
 import tools.AnchorCursor;
 import tools.anchor.Anchor;
 import tools.draw.DrawShape;
+import tools.draw.Group;
 import tools.draw.Polygon;
 import tools.draw.Selection;
 import tools.edit.CopyManager;
@@ -188,6 +190,44 @@ public class DrawingPanel extends JPanel implements Printable {
 
   public void paste() {
     copyManager.paste();
+    repaint();
+  }
+
+  public void group() {
+    Group group = new Group();
+    boolean groupAble = false;
+
+    Iterator<DrawShape> iterator = drawShapes.listIterator();
+    while(iterator.hasNext()) {
+      DrawShape drawShape = iterator.next();
+      if (drawShape.isSelected()) {
+        drawShape.setSelected(false);
+        group.add(drawShape);
+        iterator.remove();
+        groupAble = true;
+      }
+    }
+    if (groupAble) {
+      group.setSelected(true);
+      drawShapes.add(group);
+    }
+    repaint();
+  }
+
+  public void unGroup() {
+    List<DrawShape> tmpList = new ArrayList<>();
+    Iterator<DrawShape> iterator = drawShapes.listIterator();
+    while(iterator.hasNext()) {
+      DrawShape drawShape = iterator.next();
+      if (drawShape instanceof Group && drawShape.isSelected()) {
+        ((Group)drawShape).getDrawShapes().forEach(childShape -> {
+          childShape.setSelected(true);
+          tmpList.add(childShape);
+        });
+        iterator.remove();
+      }
+    }
+    drawShapes.addAll(tmpList);
     repaint();
   }
 
