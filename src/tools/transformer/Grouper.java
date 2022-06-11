@@ -2,12 +2,12 @@ package tools.transformer;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.List;
 import tools.draw.DrawShape;
-import tools.draw.Polygon;
 
-public class Drawer extends Transformer {
+public class Grouper extends Transformer {
 
-  public Drawer(DrawShape drawShape) {
+  public Grouper(DrawShape drawShape) {
     super(drawShape);
   }
 
@@ -24,14 +24,10 @@ public class Drawer extends Transformer {
     drawShape.draw(g2D);
   }
 
-  public void continueTransform(Point currentPoint) {
-    ((Polygon) drawShape).continueDraw(currentPoint);
-  }
-
-  @Override
-  public void finish() {
+  public void finish(List<DrawShape> drawShapes) {
     super.finish();
-    drawingPanel.getDrawShapes().add(drawShape);
-    drawingPanel.selectShape(drawShape);
+    drawShapes.stream()
+        .filter(shape -> drawShape.getBounds().contains(shape.getBounds()))
+        .forEach(shape -> shape.setSelected(true));
   }
 }

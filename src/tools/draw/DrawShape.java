@@ -1,9 +1,7 @@
 package tools.draw;
 
-import static global.Constants.DEFAULT_DASH_SIZE;
 import static global.Constants.DEFAULT_FILL_COLOR;
 import static global.Constants.DEFAULT_LINE_COLOR;
-import static global.Constants.DEFAULT_LINE_SIZE;
 import static global.Constants.SHAPE_INTERSECT_HEIGHT;
 import static global.Constants.SHAPE_INTERSECT_WIDTH;
 
@@ -13,7 +11,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Optional;
@@ -23,13 +20,13 @@ import tools.anchor.AnchorList;
 import utils.CustomAffineTransform;
 import utils.dto.ScalingFactorDto;
 
-public abstract class DrawShape implements Serializable {
+public abstract class DrawShape implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
   protected final AffineTransform affineTransform;
   protected final SerializableStroke serializableStroke;
-  protected final AnchorList anchorList;
+  protected AnchorList anchorList;
 
   protected Shape shape;
   protected Point startPoint;
@@ -44,15 +41,12 @@ public abstract class DrawShape implements Serializable {
     this.affineTransform = new CustomAffineTransform();
     this.serializableStroke = new SerializableStroke();
     this.anchorList = new AnchorList();
-
-    setLineSize(DEFAULT_LINE_SIZE);
-    setDashSize(DEFAULT_DASH_SIZE);
     setSelected(false);
   }
 
   public void draw(Graphics2D g2D) {
     g2D.setStroke(serializableStroke.getStroke());
-    if (!isBrush()) {
+    if (!isUnfilledShape()) {
       g2D.setColor(this.fillColor);
       g2D.fill(shape);
     }
@@ -60,13 +54,17 @@ public abstract class DrawShape implements Serializable {
     g2D.draw(shape);
 
     if (selected) {
-      Rectangle boundRectangle = shape.getBounds();
-      anchorList.draw(g2D, boundRectangle);
+      anchorList.setBound(shape.getBounds());
+      anchorList.draw(g2D);
     }
   }
 
   public Rectangle getBounds() {
     return shape.getBounds();
+  }
+
+  public boolean isSelected() {
+    return selected;
   }
 
   public void setSelected(boolean selected) {
@@ -148,13 +146,21 @@ public abstract class DrawShape implements Serializable {
     return rotationAngle;
   }
 
-  private boolean isBrush() {
-    return shape instanceof Path2D.Float;
+  private boolean isUnfilledShape() {
+    return this instanceof Brush || this instanceof Selection;
   }
 
   public abstract void setStartPoint(Point startPoint);
 
   public abstract void setCurrentPoint(Point currentPoint);
 
-  public abstract DrawShape clone();
+  public DrawShape clone() {
+    DrawShape drawShape = null;
+    try {
+      drawShape = (DrawShape) super.clone();
+    } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
+    }
+    return drawShape;
+  }
 }

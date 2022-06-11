@@ -27,9 +27,4 @@ public class Polygon extends DrawShape {
   public void continueDraw(Point point) {
     polygon.addPoint(point.x, point.y);
   }
-
-  @Override
-  public DrawShape clone() {
-    return new Polygon();
-  }
 }

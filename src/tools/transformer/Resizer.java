@@ -1,5 +1,7 @@
 package tools.transformer;
 
+import static global.Constants.DEFAULT_BACKGROUND_COLOR;
+
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -31,6 +33,7 @@ public class Resizer extends Transformer {
 
   @Override
   public void transform(Graphics2D g2D, Point currentPoint) {
+    g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
     Rectangle bounds = drawShape.getBounds();
     if (!isBoundsSizeZero(bounds)) {
       ScalingRequestDto request = new ScalingRequestDto(

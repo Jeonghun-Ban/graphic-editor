@@ -13,6 +13,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.JPanel;
@@ -20,9 +21,13 @@ import javax.swing.event.MouseInputAdapter;
 import tools.AnchorCursor;
 import tools.anchor.Anchor;
 import tools.draw.DrawShape;
+import tools.draw.Group;
 import tools.draw.Polygon;
 import tools.draw.Selection;
+import tools.edit.CopyManager;
+import tools.edit.UndoManager;
 import tools.transformer.Drawer;
+import tools.transformer.Grouper;
 import tools.transformer.Resizer;
 import tools.transformer.Rotator;
 import tools.transformer.Transformer;
@@ -43,18 +48,24 @@ public class DrawingPanel extends JPanel implements Printable {
   private Graphics2D graphicsBufferedImage;
 
   private boolean updated;
+  private DrawMode drawMode;
   private Class<? extends DrawShape> shapeClass;
   private DrawShape currentShape;
   private DrawShape selectedShape;
+
   private Transformer transformer;
-  private DrawMode drawMode;
+  private UndoManager undoManager;
+  private CopyManager copyManager;
 
   private DrawingPanel() {
     super();
 
     this.drawShapes = new ArrayList<>();
     this.shapeClass = null;
+
     this.transformer = null;
+    this.undoManager = new UndoManager(drawShapes);
+    this.copyManager = new CopyManager(drawShapes);
 
     setBackground(DEFAULT_BACKGROUND_COLOR);
     setDrawMode(DrawMode.IDLE);
@@ -117,6 +128,7 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void setTransformer(Transformer transformer) {
+    this.undoManager.reset();
     this.transformer = transformer;
   }
 
@@ -154,6 +166,69 @@ public class DrawingPanel extends JPanel implements Printable {
       setUpdated(true);
       repaint();
     });
+  }
+
+  public void undo() {
+    undoManager.undo();
+    repaint();
+  }
+
+  public void redo() {
+    undoManager.redo();
+    repaint();
+  }
+
+  public void copy() {
+    copyManager.copy(selectedShape);
+    repaint();
+  }
+
+  public void cut() {
+    copyManager.cut(selectedShape);
+    repaint();
+  }
+
+  public void paste() {
+    copyManager.paste();
+    repaint();
+  }
+
+  public void group() {
+    Group group = new Group();
+    boolean groupAble = false;
+
+    Iterator<DrawShape> iterator = drawShapes.listIterator();
+    while (iterator.hasNext()) {
+      DrawShape drawShape = iterator.next();
+      if (drawShape.isSelected()) {
+        drawShape.setSelected(false);
+        group.add(drawShape);
+        iterator.remove();
+        groupAble = true;
+      }
+    }
+    if (groupAble) {
+      drawShapes.add(group);
+      group.setSelected(true);
+    }
+    repaint();
+  }
+
+  public void unGroup() {
+    List<DrawShape> tmpList = new ArrayList<>();
+    Iterator<DrawShape> iterator = drawShapes.listIterator();
+    while (iterator.hasNext()) {
+      DrawShape drawShape = iterator.next();
+      if (drawShape instanceof Group && drawShape.isSelected()) {
+        ((Group) drawShape).getDrawShapes().forEach(childShape -> {
+          childShape.setSelected(true);
+          tmpList.add(childShape);
+        });
+        iterator.remove();
+      }
+    }
+    drawShapes.addAll(tmpList);
+    repaint();
   }
 
   @Override
@@ -249,7 +324,7 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
         if (shapeClass.equals(Selection.class)) {
-          selectShape(e.getPoint()).ifPresent(
+          selectShape(e.getPoint()).ifPresentOrElse(
               shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
                 if (anchor == Anchor.Rotate) {
                   setTransformer(new Rotator(shape));
@@ -263,7 +338,11 @@ public class DrawingPanel extends JPanel implements Printable {
                   setTransformer(new Translator(shape));
                   setDrawMode(DrawMode.TRANSLATE);
                 }
-              }));
+              }), () -> {
+                Selection selection = new Selection();
+                setTransformer(new Grouper(selection));
+                setDrawMode(DrawMode.GROUP);
+              });
         } else {
           initDraw();
           setTransformer(new Drawer(currentShape));
@@ -290,7 +369,9 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-      if (!isDrawMode(DrawMode.POLYGON)) {
+      if (isDrawMode(DrawMode.GROUP)) {
+        ((Grouper) transformer).finish(drawShapes);
+      } else if (!isDrawMode(DrawMode.POLYGON)) {
         getTransformer().ifPresent(Transformer::finish);
       }
     }
@@ -313,7 +394,10 @@ public class DrawingPanel extends JPanel implements Printable {
       changeCursor(e.getPoint());
       if (isDrawMode(DrawMode.POLYGON)) {
         getTransformer().ifPresent(
-            transformer -> transformer.transform(graphicsBufferedImage, e.getPoint()));
+            transformer -> {
+              transformer.transform(graphicsBufferedImage, e.getPoint());
+              getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
+            });
       }
     }
   }

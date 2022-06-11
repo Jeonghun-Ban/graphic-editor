@@ -23,10 +23,4 @@ public class Brush extends DrawShape {
   public void setCurrentPoint(Point currentPoint) {
     brush.lineTo(currentPoint.x, currentPoint.y);
   }
-
-  @Override
-  public DrawShape clone() {
-    return new Brush();
-  }
-
 }
