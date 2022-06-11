@@ -13,7 +13,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Optional;
@@ -52,7 +51,7 @@ public abstract class DrawShape implements Serializable, Cloneable {
 
   public void draw(Graphics2D g2D) {
     g2D.setStroke(serializableStroke.getStroke());
-    if (!isBrush()) {
+    if (!isUnfilledShape()) {
       g2D.setColor(this.fillColor);
       g2D.fill(shape);
     }
@@ -148,8 +147,8 @@ public abstract class DrawShape implements Serializable, Cloneable {
     return rotationAngle;
   }
 
-  private boolean isBrush() {
-    return shape instanceof Path2D.Float;
+  private boolean isUnfilledShape() {
+    return this instanceof Brush || this instanceof Selection;
   }
 
   public abstract void setStartPoint(Point startPoint);

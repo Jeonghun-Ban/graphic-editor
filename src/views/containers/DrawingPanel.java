@@ -25,6 +25,7 @@ import tools.draw.Selection;
 import tools.edit.CopyManager;
 import tools.edit.UndoManager;
 import tools.transformer.Drawer;
+import tools.transformer.Grouper;
 import tools.transformer.Resizer;
 import tools.transformer.Rotator;
 import tools.transformer.Transformer;
@@ -283,7 +284,7 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mousePressed(MouseEvent e) {
       if (isDrawMode(DrawMode.IDLE)) {
         if (shapeClass.equals(Selection.class)) {
-          selectShape(e.getPoint()).ifPresent(
+          selectShape(e.getPoint()).ifPresentOrElse(
               shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
                 if (anchor == Anchor.Rotate) {
                   setTransformer(new Rotator(shape));
@@ -297,7 +298,11 @@ public class DrawingPanel extends JPanel implements Printable {
                   setTransformer(new Translator(shape));
                   setDrawMode(DrawMode.TRANSLATE);
                 }
-              }));
+              }), () -> {
+                Selection selection = new Selection();
+                setTransformer(new Grouper(selection));
+                setDrawMode(DrawMode.GROUP);
+              });
         } else {
           initDraw();
           setTransformer(new Drawer(currentShape));
@@ -324,7 +329,9 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-      if (!isDrawMode(DrawMode.POLYGON)) {
+      if (isDrawMode(DrawMode.GROUP)) {
+        ((Grouper) transformer).finish(drawShapes);
+      } else if (!isDrawMode(DrawMode.POLYGON)) {
         getTransformer().ifPresent(Transformer::finish);
       }
     }
