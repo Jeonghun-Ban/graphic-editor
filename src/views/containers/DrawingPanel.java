@@ -22,6 +22,7 @@ import tools.anchor.Anchor;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
 import tools.draw.Selection;
+import tools.edit.UndoManager;
 import tools.transformer.Drawer;
 import tools.transformer.Resizer;
 import tools.transformer.Rotator;
@@ -43,11 +44,13 @@ public class DrawingPanel extends JPanel implements Printable {
   private Graphics2D graphicsBufferedImage;
 
   private boolean updated;
+  private DrawMode drawMode;
   private Class<? extends DrawShape> shapeClass;
   private DrawShape currentShape;
   private DrawShape selectedShape;
+
   private Transformer transformer;
-  private DrawMode drawMode;
+  private UndoManager undoManager;
 
   private DrawingPanel() {
     super();
@@ -55,6 +58,7 @@ public class DrawingPanel extends JPanel implements Printable {
     this.drawShapes = new ArrayList<>();
     this.shapeClass = null;
     this.transformer = null;
+    this.undoManager = new UndoManager(drawShapes);
 
     setBackground(DEFAULT_BACKGROUND_COLOR);
     setDrawMode(DrawMode.IDLE);
@@ -117,6 +121,7 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void setTransformer(Transformer transformer) {
+    this.undoManager.reset();
     this.transformer = transformer;
   }
 
@@ -154,6 +159,16 @@ public class DrawingPanel extends JPanel implements Printable {
       setUpdated(true);
       repaint();
     });
+  }
+
+  public void undo() {
+    undoManager.undo();
+    repaint();
+  }
+
+  public void redo() {
+    undoManager.redo();
+    repaint();
   }
 
   @Override

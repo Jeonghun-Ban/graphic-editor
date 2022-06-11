@@ -3,13 +3,14 @@ package views.menubar.item;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
+import views.containers.DrawingPanel;
 
 public enum EditMenuItem {
   Undo("Undo", KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.META_DOWN_MASK),
-      () -> {}),
+      () -> DrawingPanel.getInstance().undo()),
   Redo("Redo", KeyStroke.getKeyStroke(KeyEvent.VK_Z,
       InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
-      () -> {}),
+      () -> DrawingPanel.getInstance().redo()),
   Cut("Cut", KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.META_DOWN_MASK),
       () -> {}),
   Copy("Copy", KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK),
