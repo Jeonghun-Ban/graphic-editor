@@ -53,11 +53,13 @@ public class Group extends DrawShape {
 
   @Override
   public void setLineSize(int lineSize) {
+    super.setLineSize(lineSize);
     drawShapes.forEach(drawShape -> drawShape.setLineSize(lineSize));
   }
 
   @Override
   public void setDashSize(int dashSize) {
+    super.setDashSize(dashSize);
     drawShapes.forEach(drawShape -> drawShape.setDashSize(dashSize));
   }
 
