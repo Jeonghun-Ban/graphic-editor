@@ -23,7 +23,7 @@ import tools.anchor.AnchorList;
 import utils.CustomAffineTransform;
 import utils.dto.ScalingFactorDto;
 
-public abstract class DrawShape implements Serializable {
+public abstract class DrawShape implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
@@ -156,5 +156,13 @@ public abstract class DrawShape implements Serializable {
 
   public abstract void setCurrentPoint(Point currentPoint);
 
-  public abstract DrawShape clone();
+  public DrawShape clone() {
+    DrawShape drawShape = null;
+    try {
+      drawShape = (DrawShape) super.clone();
+    } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
+    }
+    return drawShape;
+  }
 }

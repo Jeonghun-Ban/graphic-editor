@@ -23,9 +23,4 @@ public class Oval extends DrawShape {
   public void setCurrentPoint(Point currentPoint) {
     ellipse.setFrameFromDiagonal(startPoint.x, startPoint.y, currentPoint.x, currentPoint.y);
   }
-
-  @Override
-  public DrawShape clone() {
-    return new Oval();
-  }
 }

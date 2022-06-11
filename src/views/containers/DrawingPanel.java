@@ -22,6 +22,7 @@ import tools.anchor.Anchor;
 import tools.draw.DrawShape;
 import tools.draw.Polygon;
 import tools.draw.Selection;
+import tools.edit.CopyManager;
 import tools.edit.UndoManager;
 import tools.transformer.Drawer;
 import tools.transformer.Resizer;
@@ -51,14 +52,17 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private Transformer transformer;
   private UndoManager undoManager;
+  private CopyManager copyManager;
 
   private DrawingPanel() {
     super();
 
     this.drawShapes = new ArrayList<>();
     this.shapeClass = null;
+
     this.transformer = null;
     this.undoManager = new UndoManager(drawShapes);
+    this.copyManager = new CopyManager(drawShapes);
 
     setBackground(DEFAULT_BACKGROUND_COLOR);
     setDrawMode(DrawMode.IDLE);
@@ -168,6 +172,21 @@ public class DrawingPanel extends JPanel implements Printable {
 
   public void redo() {
     undoManager.redo();
+    repaint();
+  }
+
+  public void copy() {
+    copyManager.copy(selectedShape);
+    repaint();
+  }
+
+  public void cut() {
+    copyManager.cut(selectedShape);
+    repaint();
+  }
+
+  public void paste() {
+    copyManager.paste();
     repaint();
   }
 
