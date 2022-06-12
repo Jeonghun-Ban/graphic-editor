@@ -19,7 +19,8 @@ public enum EditMenuItem {
       () -> DrawingPanel.getInstance().paste()),
   Group("Group", KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.META_DOWN_MASK),
       () -> DrawingPanel.getInstance().group()),
-  Ungroup("Ungroup", KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_DOWN_MASK),
+  Ungroup("Ungroup", KeyStroke.getKeyStroke(KeyEvent.VK_G,
+      InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
       () -> DrawingPanel.getInstance().unGroup());
 
   private final String label;
