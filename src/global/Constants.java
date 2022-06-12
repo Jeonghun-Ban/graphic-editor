@@ -9,8 +9,8 @@ public class Constants {
 
   // MainFrame
   public static final String TITLE_MAINFRAME = "Graphic Editor";
-  public static final int WIDTH_MAINFRAME = 600;
-  public static final int HEIGHT_MAINFRAME = 400;
+  public static final int WIDTH_MAINFRAME = 800;
+  public static final int HEIGHT_MAINFRAME = 600;
 
   // ToolBar
   public static final String LINE_SIZE_SPINNER = "Line Size";
