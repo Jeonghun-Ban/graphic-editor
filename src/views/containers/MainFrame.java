@@ -38,6 +38,7 @@ public class MainFrame extends JFrame {
     this.setTitle(TITLE_MAINFRAME);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setSize(WIDTH_MAINFRAME, HEIGHT_MAINFRAME);
+    this.setLocationRelativeTo(null);
     this.setVisible(true);
   }
 }
