@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.List;
 import tools.draw.DrawShape;
+import views.containers.DrawingPanel;
 
 public class Grouper extends Transformer {
 
@@ -30,6 +31,9 @@ public class Grouper extends Transformer {
     super.finish();
     drawShapes.stream()
         .filter(shape -> drawShape.getBounds().contains(shape.getBounds()))
-        .forEach(shape -> shape.setSelected(true));
+        .forEach(shape -> {
+          shape.setSelected(true);
+        });
+    DrawingPanel.getInstance().setSelectedShapes(drawShapes);
   }
 }

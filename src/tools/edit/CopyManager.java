@@ -5,24 +5,26 @@ import tools.draw.DrawShape;
 
 public class CopyManager {
 
-  private List<DrawShape> drawShapes;
-  private DrawShape temp;
+  private final List<DrawShape> drawShapes;
+  private final List<DrawShape> temp;
 
   public CopyManager(List<DrawShape> drawShapes) {
     this.drawShapes = drawShapes;
     this.temp = null;
   }
 
-  public void copy(DrawShape copyShape) {
-    this.temp = copyShape.clone();
+  public void copy(List<DrawShape> copyShapes) {
+    copyShapes.forEach(copyShape -> temp.add(copyShape.clone()));
   }
 
-  public void cut(DrawShape copyShape) {
-    this.temp = copyShape;
-    drawShapes.remove(copyShape);
+  public void cut(List<DrawShape> copyShapes) {
+    copyShapes.forEach(copyShape -> {
+      temp.add(copyShape.clone());
+      drawShapes.remove(copyShape);
+    });
   }
 
   public void paste() {
-    drawShapes.add(temp);
+    drawShapes.addAll(temp);
   }
 }

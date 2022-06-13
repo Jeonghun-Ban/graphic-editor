@@ -4,6 +4,7 @@ import static global.Constants.DEFAULT_BACKGROUND_COLOR;
 
 import global.DrawMode;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +53,7 @@ public class DrawingPanel extends JPanel implements Printable {
   private DrawMode drawMode;
   private Class<? extends DrawShape> shapeClass;
   private DrawShape currentShape;
-  private DrawShape selectedShape;
+  private List<DrawShape> selectedShapes;
 
   private Transformer transformer;
   private UndoManager undoManager;
@@ -61,6 +63,7 @@ public class DrawingPanel extends JPanel implements Printable {
     super();
 
     this.drawShapes = new ArrayList<>();
+    this.selectedShapes = new ArrayList<>();
     this.shapeClass = null;
 
     this.transformer = null;
@@ -82,8 +85,7 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void initialize() {
-    this.bufferedImage = (BufferedImage) this.createImage(
-        this.getWidth(), this.getHeight());
+    this.bufferedImage = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
     this.graphicsBufferedImage = this.bufferedImage.createGraphics();
     this.graphicsBufferedImage.setBackground(DEFAULT_BACKGROUND_COLOR);
   }
@@ -118,12 +120,12 @@ public class DrawingPanel extends JPanel implements Printable {
     repaint();
   }
 
-  private Optional<DrawShape> getSelectedShape() {
-    return Optional.ofNullable(this.selectedShape);
+  private Optional<List<DrawShape>> getSelectedShapes() {
+    return Optional.ofNullable(this.selectedShapes);
   }
 
-  public void setSelectedShape(DrawShape selectedShape) {
-    this.selectedShape = selectedShape;
+  public void setSelectedShapes(List<DrawShape> selectedShapes) {
+    this.selectedShapes = selectedShapes;
   }
 
   public void setTransformer(Transformer transformer) {
@@ -136,32 +138,32 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void updateLineColor(Color color) {
-    getSelectedShape().ifPresent(shape -> {
-      shape.setLineColor(color);
+    getSelectedShapes().ifPresent(selectedShapes -> {
+      selectedShapes.forEach(selectedShape -> selectedShape.setLineColor(color));
       setUpdated(true);
       repaint();
     });
   }
 
   public void updateFillColor(Color color) {
-    getSelectedShape().ifPresent(shape -> {
-      shape.setFillColor(color);
+    getSelectedShapes().ifPresent(selectedShapes -> {
+      selectedShapes.forEach(selectedShape -> selectedShape.setFillColor(color));
       setUpdated(true);
       repaint();
     });
   }
 
   public void updateLineSize(int lineSize) {
-    getSelectedShape().ifPresent(shape -> {
-      shape.setLineSize(lineSize);
+    getSelectedShapes().ifPresent(selectedShapes -> {
+      selectedShapes.forEach(selectedShape -> selectedShape.setLineSize(lineSize));
       setUpdated(true);
       repaint();
     });
   }
 
   public void updateDashSize(int dashSize) {
-    getSelectedShape().ifPresent(shape -> {
-      shape.setDashSize(dashSize);
+    getSelectedShapes().ifPresent(selectedShapes -> {
+      selectedShapes.forEach(selectedShape -> selectedShape.setDashSize(dashSize));
       setUpdated(true);
       repaint();
     });
@@ -178,12 +180,12 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void copy() {
-    copyManager.copy(selectedShape);
+    copyManager.copy(selectedShapes);
     repaint();
   }
 
   public void cut() {
-    copyManager.cut(selectedShape);
+    copyManager.cut(selectedShapes);
     repaint();
   }
 
@@ -254,8 +256,8 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void remove() {
-    getSelectedShape().ifPresent(shape -> {
-      getDrawShapes().remove(shape);
+    getSelectedShapes().ifPresent(selectedShapes -> {
+      selectedShapes.forEach(selectedShape -> getDrawShapes().remove(selectedShape));
       repaint();
     });
   }
@@ -266,15 +268,33 @@ public class DrawingPanel extends JPanel implements Printable {
     return reversedList.stream().filter(shape -> shape.onShape(point)).findFirst();
   }
 
+  private Optional<Anchor> onAnchor(Point point) {
+    if (getSelectedShapes().isPresent()) {
+      List<DrawShape> selectedShapes = getSelectedShapes().get();
+      Optional<Anchor> anchor = selectedShapes.stream()
+          .filter(selectedShape -> selectedShape.onAnchor(point).isPresent()).findFirst()
+          .flatMap(selectedShape -> selectedShape.onAnchor(point));
+      return anchor;
+    }
+    return null;
+  }
+
   private void changeCursor(Point point) {
     if (shapeClass.equals(Selection.class)) {
-      setCursor(
-          onShape(point).isPresent() ? CursorManager.MOVE_CURSOR : CursorManager.DEFAULT_CURSOR);
-      getSelectedShape().flatMap(shape -> shape.onAnchor(point))
-          .ifPresent(anchor -> setCursor(AnchorCursor.valueOf(anchor.name()).getCursor()));
+      setCursor(onAnchor(point).isPresent() ? getAnchorCursor(point)
+          : onShape(point).isPresent() ? CursorManager.MOVE_CURSOR : CursorManager.DEFAULT_CURSOR);
     } else {
       setCursor(CursorManager.CROSSHAIR_CURSOR);
     }
+  }
+
+
+  private Cursor getAnchorCursor(Point point) {
+    Optional<Anchor> anchor = onAnchor(point);
+    if (anchor.isPresent()) {
+      return AnchorCursor.valueOf(anchor.get().name()).getCursor();
+    }
+    return null;
   }
 
   private Optional<DrawShape> selectShape(Point point) {
@@ -288,20 +308,20 @@ public class DrawingPanel extends JPanel implements Printable {
     return selectedShape;
   }
 
-  public void selectShape(DrawShape drawShape) {
-    setSelectedShape(drawShape);
-    drawShape.setSelected(true);
-
-    ToolBar.getInstance().setDashSize(drawShape.getDashSize());
-    ToolBar.getInstance().setLineSize(drawShape.getLineSize());
-    ColorDialog.getInstance().setLineColor(drawShape.getLineColor());
-    ColorDialog.getInstance().setFillColor(drawShape.getFillColor());
-
+  public void selectShape(DrawShape... selectedShapes) {
+    setSelectedShapes(List.of(selectedShapes));
+    Arrays.stream(selectedShapes).forEach(selectedShape -> {
+      selectedShape.setSelected(true);
+      ToolBar.getInstance().setDashSize(selectedShape.getDashSize());
+      ToolBar.getInstance().setLineSize(selectedShape.getLineSize());
+      ColorDialog.getInstance().setLineColor(selectedShape.getLineColor());
+      ColorDialog.getInstance().setFillColor(selectedShape.getFillColor());
+    });
     repaint();
   }
 
   private void unselectShapes() {
-    setSelectedShape(null);
+    setSelectedShapes(null);
     getDrawShapes().forEach(shape -> shape.setSelected(false));
     repaint();
   }
@@ -354,12 +374,11 @@ public class DrawingPanel extends JPanel implements Printable {
     @Override
     public void mouseDragged(MouseEvent e) {
       if (!isDrawMode(DrawMode.IDLE)) {
-        getTransformer().ifPresent(
-            transformer -> {
-              transformer.transform(graphicsBufferedImage, e.getPoint());
-              DrawingPanel.getInstance().graphicsBufferedImage.setPaintMode();
-              getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
-            });
+        getTransformer().ifPresent(transformer -> {
+          transformer.transform(graphicsBufferedImage, e.getPoint());
+          DrawingPanel.getInstance().graphicsBufferedImage.setPaintMode();
+          getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
+        });
       }
       if (isDrawMode(DrawMode.TRANSLATE) || isDrawMode(DrawMode.RESIZE) || isDrawMode(
           DrawMode.ROTATE)) {
@@ -393,12 +412,11 @@ public class DrawingPanel extends JPanel implements Printable {
     public void mouseMoved(MouseEvent e) {
       changeCursor(e.getPoint());
       if (isDrawMode(DrawMode.POLYGON)) {
-        getTransformer().ifPresent(
-            transformer -> {
-              transformer.transform(graphicsBufferedImage, e.getPoint());
-              DrawingPanel.getInstance().graphicsBufferedImage.setPaintMode();
-              getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
-            });
+        getTransformer().ifPresent(transformer -> {
+          transformer.transform(graphicsBufferedImage, e.getPoint());
+          DrawingPanel.getInstance().graphicsBufferedImage.setPaintMode();
+          getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
+        });
       }
     }
   }
