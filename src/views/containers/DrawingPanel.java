@@ -209,6 +209,7 @@ public class DrawingPanel extends JPanel implements Printable {
     }
     if (groupAble) {
       drawShapes.add(group);
+      selectedShapes.add(group);
       group.setSelected(true);
     }
     repaint();
