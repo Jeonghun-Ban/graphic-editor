@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -120,12 +119,12 @@ public class DrawingPanel extends JPanel implements Printable {
     repaint();
   }
 
-  private Optional<List<DrawShape>> getSelectedShapes() {
-    return Optional.ofNullable(this.selectedShapes);
-  }
-
   public void setSelectedShapes(List<DrawShape> selectedShapes) {
     this.selectedShapes = selectedShapes;
+  }
+
+  public void addSelectedShape(DrawShape selectedShape) {
+    this.selectedShapes.add(selectedShape);
   }
 
   public void setTransformer(Transformer transformer) {
@@ -138,35 +137,35 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void updateLineColor(Color color) {
-    getSelectedShapes().ifPresent(selectedShapes -> {
+    if (!selectedShapes.isEmpty()) {
       selectedShapes.forEach(selectedShape -> selectedShape.setLineColor(color));
       setUpdated(true);
       repaint();
-    });
+    }
   }
 
   public void updateFillColor(Color color) {
-    getSelectedShapes().ifPresent(selectedShapes -> {
+    if (!selectedShapes.isEmpty()) {
       selectedShapes.forEach(selectedShape -> selectedShape.setFillColor(color));
       setUpdated(true);
       repaint();
-    });
+    }
   }
 
   public void updateLineSize(int lineSize) {
-    getSelectedShapes().ifPresent(selectedShapes -> {
+    if (!selectedShapes.isEmpty()) {
       selectedShapes.forEach(selectedShape -> selectedShape.setLineSize(lineSize));
       setUpdated(true);
       repaint();
-    });
+    }
   }
 
   public void updateDashSize(int dashSize) {
-    getSelectedShapes().ifPresent(selectedShapes -> {
+    if (!selectedShapes.isEmpty()) {
       selectedShapes.forEach(selectedShape -> selectedShape.setDashSize(dashSize));
       setUpdated(true);
       repaint();
-    });
+    }
   }
 
   public void undo() {
@@ -256,10 +255,14 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void remove() {
-    getSelectedShapes().ifPresent(selectedShapes -> {
-      selectedShapes.forEach(selectedShape -> getDrawShapes().remove(selectedShape));
-      repaint();
-    });
+    Iterator<DrawShape> iter = drawShapes.listIterator();
+    while (iter.hasNext()) {
+      DrawShape drawShape = iter.next();
+      if (selectedShapes.contains(drawShape)) {
+        iter.remove();
+      }
+    }
+    unselectShapes();
   }
 
   private Optional<DrawShape> onShape(Point point) {
@@ -269,14 +272,10 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private Optional<Anchor> onAnchor(Point point) {
-    if (getSelectedShapes().isPresent()) {
-      List<DrawShape> selectedShapes = getSelectedShapes().get();
-      Optional<Anchor> anchor = selectedShapes.stream()
-          .filter(selectedShape -> selectedShape.onAnchor(point).isPresent()).findFirst()
-          .flatMap(selectedShape -> selectedShape.onAnchor(point));
-      return anchor;
-    }
-    return null;
+    Optional<Anchor> anchor = selectedShapes.stream()
+        .filter(selectedShape -> selectedShape.onAnchor(point).isPresent()).findFirst()
+        .flatMap(selectedShape -> selectedShape.onAnchor(point));
+    return anchor;
   }
 
   private void changeCursor(Point point) {
@@ -287,7 +286,6 @@ public class DrawingPanel extends JPanel implements Printable {
       setCursor(CursorManager.CROSSHAIR_CURSOR);
     }
   }
-
 
   private Cursor getAnchorCursor(Point point) {
     Optional<Anchor> anchor = onAnchor(point);
@@ -308,21 +306,21 @@ public class DrawingPanel extends JPanel implements Printable {
     return selectedShape;
   }
 
-  public void selectShape(DrawShape... selectedShapes) {
-    setSelectedShapes(List.of(selectedShapes));
-    Arrays.stream(selectedShapes).forEach(selectedShape -> {
-      selectedShape.setSelected(true);
-      ToolBar.getInstance().setDashSize(selectedShape.getDashSize());
-      ToolBar.getInstance().setLineSize(selectedShape.getLineSize());
-      ColorDialog.getInstance().setLineColor(selectedShape.getLineColor());
-      ColorDialog.getInstance().setFillColor(selectedShape.getFillColor());
-    });
+  public void selectShape(DrawShape selectedShape) {
+    selectedShapes.add(selectedShape);
+    selectedShape.setSelected(true);
+
+    ToolBar.getInstance().setDashSize(selectedShape.getDashSize());
+    ToolBar.getInstance().setLineSize(selectedShape.getLineSize());
+    ColorDialog.getInstance().setLineColor(selectedShape.getLineColor());
+    ColorDialog.getInstance().setFillColor(selectedShape.getFillColor());
+
     repaint();
   }
 
   private void unselectShapes() {
-    setSelectedShapes(null);
-    getDrawShapes().forEach(shape -> shape.setSelected(false));
+    selectedShapes.forEach(selectedShape -> selectedShape.setSelected(false));
+    selectedShapes.clear();
     repaint();
   }
 

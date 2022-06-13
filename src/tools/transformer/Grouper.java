@@ -33,7 +33,8 @@ public class Grouper extends Transformer {
         .filter(shape -> drawShape.getBounds().contains(shape.getBounds()))
         .forEach(shape -> {
           shape.setSelected(true);
+          DrawingPanel.getInstance().addSelectedShape(shape);
         });
-    DrawingPanel.getInstance().setSelectedShapes(drawShapes);
+
   }
 }
