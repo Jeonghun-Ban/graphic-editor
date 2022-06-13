@@ -20,7 +20,7 @@ public class Rotator extends Transformer{
 
   @Override
   public void transform(Graphics2D g2D, Point currentPoint) {
-    drawShape.rotateTo(startPoint, currentPoint);
+    drawShape.rotateTo(this.drawShape, startPoint, currentPoint);
     this.startPoint = currentPoint;
   }
 }

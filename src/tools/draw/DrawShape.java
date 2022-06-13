@@ -124,9 +124,9 @@ public abstract class DrawShape implements Serializable, Cloneable {
     shape = affineTransform.createTransformedShape(shape);
   }
 
-  public void rotateTo(Point2D startPoint, Point2D currentPoint) {
-    Point2D centerPoint = new Point2D.Double(shape.getBounds2D().getCenterX(),
-        shape.getBounds2D().getCenterY());
+  public void rotateTo(DrawShape target, Point2D startPoint, Point2D currentPoint) {
+    Point2D centerPoint = new Point2D.Double(target.shape.getBounds2D().getCenterX(),
+        target.shape.getBounds2D().getCenterY());
     double rotateAngle = getRotateAngle(centerPoint, startPoint, currentPoint);
     affineTransform.setToRotation(Math.toRadians(rotateAngle), centerPoint.getX(),
         centerPoint.getY());

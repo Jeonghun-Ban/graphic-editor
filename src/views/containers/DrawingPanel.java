@@ -220,7 +220,7 @@ public class DrawingPanel extends JPanel implements Printable {
     while (iterator.hasNext()) {
       DrawShape drawShape = iterator.next();
       if (drawShape instanceof Group && drawShape.isSelected()) {
-        ((Group) drawShape).getDrawShapes().forEach(childShape -> {
+        ((Group) drawShape).getChildShapes().forEach(childShape -> {
           childShape.setSelected(true);
           tmpList.add(childShape);
         });

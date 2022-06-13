@@ -11,61 +11,61 @@ import utils.dto.ScalingFactorDto;
 
 public class Group extends DrawShape {
 
-  private List<DrawShape> drawShapes;
+  private List<DrawShape> childShapes;
 
   public Group() {
     super(new Rectangle());
-    drawShapes = new ArrayList<>();
+    childShapes = new ArrayList<>();
   }
 
   @Override
   public void setStartPoint(Point startPoint) {
-    drawShapes.forEach(drawShape -> drawShape.setStartPoint(startPoint));
+    childShapes.forEach(drawShape -> drawShape.setStartPoint(startPoint));
   }
 
   @Override
   public void setCurrentPoint(Point currentPoint) {
-    drawShapes.forEach(drawShape -> drawShape.setCurrentPoint(currentPoint));
+    childShapes.forEach(drawShape -> drawShape.setCurrentPoint(currentPoint));
   }
 
   public void add(DrawShape drawShape) {
-    drawShapes.add(drawShape);
-    if (drawShapes.size() == 1) {
+    childShapes.add(drawShape);
+    if (childShapes.size() == 1) {
       shape = drawShape.getBounds();
     } else {
       shape = shape.getBounds().createUnion(drawShape.getBounds());
     }
   }
 
-  public List<DrawShape> getDrawShapes() {
-    return drawShapes;
+  public List<DrawShape> getChildShapes() {
+    return childShapes;
   }
 
   @Override
   public void setLineColor(Color lineColor) {
-    drawShapes.forEach(drawShape -> drawShape.setLineColor(lineColor));
+    childShapes.forEach(drawShape -> drawShape.setLineColor(lineColor));
   }
 
   @Override
   public void setFillColor(Color fillColor) {
-    drawShapes.forEach(drawShape -> drawShape.setFillColor(fillColor));
+    childShapes.forEach(drawShape -> drawShape.setFillColor(fillColor));
   }
 
   @Override
   public void setLineSize(int lineSize) {
     super.setLineSize(lineSize);
-    drawShapes.forEach(drawShape -> drawShape.setLineSize(lineSize));
+    childShapes.forEach(drawShape -> drawShape.setLineSize(lineSize));
   }
 
   @Override
   public void setDashSize(int dashSize) {
     super.setDashSize(dashSize);
-    drawShapes.forEach(drawShape -> drawShape.setDashSize(dashSize));
+    childShapes.forEach(drawShape -> drawShape.setDashSize(dashSize));
   }
 
   @Override
   public void draw(Graphics2D g2D) {
-    drawShapes.forEach(drawShape -> drawShape.draw(g2D));
+    childShapes.forEach(drawShape -> drawShape.draw(g2D));
     if (isSelected()) {
       this.anchorList.setBound(this.getBounds());
       this.anchorList.draw(g2D);
@@ -75,18 +75,18 @@ public class Group extends DrawShape {
   @Override
   public void translateTo(Point changePoint) {
     super.translateTo(changePoint);
-    drawShapes.forEach(drawShape -> drawShape.translateTo(changePoint));
+    childShapes.forEach(drawShape -> drawShape.translateTo(changePoint));
   }
 
   @Override
   public void scaleTo(ScalingFactorDto scalingFactorDto) {
     super.scaleTo(scalingFactorDto);
-    drawShapes.forEach(drawShape -> drawShape.scaleTo(scalingFactorDto));
+    childShapes.forEach(drawShape -> drawShape.scaleTo(scalingFactorDto));
   }
 
   @Override
-  public void rotateTo(Point2D startPoint, Point2D currentPoint) {
-    super.rotateTo(startPoint, currentPoint);
-    drawShapes.forEach(drawShape -> drawShape.rotateTo(startPoint, currentPoint));
+  public void rotateTo(DrawShape target, Point2D startPoint, Point2D currentPoint) {
+    super.rotateTo(target, startPoint, currentPoint);
+    childShapes.forEach(childShape -> childShape.rotateTo(target, startPoint, currentPoint));
   }
 }
