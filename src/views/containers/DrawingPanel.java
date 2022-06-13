@@ -67,7 +67,6 @@ public class DrawingPanel extends JPanel implements Printable {
     this.undoManager = new UndoManager(drawShapes);
     this.copyManager = new CopyManager(drawShapes);
 
-    setBackground(DEFAULT_BACKGROUND_COLOR);
     setDrawMode(DrawMode.IDLE);
 
     MouseDrawingHandler drawingHandler = new MouseDrawingHandler();
@@ -358,6 +357,7 @@ public class DrawingPanel extends JPanel implements Printable {
         getTransformer().ifPresent(
             transformer -> {
               transformer.transform(graphicsBufferedImage, e.getPoint());
+              DrawingPanel.getInstance().graphicsBufferedImage.setPaintMode();
               getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
             });
       }
@@ -396,6 +396,7 @@ public class DrawingPanel extends JPanel implements Printable {
         getTransformer().ifPresent(
             transformer -> {
               transformer.transform(graphicsBufferedImage, e.getPoint());
+              DrawingPanel.getInstance().graphicsBufferedImage.setPaintMode();
               getGraphics().drawImage(bufferedImage, 0, 0, DrawingPanel.getInstance());
             });
       }

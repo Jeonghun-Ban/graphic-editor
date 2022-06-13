@@ -1,5 +1,7 @@
 package tools.transformer;
 
+import static global.Constants.DEFAULT_BACKGROUND_COLOR;
+
 import java.awt.Graphics2D;
 import java.awt.Point;
 import tools.draw.DrawShape;
@@ -18,7 +20,7 @@ public class Drawer extends Transformer {
 
   @Override
   public void transform(Graphics2D g2D, Point currentPoint) {
-    g2D.setXORMode(g2D.getBackground());
+    g2D.setXORMode(DEFAULT_BACKGROUND_COLOR);
     drawShape.draw(g2D);
     drawShape.setCurrentPoint(currentPoint);
     drawShape.draw(g2D);
