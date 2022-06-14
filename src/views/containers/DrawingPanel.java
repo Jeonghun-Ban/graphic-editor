@@ -186,7 +186,8 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void cut() {
-    copyManager.cut(selectedShapes);
+    copyManager.copy(selectedShapes);
+    remove();
     repaint();
   }
 
