@@ -25,6 +25,7 @@ import tools.draw.DrawShape;
 import tools.draw.Group;
 import tools.draw.Polygon;
 import tools.draw.Selection;
+import tools.edit.ArrangeManager;
 import tools.edit.CopyManager;
 import tools.edit.UndoManager;
 import tools.transformer.Drawer;
@@ -58,6 +59,7 @@ public class DrawingPanel extends JPanel implements Printable {
   private Transformer transformer;
   private UndoManager undoManager;
   private CopyManager copyManager;
+  private ArrangeManager arrangeManager;
 
   private DrawingPanel() {
     super();
@@ -69,6 +71,7 @@ public class DrawingPanel extends JPanel implements Printable {
     this.transformer = null;
     this.undoManager = new UndoManager(drawShapes);
     this.copyManager = new CopyManager(drawShapes);
+    this.arrangeManager = new ArrangeManager(drawShapes);
 
     setDrawMode(DrawMode.IDLE);
 
@@ -232,6 +235,26 @@ public class DrawingPanel extends JPanel implements Printable {
       }
     }
     drawShapes.addAll(tmpList);
+    repaint();
+  }
+
+  public void bringForward() {
+    arrangeManager.bringForward(selectedShapes);
+    repaint();
+  }
+
+  public void sendBackward() {
+    arrangeManager.sendBackward(selectedShapes);
+    repaint();
+  }
+
+  public void bringToFront() {
+    arrangeManager.bringToFront(selectedShapes);
+    repaint();
+  }
+
+  public void sendToBack() {
+    arrangeManager.sendToBack(selectedShapes);
     repaint();
   }
 
