@@ -1,5 +1,7 @@
 package views.dialogs;
 
+import static global.Constants.TITLE_MAINFRAME;
+
 import global.Exception;
 import global.Message;
 import java.awt.print.PrinterException;
@@ -51,13 +53,13 @@ public class FileDialog {
         saveFile();
       }
     }
-
     dialogOption = JOptionPane.showConfirmDialog(drawingPanel, Message.NEW_FILE_DIALOG,
         Message.NEW_FILE_DIALOG.getTitle(), JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE);
     if (dialogOption == JOptionPane.YES_OPTION) {
       drawingPanel.clear();
-      this.file = null;
+      file = null;
+      MainFrame.getInstance().setTitle(TITLE_MAINFRAME);
     }
   }
 
@@ -111,6 +113,7 @@ public class FileDialog {
         List<DrawShape> drawShapeList = drawingPanel.getDrawShapes();
         fileStore.save(this.file, drawShapeList);
         this.drawingPanel.setUpdated(false);
+        MainFrame.getInstance().setTitle(file.getName());
       }
     } catch (IOException e) {
       JOptionPane.showMessageDialog(drawingPanel, Exception.FILE_STORE_SAVE_ERROR,
