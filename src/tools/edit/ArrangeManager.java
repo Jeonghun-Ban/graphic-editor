@@ -22,27 +22,29 @@ public class ArrangeManager {
   }
 
   public void bringToFront(List<DrawShape> selectedShapes) {
-    DrawShape lastElement = selectedShapes.get(selectedShapes.size() - 1);
-    int lastElementIndex = drawShapes.indexOf(lastElement);
-    if (!isForward(lastElementIndex)) {
+    if (!isForward(selectedShapes)) {
+      int firstElementIndex = drawShapes.indexOf(selectedShapes.get(0));
       drawShapes.removeAll(selectedShapes);
-      drawShapes.addAll(lastElementIndex + 1, selectedShapes);
+      drawShapes.addAll(firstElementIndex + 1, selectedShapes);
     }
   }
 
   public void sendToBack(List<DrawShape> selectedShapes) {
-    int firstElementIndex = drawShapes.indexOf(selectedShapes.get(0));
-    if (!isBackward(firstElementIndex)) {
+    if (!isBackward(selectedShapes)) {
+      int firstElementIndex = drawShapes.indexOf(selectedShapes.get(0));
       drawShapes.removeAll(selectedShapes);
       drawShapes.addAll(firstElementIndex - 1, selectedShapes);
     }
   }
 
-  private boolean isBackward(int index) {
-    return index == 0;
+  private boolean isForward(List<DrawShape> selectedShapes) {
+    DrawShape lastElement = selectedShapes.get(selectedShapes.size() - 1);
+    int lastElementIndex = drawShapes.indexOf(lastElement);
+    return lastElementIndex == drawShapes.size() - 1;
   }
 
-  private boolean isForward(int index) {
-    return index == drawShapes.size() - 1;
+  private boolean isBackward(List<DrawShape> selectedShapes) {
+    int firstElementIndex = drawShapes.indexOf(selectedShapes.get(0));
+    return firstElementIndex == 0;
   }
 }
