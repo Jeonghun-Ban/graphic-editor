@@ -7,40 +7,42 @@ import views.containers.DrawingPanel;
 
 public enum EditMenuItem {
   Undo("Undo", KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().undo()),
+      () -> DrawingPanel.getInstance().undo(), false),
   Redo("Redo", KeyStroke.getKeyStroke(KeyEvent.VK_Z,
       InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().redo()),
+      () -> DrawingPanel.getInstance().redo(), true),
   Cut("Cut", KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().cut()),
+      () -> DrawingPanel.getInstance().cut(), false),
   Copy("Copy", KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().copy()),
+      () -> DrawingPanel.getInstance().copy(), false),
   Paste("Paste", KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().paste()),
+      () -> DrawingPanel.getInstance().paste(), true),
   Group("Group", KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().group()),
+      () -> DrawingPanel.getInstance().group(), false),
   Ungroup("Ungroup", KeyStroke.getKeyStroke(KeyEvent.VK_G,
       InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().unGroup()),
+      () -> DrawingPanel.getInstance().unGroup(), true),
   BringForward("Bring forward", KeyStroke.getKeyStroke(KeyEvent.VK_F,
       InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().bringForward()),
+      () -> DrawingPanel.getInstance().bringForward(), false),
   SendBackward("Send backward", KeyStroke.getKeyStroke(KeyEvent.VK_B,
       InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().sendBackward()),
+      () -> DrawingPanel.getInstance().sendBackward(), false),
   BringToFront("Bring to front", KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().bringToFront()),
+      () -> DrawingPanel.getInstance().bringToFront(), false),
   SendToBack("Send to back", KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().sendToBack());
+      () -> DrawingPanel.getInstance().sendToBack(), false);
 
   private final String label;
   private final KeyStroke keyStroke;
   private final Runnable operator;
+  private final boolean seperator;
 
-  EditMenuItem(String label, KeyStroke keyStroke, Runnable operator) {
+  EditMenuItem(String label, KeyStroke keyStroke, Runnable operator, boolean seperator) {
     this.label = label;
     this.keyStroke = keyStroke;
     this.operator = operator;
+    this.seperator = seperator;
   }
 
   @Override
@@ -54,5 +56,9 @@ public enum EditMenuItem {
 
   public void operate() {
     this.operator.run();
+  }
+
+  public boolean isSeperate() {
+    return this.seperator;
   }
 }

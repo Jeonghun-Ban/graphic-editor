@@ -7,27 +7,29 @@ import views.dialogs.FileDialog;
 
 public enum FileMenuItem {
   New("New", KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.META_DOWN_MASK),
-      () -> FileDialog.getInstance().newFile()),
+      () -> FileDialog.getInstance().newFile(), true),
   Open("Open", KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_DOWN_MASK),
-      () -> FileDialog.getInstance().openFile()),
+      () -> FileDialog.getInstance().openFile(), false),
   Save("Save", KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.META_DOWN_MASK),
-      () -> FileDialog.getInstance().saveFile()),
+      () -> FileDialog.getInstance().saveFile(), false),
   SaveAs("Save As..",
       KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
-      () -> FileDialog.getInstance().saveFileAs()),
+      () -> FileDialog.getInstance().saveFileAs(), true),
   Print("Print", KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.META_DOWN_MASK),
-      (() -> FileDialog.getInstance().print())),
+      (() -> FileDialog.getInstance().print()), true),
   Quit("Quit", KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.META_DOWN_MASK),
-      (() -> FileDialog.getInstance().quit()));
+      (() -> FileDialog.getInstance().quit()), false);
 
   private final String label;
   private final KeyStroke keyStroke;
   private final Runnable operator;
+  private final boolean seperator;
 
-  FileMenuItem(String label, KeyStroke keyStroke, Runnable operator) {
+  FileMenuItem(String label, KeyStroke keyStroke, Runnable operator, boolean seperator) {
     this.label = label;
     this.keyStroke = keyStroke;
     this.operator = operator;
+    this.seperator = seperator;
   }
 
   @Override
@@ -41,5 +43,9 @@ public enum FileMenuItem {
 
   public void operate() {
     this.operator.run();
+  }
+
+  public boolean isSeperate() {
+    return this.seperator;
   }
 }
