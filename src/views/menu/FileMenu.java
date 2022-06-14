@@ -1,4 +1,4 @@
-package views.menubar;
+package views.menu;
 
 import static global.Constants.FILE_MENU_TITLE;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import views.menubar.item.FileMenuItem;
+import views.menu.item.FileMenuItem;
 
 public class FileMenu extends JMenu {
 

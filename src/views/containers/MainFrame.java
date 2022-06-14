@@ -6,7 +6,7 @@ import static global.Constants.WIDTH_MAINFRAME;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import views.menubar.MenuBar;
+import views.menu.MenuBar;
 import views.toolbar.ToolBar;
 
 public class MainFrame extends JFrame {

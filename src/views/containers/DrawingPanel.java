@@ -35,6 +35,7 @@ import tools.transformer.Transformer;
 import tools.transformer.Translator;
 import utils.CursorManager;
 import views.dialogs.ColorDialog;
+import views.menu.PopMenu;
 import views.toolbar.ToolBar;
 
 
@@ -87,6 +88,7 @@ public class DrawingPanel extends JPanel implements Printable {
     this.bufferedImage = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
     this.graphicsBufferedImage = this.bufferedImage.createGraphics();
     this.graphicsBufferedImage.setBackground(DEFAULT_BACKGROUND_COLOR);
+    this.add(PopMenu.getInstance());
   }
 
   public boolean isUpdated() {
@@ -340,27 +342,32 @@ public class DrawingPanel extends JPanel implements Printable {
 
     @Override
     public void mousePressed(MouseEvent e) {
+
       if (isDrawMode(DrawMode.IDLE)) {
         if (shapeClass.equals(Selection.class)) {
-          selectShape(e.getPoint()).ifPresentOrElse(
-              shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
-                if (anchor == Anchor.Rotate) {
-                  setTransformer(new Rotator(shape));
-                  setDrawMode(DrawMode.ROTATE);
-                } else {
-                  setTransformer(new Resizer(shape));
-                  setDrawMode(DrawMode.RESIZE);
-                }
-              }, () -> {
-                if (shape.onShape(e.getPoint())) {
-                  setTransformer(new Translator(shape));
-                  setDrawMode(DrawMode.TRANSLATE);
-                }
-              }), () -> {
-                Selection selection = new Selection();
-                setTransformer(new Grouper(selection));
-                setDrawMode(DrawMode.GROUP);
-              });
+          if (e.getButton() == MouseEvent.BUTTON3) {
+            PopMenu.getInstance().show(DrawingPanel.getInstance(), e.getX(), e.getY());
+          } else {
+            selectShape(e.getPoint()).ifPresentOrElse(
+                shape -> shape.onAnchor(e.getPoint()).ifPresentOrElse(anchor -> {
+                  if (anchor == Anchor.Rotate) {
+                    setTransformer(new Rotator(shape));
+                    setDrawMode(DrawMode.ROTATE);
+                  } else {
+                    setTransformer(new Resizer(shape));
+                    setDrawMode(DrawMode.RESIZE);
+                  }
+                }, () -> {
+                  if (shape.onShape(e.getPoint())) {
+                    setTransformer(new Translator(shape));
+                    setDrawMode(DrawMode.TRANSLATE);
+                  }
+                }), () -> {
+                  Selection selection = new Selection();
+                  setTransformer(new Grouper(selection));
+                  setDrawMode(DrawMode.GROUP);
+                });
+          }
         } else {
           initDraw();
           setTransformer(new Drawer(currentShape));

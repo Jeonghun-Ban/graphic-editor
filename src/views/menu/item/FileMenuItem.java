@@ -1,4 +1,4 @@
-package views.menubar.item;
+package views.menu.item;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;

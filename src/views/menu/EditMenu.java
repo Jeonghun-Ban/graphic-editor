@@ -1,4 +1,4 @@
-package views.menubar;
+package views.menu;
 
 import static global.Constants.EDIT_MENU_TITLE;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import views.menubar.item.EditMenuItem;
+import views.menu.item.EditMenuItem;
 
 public class EditMenu extends JMenu {
 
@@ -41,7 +41,7 @@ public class EditMenu extends JMenu {
     });
   }
 
-  private static class ActionHandler implements ActionListener {
+  static class ActionHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
