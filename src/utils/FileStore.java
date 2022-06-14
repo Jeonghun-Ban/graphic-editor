@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileStore {
 
-  public static FileNameExtensionFilter filter =
+  public static final FileNameExtensionFilter filter =
       new FileNameExtensionFilter("graphic editor(.grt)", "grt");
 
   public void save(File file, Object object) throws IOException {

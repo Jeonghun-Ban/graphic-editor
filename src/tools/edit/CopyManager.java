@@ -1,7 +1,6 @@
 package tools.edit;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import tools.draw.DrawShape;
 import views.containers.DrawingPanel;
@@ -19,9 +18,8 @@ public class CopyManager {
   public void copy(List<DrawShape> selectedShapes) {
     if(!selectedShapes.isEmpty()) {
       copyShapes.clear();
-      Iterator<DrawShape> iter = selectedShapes.listIterator();
-      while (iter.hasNext()) {
-        DrawShape copyShape = iter.next().clone();
+      for (DrawShape selectedShape : selectedShapes) {
+        DrawShape copyShape = selectedShape.clone();
         copyShapes.add(copyShape);
       }
     }

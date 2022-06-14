@@ -46,6 +46,10 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private static DrawingPanel drawingPanel;
 
+  private final UndoManager undoManager;
+  private final CopyManager copyManager;
+  private final ArrangeManager arrangeManager;
+
   private List<DrawShape> drawShapes;
   private BufferedImage bufferedImage;
   private Graphics2D graphicsBufferedImage;
@@ -55,11 +59,7 @@ public class DrawingPanel extends JPanel implements Printable {
   private Class<? extends DrawShape> shapeClass;
   private DrawShape currentShape;
   private List<DrawShape> selectedShapes;
-
   private Transformer transformer;
-  private UndoManager undoManager;
-  private CopyManager copyManager;
-  private ArrangeManager arrangeManager;
 
   private DrawingPanel() {
     super();
@@ -282,13 +282,7 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   public void remove() {
-    Iterator<DrawShape> iter = drawShapes.listIterator();
-    while (iter.hasNext()) {
-      DrawShape drawShape = iter.next();
-      if (selectedShapes.contains(drawShape)) {
-        iter.remove();
-      }
-    }
+    drawShapes.removeIf(drawShape -> selectedShapes.contains(drawShape));
     unselectShapes();
   }
 
@@ -299,10 +293,9 @@ public class DrawingPanel extends JPanel implements Printable {
   }
 
   private Optional<Anchor> onAnchor(Point point) {
-    Optional<Anchor> anchor = selectedShapes.stream()
+    return selectedShapes.stream()
         .filter(selectedShape -> selectedShape.onAnchor(point).isPresent()).findFirst()
         .flatMap(selectedShape -> selectedShape.onAnchor(point));
-    return anchor;
   }
 
   private void changeCursor(Point point) {
@@ -316,10 +309,7 @@ public class DrawingPanel extends JPanel implements Printable {
 
   private Cursor getAnchorCursor(Point point) {
     Optional<Anchor> anchor = onAnchor(point);
-    if (anchor.isPresent()) {
-      return AnchorCursor.valueOf(anchor.get().name()).getCursor();
-    }
-    return null;
+    return anchor.map(value -> AnchorCursor.valueOf(value.name()).getCursor()).orElse(null);
   }
 
   private Optional<DrawShape> selectShape(Point point) {

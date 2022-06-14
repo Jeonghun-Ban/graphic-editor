@@ -116,7 +116,7 @@ public class ToolBar extends JToolBar {
     }
   }
 
-  private class EditToolHandler implements ActionListener {
+  private static class EditToolHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {

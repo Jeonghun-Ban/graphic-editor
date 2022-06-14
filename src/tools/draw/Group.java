@@ -11,7 +11,7 @@ import utils.dto.ScalingFactorDto;
 
 public class Group extends DrawShape {
 
-  private List<DrawShape> childShapes;
+  private final List<DrawShape> childShapes;
 
   public Group() {
     super(new Rectangle());

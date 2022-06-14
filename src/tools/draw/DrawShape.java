@@ -26,7 +26,7 @@ public abstract class DrawShape implements Serializable, Cloneable {
 
   protected final AffineTransform affineTransform;
   protected final SerializableStroke serializableStroke;
-  protected AnchorList anchorList;
+  protected final AnchorList anchorList;
 
   protected Shape shape;
   protected Point startPoint;

@@ -6,8 +6,8 @@ import tools.draw.DrawShape;
 
 public class UndoManager {
 
-  private List<DrawShape> drawShapes;
-  private Stack<DrawShape> undoStack;
+  private final List<DrawShape> drawShapes;
+  private final Stack<DrawShape> undoStack;
 
   public UndoManager(List<DrawShape> drawShapes) {
     this.drawShapes = drawShapes;
