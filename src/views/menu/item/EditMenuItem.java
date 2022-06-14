@@ -36,13 +36,13 @@ public enum EditMenuItem {
   private final String label;
   private final KeyStroke keyStroke;
   private final Runnable operator;
-  private final boolean seperator;
+  private final boolean separator;
 
-  EditMenuItem(String label, KeyStroke keyStroke, Runnable operator, boolean seperator) {
+  EditMenuItem(String label, KeyStroke keyStroke, Runnable operator, boolean separator) {
     this.label = label;
     this.keyStroke = keyStroke;
     this.operator = operator;
-    this.seperator = seperator;
+    this.separator = separator;
   }
 
   @Override
@@ -58,7 +58,7 @@ public enum EditMenuItem {
     this.operator.run();
   }
 
-  public boolean isSeperate() {
-    return this.seperator;
+  public boolean isSeparator() {
+    return this.separator;
   }
 }

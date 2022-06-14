@@ -29,7 +29,7 @@ public class PopMenu extends PopupMenu {
       menuItem.addActionListener(actionHandler);
       menuItem.setActionCommand(item.name());
       this.add(menuItem);
-      if (item.isSeperate()) {
+      if (item.isSeparator()) {
         this.addSeparator();
       }
     });

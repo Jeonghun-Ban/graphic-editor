@@ -38,7 +38,7 @@ public class EditMenu extends JMenu {
       menuItem.setToolTipText(item.toString());
       menuItem.setAccelerator(item.getKeyStroke());
       this.add(menuItem);
-      if (item.isSeperate()) {
+      if (item.isSeparator()) {
         this.addSeparator();
       }
     });
