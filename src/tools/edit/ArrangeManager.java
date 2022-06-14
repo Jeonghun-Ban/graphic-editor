@@ -12,17 +12,21 @@ public class ArrangeManager {
   }
 
   public void bringForward(List<DrawShape> selectedShapes) {
-    drawShapes.removeAll(selectedShapes);
-    drawShapes.addAll(selectedShapes);
+    if (!selectedShapes.isEmpty()) {
+      drawShapes.removeAll(selectedShapes);
+      drawShapes.addAll(selectedShapes);
+    }
   }
 
   public void sendBackward(List<DrawShape> selectedShapes) {
-    drawShapes.removeAll(selectedShapes);
-    drawShapes.addAll(0, selectedShapes);
+    if (!selectedShapes.isEmpty()) {
+      drawShapes.removeAll(selectedShapes);
+      drawShapes.addAll(0, selectedShapes);
+    }
   }
 
   public void bringToFront(List<DrawShape> selectedShapes) {
-    if (!isForward(selectedShapes)) {
+    if (!selectedShapes.isEmpty() && !isForward(selectedShapes)) {
       int firstElementIndex = drawShapes.indexOf(selectedShapes.get(0));
       drawShapes.removeAll(selectedShapes);
       drawShapes.addAll(firstElementIndex + 1, selectedShapes);
@@ -30,7 +34,7 @@ public class ArrangeManager {
   }
 
   public void sendToBack(List<DrawShape> selectedShapes) {
-    if (!isBackward(selectedShapes)) {
+    if (!selectedShapes.isEmpty() && !isBackward(selectedShapes)) {
       int firstElementIndex = drawShapes.indexOf(selectedShapes.get(0));
       drawShapes.removeAll(selectedShapes);
       drawShapes.addAll(firstElementIndex - 1, selectedShapes);
