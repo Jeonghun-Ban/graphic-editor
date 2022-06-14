@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import tools.draw.DrawShape;
+import views.containers.DrawingPanel;
 
 public class CopyManager {
 
@@ -28,7 +29,10 @@ public class CopyManager {
 
   public void paste() {
     if (!copyShapes.isEmpty()) {
-      drawShapes.addAll(copyShapes);
+      copyShapes.forEach(copyShape -> {
+        drawShapes.add(copyShape);
+        DrawingPanel.getInstance().addSelectedShape(copyShape);
+      });
     }
   }
 }
