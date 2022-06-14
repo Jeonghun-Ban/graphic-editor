@@ -22,16 +22,16 @@ public enum EditMenuItem {
   Ungroup("Ungroup", KeyStroke.getKeyStroke(KeyEvent.VK_G,
       InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
       () -> DrawingPanel.getInstance().unGroup(), true),
+  BringToFront("Bring to front", KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.META_DOWN_MASK),
+      () -> DrawingPanel.getInstance().bringToFront(), false),
   BringForward("Bring forward", KeyStroke.getKeyStroke(KeyEvent.VK_F,
       InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
       () -> DrawingPanel.getInstance().bringForward(), false),
+  SendToBack("Send to back", KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.META_DOWN_MASK),
+      () -> DrawingPanel.getInstance().sendToBack(), false),
   SendBackward("Send backward", KeyStroke.getKeyStroke(KeyEvent.VK_B,
       InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().sendBackward(), false),
-  BringToFront("Bring to front", KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().bringToFront(), false),
-  SendToBack("Send to back", KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.META_DOWN_MASK),
-      () -> DrawingPanel.getInstance().sendToBack(), false);
+      () -> DrawingPanel.getInstance().sendBackward(), false);
 
   private final String label;
   private final KeyStroke keyStroke;
